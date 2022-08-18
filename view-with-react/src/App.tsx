@@ -1,13 +1,23 @@
 import React from 'react'
-import logo from './logo.svg'
 import './App.css'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
 
 function App() {
+  const isPro = process.env.NODE_ENV === 'production' || false
+  const isDev = process.env.NODE_ENV === 'development' || false
+  const isTest = process.env.NODE_ENV === 'test' || false
+
   return (
     <div>
       <h1>Basic Example</h1>
 
+      <p>
+        isPro: {String(isPro)}, isDev: {String(isDev)}, isTest: {String(isTest)}
+      </p>
+      <p>
+        NODE_ENV: &gt;&gt;{process.env.NODE_ENV}&lt;&lt;, REACT_APP_MODE: &gt;&gt;{process.env.REACT_APP_MODE}
+        &lt;&lt;
+      </p>
       <p>
         This example demonstrates some of the core features of React Router including nested{' '}
         <code>&lt;Route&gt;</code>s, <code>&lt;Outlet&gt;</code>s, <code>&lt;Link&gt;</code>s, and using a
