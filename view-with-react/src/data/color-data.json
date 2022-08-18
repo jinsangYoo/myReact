@@ -1,0 +1,7 @@
+{
+  "colors": [
+    { "id": "01", "title": "해질녘 바다", "color": "#00c4e2", "rating": 5 },
+    { "id": "83", "title": "잔디", "color": "#26ac56", "rating": 3 },
+    { "id": "a1", "title": "밝은 빨강", "color": "#ff0000", "rating": 0 }
+  ]
+}

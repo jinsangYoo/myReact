@@ -11,7 +11,14 @@ app.get('/', function (req, res) {
 })
 
 app.get('/product', function (req, res) {
-  res.json({ name: 'balck shoes' })
+  console.log('===== GET call')
+  console.log('***** req.headers: >>' + JSON.stringify(req.headers) + '<<')
+
+  console.log('***** req.url: ' + JSON.stringify(req.url))
+  console.log('***** req.query: ' + JSON.stringify(req.query))
+  console.log('***** req.body: ' + JSON.stringify(req.body))
+
+  res.json({ name: 'black shoes' })
 })
 
 app.get('*', function (req, res) {
