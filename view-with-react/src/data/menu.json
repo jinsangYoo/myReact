@@ -1,0 +1,25 @@
+{
+  "version": "0.1",
+  "lastSelectMenuId": "personal",
+  "lastSelectSubMenuId": "main",
+  "menu": [
+    {
+      "id": "personal",
+      "name": "진상",
+      "path": "/",
+      "subMenu": [{ "id": "main", "name": "메인", "path": "/" }]
+    },
+    {
+      "id": "myReact",
+      "name": "myReact",
+      "path": "/myReact",
+      "subMenu": [{ "id": "main", "name": "메인", "path": "/" }]
+    },
+    {
+      "id": "etc",
+      "name": "...",
+      "path": "/...",
+      "subMenu": [{ "id": "main", "name": "메인", "path": "/" }]
+    }
+  ]
+}

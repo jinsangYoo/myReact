@@ -1,42 +1,27 @@
 import React from 'react'
 import './App.css'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
+import Paperbase from './themes/paperbase/Paperbase'
+import AppLayout from './components/navigator/AppLayout'
 
 function App() {
   const isPro = process.env.NODE_ENV === 'production' || false
   const isDev = process.env.NODE_ENV === 'development' || false
   const isTest = process.env.NODE_ENV === 'test' || false
+  console.log(`isPro: ${String(isPro)}, isDev: ${String(isDev)}, isTest: ${String(isTest)}`)
+  console.log(
+    `NODE_ENV: &gt;&gt;${process.env.NODE_ENV}&lt;&lt;, REACT_APP_MODE: &gt;&gt;${process.env.REACT_APP_MODE}&lt;&lt;`
+  )
 
   return (
     <div>
-      <h1>Basic Example</h1>
-
-      <p>
-        isPro: {String(isPro)}, isDev: {String(isDev)}, isTest: {String(isTest)}
-      </p>
-      <p>
-        NODE_ENV: &gt;&gt;{process.env.NODE_ENV}&lt;&lt;, REACT_APP_MODE: &gt;&gt;{process.env.REACT_APP_MODE}
-        &lt;&lt;
-      </p>
-      <p>
-        This example demonstrates some of the core features of React Router including nested{' '}
-        <code>&lt;Route&gt;</code>s, <code>&lt;Outlet&gt;</code>s, <code>&lt;Link&gt;</code>s, and using a
-        &quot;*&quot; route (aka &quot;splat route&quot;) to render a &quot;not found&quot; page when someone
-        visits an unrecognized URL.
-      </p>
-
-      {/* Routes nest inside one another. Nested route paths build upon
-            parent route paths, and nested route elements render inside
-            parent route elements. See the note about <Outlet> below. */}
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="paperbase" element={<Paperbase />} />
 
-          {/* Using path="*"" means "match anything", so this route
-                acts like a catch-all for URLs that we don't have explicit
-                routes for. */}
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>
@@ -59,6 +44,9 @@ function Layout() {
           </li>
           <li>
             <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link to="/paperbase">Paperbase</Link>
           </li>
           <li>
             <Link to="/nothing-here">Nothing Here</Link>
