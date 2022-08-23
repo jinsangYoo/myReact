@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, Dispatch } from 'react'
+import React, { useState, useContext } from 'react'
 import { menuData } from '../data'
 import { v4 } from 'uuid'
 
@@ -19,8 +19,8 @@ type MenuPropsType = MenuProps[]
 
 interface MenuFormat {
   version: string
-  lastSelectMenuId: string
-  lastSelectSubMenuId: string
+  lastSelectMenuId: number
+  lastSelectSubMenuId: number
   menu: [MenuProps]
 }
 
@@ -29,13 +29,19 @@ export interface IMenu {
   addMenu: (name: string, path: string, subMenu: [SubMenuProps]) => void
   updateMenu: (id: string, value: MenuProps) => void
   removeMenu: (id: string) => void
+  getSelectMenuId: () => number
+  updateSelectMenuId: (index: number) => void
+  getSelectSubMenuId: () => number
+  updateSelectSubMenuId: (index: number) => void
 }
 
-const MenuContext = React.createContext<IMenu | null>(null)
+const MenuContext = React.createContext({} as IMenu)
 export const useMenus = () => useContext(MenuContext)
 
 export function MenuProvider(props: any) {
   const [menus, setMenus] = useState(menuData.menu)
+  const [lastSelectMenuId, setLastSelectMenuId] = useState(menuData.lastSelectMenuId)
+  const [lastSelectSubMenuId, setLastSelectSubMenuId] = useState(menuData.lastSelectSubMenuId)
 
   const addMenu = (name: string, path: string, subMenu: [SubMenuProps]) =>
     setMenus([...menus, { id: v4(), name, path, subMenu }])
@@ -43,8 +49,24 @@ export function MenuProvider(props: any) {
     setMenus(menus.map((menu) => (menu.id === id ? value : menu)))
   const removeMenu = (id: string) => setMenus(menus.filter((menu) => menu.id !== id))
 
+  const getSelectMenuId = () => lastSelectMenuId
+  const updateSelectMenuId = (index: number) => setLastSelectMenuId(index)
+  const getSelectSubMenuId = () => lastSelectSubMenuId
+  const updateSelectSubMenuId = (index: number) => setLastSelectSubMenuId(index)
+
   return (
-    <MenuContext.Provider value={{ menus, addMenu, updateMenu, removeMenu }}>
+    <MenuContext.Provider
+      value={{
+        menus,
+        addMenu,
+        updateMenu,
+        removeMenu,
+        getSelectMenuId,
+        updateSelectMenuId,
+        getSelectSubMenuId,
+        updateSelectSubMenuId
+      }}
+    >
       {props.children}
     </MenuContext.Provider>
   )

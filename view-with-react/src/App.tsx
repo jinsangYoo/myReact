@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
 import Paperbase from './themes/paperbase/Paperbase'
-import AppLayout from './components/navigator/AppLayout'
+import AppLayout from './components/layout/AppLayout'
 
 function App() {
   const isPro = process.env.NODE_ENV === 'production' || false
