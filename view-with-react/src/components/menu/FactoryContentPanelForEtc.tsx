@@ -3,11 +3,11 @@ import React from 'react'
 import { EtcMain, EtcGrid } from '../../pages'
 
 interface FactoryContentPanelForEtcProps {
-  id: string
+  path: string
 }
 
-export default function FactoryContentPanelForEtc({ id }: FactoryContentPanelForEtcProps) {
-  switch (id) {
+export default function FactoryContentPanelForEtc({ path }: FactoryContentPanelForEtcProps) {
+  switch (path) {
     case 'main':
       return <EtcMain />
     case 'grid':

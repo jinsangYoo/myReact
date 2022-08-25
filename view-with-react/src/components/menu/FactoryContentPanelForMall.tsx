@@ -3,11 +3,11 @@ import React from 'react'
 import { MallMain, MallCart, MallOrder } from '../../pages'
 
 interface FactoryContentPanelForMallProps {
-  id: string
+  path: string
 }
 
-export default function FactoryContentPanelForMall({ id }: FactoryContentPanelForMallProps) {
-  switch (id) {
+export default function FactoryContentPanelForMall({ path }: FactoryContentPanelForMallProps) {
+  switch (path) {
     case 'main':
       return <MallMain />
     case 'cart':

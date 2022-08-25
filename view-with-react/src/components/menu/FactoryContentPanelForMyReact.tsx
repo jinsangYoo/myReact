@@ -3,11 +3,11 @@ import React from 'react'
 import { MyReactMain, MyReactOpenSourceLicense } from '../../pages'
 
 interface FactoryContentPanelForMyReactProps {
-  id: string
+  path: string
 }
 
-export default function FactoryContentPanelForMyReact({ id }: FactoryContentPanelForMyReactProps) {
-  switch (id) {
+export default function FactoryContentPanelForMyReact({ path }: FactoryContentPanelForMyReactProps) {
+  switch (path) {
     case 'main':
       return <MyReactMain />
     case 'openSourceLicense':

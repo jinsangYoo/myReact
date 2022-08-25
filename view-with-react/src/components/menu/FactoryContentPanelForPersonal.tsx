@@ -3,11 +3,11 @@ import React from 'react'
 import { PersonalMain, PersonalCommunity, PersonalAbout } from '../../pages'
 
 interface FactoryContentPanelForPersonalProps {
-  id: string
+  path: string
 }
 
-export default function FactoryContentPanelForPersonal({ id }: FactoryContentPanelForPersonalProps) {
-  switch (id) {
+export default function FactoryContentPanelForPersonal({ path }: FactoryContentPanelForPersonalProps) {
+  switch (path) {
     case 'main':
       return <PersonalMain />
     case 'community':

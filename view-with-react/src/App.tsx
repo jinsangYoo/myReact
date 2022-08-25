@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import { Routes, Route, Link, Outlet } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Link, Outlet } from 'react-router-dom'
 import Paperbase from './themes/paperbase/Paperbase'
 import AppLayout from './components/layout/AppLayout'
 
@@ -14,18 +14,11 @@ function App() {
   )
 
   return (
-    <div>
+    <Router>
       <Routes>
-        <Route path="/" element={<AppLayout />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="paperbase" element={<Paperbase />} />
-
-          <Route path="*" element={<NoMatch />} />
-        </Route>
+        <Route path="*" element={<AppLayout />} />
       </Routes>
-    </div>
+    </Router>
   )
 }
 

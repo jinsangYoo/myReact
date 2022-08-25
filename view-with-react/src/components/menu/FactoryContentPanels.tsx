@@ -6,21 +6,23 @@ import FactoryContentPanelForMall from './FactoryContentPanelForMall'
 import FactoryContentPanelForEtc from './FactoryContentPanelForEtc'
 
 interface FactoryContentPanelsProps {
-  mainMenuId: string
-  subMenuId: string
+  mainMenuPath: string
+  subMenuPath: string
 }
 
-export default function FactoryContentPanels({ mainMenuId, subMenuId }: FactoryContentPanelsProps) {
-  switch (mainMenuId) {
+export default function FactoryContentPanels({ mainMenuPath, subMenuPath }: FactoryContentPanelsProps) {
+  switch (mainMenuPath) {
     case 'personal':
-      return <FactoryContentPanelForPersonal id={subMenuId} />
+      return <FactoryContentPanelForPersonal path={subMenuPath} />
     case 'myReact':
-      return <FactoryContentPanelForMyReact id={subMenuId} />
+      return <FactoryContentPanelForMyReact path={subMenuPath} />
     case 'mall':
-      return <FactoryContentPanelForMall id={subMenuId} />
+      return <FactoryContentPanelForMall path={subMenuPath} />
     case 'etc':
-      return <FactoryContentPanelForEtc id={subMenuId} />
-    default:
+      return <FactoryContentPanelForEtc path={subMenuPath} />
+    default: {
+      console.log(`mainMenuPath: ${mainMenuPath}`)
       return <p>not find content.</p>
+    }
   }
 }

@@ -4,8 +4,8 @@ import Typography from '@mui/material/Typography'
 
 interface TabPanelProps {
   children?: React.ReactNode
-  index: number
-  value: number
+  index: string
+  value: string
 }
 
 export function TabPanel(props: TabPanelProps) {

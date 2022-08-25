@@ -19,8 +19,8 @@ type MenuPropsType = MenuProps[]
 
 interface MenuFormat {
   version: string
-  lastSelectMenuId: number
-  lastSelectSubMenuId: number
+  lastSelectMenuId: string
+  lastSelectSubMenuId: string
   menu: [MenuProps]
 }
 
@@ -29,10 +29,10 @@ export interface IMenu {
   addMenu: (name: string, path: string, subMenu: [SubMenuProps]) => void
   updateMenu: (id: string, value: MenuProps) => void
   removeMenu: (id: string) => void
-  getSelectMenuId: () => number
-  updateSelectMenuId: (index: number) => void
-  getSelectSubMenuId: () => number
-  updateSelectSubMenuId: (index: number) => void
+  getSelectMenuId: () => string
+  updateSelectMenuId: (index: string) => void
+  getSelectSubMenuId: () => string
+  updateSelectSubMenuId: (index: string) => void
 }
 
 const MenuContext = React.createContext({} as IMenu)
@@ -50,9 +50,9 @@ export function MenuProvider(props: any) {
   const removeMenu = (id: string) => setMenus(menus.filter((menu) => menu.id !== id))
 
   const getSelectMenuId = () => lastSelectMenuId
-  const updateSelectMenuId = (index: number) => setLastSelectMenuId(index)
+  const updateSelectMenuId = (index: string) => setLastSelectMenuId(index)
   const getSelectSubMenuId = () => lastSelectSubMenuId
-  const updateSelectSubMenuId = (index: number) => setLastSelectSubMenuId(index)
+  const updateSelectSubMenuId = (index: string) => setLastSelectSubMenuId(index)
 
   return (
     <MenuContext.Provider
