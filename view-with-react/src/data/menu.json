@@ -1,44 +1,38 @@
 {
   "version": "0.1",
-  "lastSelectMenuId": "/",
-  "lastSelectSubMenuId": "main",
   "menu": [
     {
-      "id": "personal",
       "name": "진상",
-      "path": "personal",
+      "path": "/personal",
       "subMenu": [
-        { "id": "main", "name": "메인", "path": "main" },
-        { "id": "community", "name": "게시판", "path": "community" },
-        { "id": "about", "name": "여긴 어디", "path": "about" }
+        { "name": "메인", "path": "main" },
+        { "name": "게시판", "path": "community" },
+        { "name": "여긴 어디", "path": "about" }
       ]
     },
     {
-      "id": "myReact",
       "name": "myReact",
-      "path": "myReact",
+      "path": "/myReact",
       "subMenu": [
-        { "id": "main", "name": "메인", "path": "main" },
-        { "id": "openSourceLicense", "name": "라이센스", "path": "openSourceLicense" }
+        { "name": "메인", "path": "main" },
+        { "name": "라이센스", "path": "openSourceLicense" }
       ]
     },
     {
-      "id": "mall",
       "name": "쇼핑몰(가상)",
-      "path": "mall",
+      "path": "/mall",
       "subMenu": [
-        { "id": "main", "name": "메인", "path": "main" },
-        { "id": "cart", "name": "장바구니", "path": "cart" },
-        { "id": "order", "name": "주문", "path": "order" }
+        { "name": "메인", "path": "main" },
+        { "name": "장바구니", "path": "cart" },
+        { "name": "주문", "path": "order" }
       ]
     },
     {
-      "id": "etc",
       "name": "기타",
-      "path": "etc",
+      "path": "/etc",
       "subMenu": [
-        { "id": "main", "name": "메인", "path": "main" },
-        { "id": "grid", "name": "그리드", "path": "grid" }
+        { "name": "메인", "path": "main" },
+        { "name": "그리드", "path": "grid" }
       ]
     }
   ]

@@ -1,15 +1,13 @@
 import React, { useState, useContext } from 'react'
 import { menuData } from '../data'
-import { v4 } from 'uuid'
+import useRouteMatch from './useRouteMatch'
 
 export interface SubMenuProps {
-  id: string
   name: string
   path: string
 }
 
 export interface MenuProps {
-  id: string
   name: string
   path: string
   subMenu: SubMenuProps[]
@@ -19,20 +17,16 @@ type MenuPropsType = MenuProps[]
 
 interface MenuFormat {
   version: string
-  lastSelectMenuId: string
-  lastSelectSubMenuId: string
+  lastSelectMenuPath: string
+  lastSelectSubMenuPath: string
   menu: [MenuProps]
 }
 
 export interface IMenu {
   menus: MenuPropsType
   addMenu: (name: string, path: string, subMenu: [SubMenuProps]) => void
-  updateMenu: (id: string, value: MenuProps) => void
-  removeMenu: (id: string) => void
-  getSelectMenuId: () => string
-  updateSelectMenuId: (index: string) => void
-  getSelectSubMenuId: () => string
-  updateSelectSubMenuId: (index: string) => void
+  updateMenu: (path: string, value: MenuProps) => void
+  removeMenu: (path: string) => void
 }
 
 const MenuContext = React.createContext({} as IMenu)
@@ -40,19 +34,12 @@ export const useMenus = () => useContext(MenuContext)
 
 export function MenuProvider(props: any) {
   const [menus, setMenus] = useState(menuData.menu)
-  const [lastSelectMenuId, setLastSelectMenuId] = useState(menuData.lastSelectMenuId)
-  const [lastSelectSubMenuId, setLastSelectSubMenuId] = useState(menuData.lastSelectSubMenuId)
 
   const addMenu = (name: string, path: string, subMenu: [SubMenuProps]) =>
-    setMenus([...menus, { id: v4(), name, path, subMenu }])
-  const updateMenu = (id: string, value: MenuProps) =>
-    setMenus(menus.map((menu) => (menu.id === id ? value : menu)))
-  const removeMenu = (id: string) => setMenus(menus.filter((menu) => menu.id !== id))
-
-  const getSelectMenuId = () => lastSelectMenuId
-  const updateSelectMenuId = (index: string) => setLastSelectMenuId(index)
-  const getSelectSubMenuId = () => lastSelectSubMenuId
-  const updateSelectSubMenuId = (index: string) => setLastSelectSubMenuId(index)
+    setMenus([...menus, { name, path, subMenu }])
+  const updateMenu = (path: string, value: MenuProps) =>
+    setMenus(menus.map((menu) => (menu.path === path ? value : menu)))
+  const removeMenu = (path: string) => setMenus(menus.filter((menu) => menu.path !== path))
 
   return (
     <MenuContext.Provider
@@ -60,14 +47,27 @@ export function MenuProvider(props: any) {
         menus,
         addMenu,
         updateMenu,
-        removeMenu,
-        getSelectMenuId,
-        updateSelectMenuId,
-        getSelectSubMenuId,
-        updateSelectSubMenuId
+        removeMenu
       }}
     >
       {props.children}
     </MenuContext.Provider>
+  )
+}
+
+export const useWrapperRouteMatchForMenu = () => {
+  const { menus } = useMenus()
+
+  const pathArrays: string[] = []
+  menus.map((menu) => pathArrays.push(`${menu.path}/:subPath`))
+
+  const routeMatch = useRouteMatch(pathArrays, pathArrays[0])
+  return (
+    routeMatch || {
+      params: {},
+      pathname: pathArrays[0],
+      pathnameBase: pathArrays[0],
+      pattern: { path: pathArrays[0], caseSensitive: false, end: true }
+    }
   )
 }

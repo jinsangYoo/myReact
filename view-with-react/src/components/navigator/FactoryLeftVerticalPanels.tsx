@@ -1,62 +1,35 @@
 import React from 'react'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Box from '@mui/material/Box'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
-import { TabPanel } from '../tabs/TabPanel'
-import { useMenus } from '../../hooks'
+import { useMenus, useWrapperRouteMatchForMenu } from '../../hooks'
 import FactoryContentPanels from '../menu/FactoryContentPanels'
 
-interface FactoryLeftVerticalPanelsProps {
-  id: string
-  path: string
-}
+export default function FactoryLeftVerticalPanels() {
+  const { menus } = useMenus()
 
-export default function FactoryLeftVerticalPanels({ id, path }: FactoryLeftVerticalPanelsProps) {
-  const { menus, updateSelectSubMenuId } = useMenus()
-  const [menuIndex, setMenuIndex] = React.useState('main')
-  const subMenus = menus.find((menu) => menu.id === id)?.subMenu
+  const mainMenuPath = useWrapperRouteMatchForMenu()
+  console.log(`FactoryLeftVerticalPanels::mainMenuPath: >>${JSON.stringify(mainMenuPath, null, 2)}<<`)
 
-  const handleMenuChange = (event: React.SyntheticEvent, newValue: string) => {
-    setMenuIndex(newValue)
-    updateSelectSubMenuId(newValue)
-  }
+  const mainMenu = menus.find((menu) => menu.path === mainMenuPath.pathname)
+  const subMenus = mainMenu?.subMenu
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        bgcolor: 'background.paper',
-        display: 'flex',
-        maxHeight: { xs: 120, sm: 480, lg: 1 }
-      }}
-    >
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={menuIndex}
-        onChange={handleMenuChange}
-        aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: 'divider' }}
-      >
+    <>
+      <div>
         {subMenus &&
           subMenus.map((menu, index) => (
-            <Tab
-              key={index}
-              label={menu.name}
-              value={menu.path}
-              to={`${path}/${menu.path}`}
-              component={Link}
-            />
+            <Link key={index} to={menu.path}>
+              {menu.name}
+              {' | '}
+            </Link>
           ))}
-      </Tabs>
-      {subMenus &&
-        subMenus.map((menu, index) => (
-          <TabPanel value={menuIndex} index={menu.path} key={index}>
-            {<FactoryContentPanels mainMenuPath={id} subMenuPath={menu.path} />}
-          </TabPanel>
-        ))}
-    </Box>
+      </div>
+      <div>
+        {subMenus &&
+          subMenus.map((menu, index) => (
+            <FactoryContentPanels key={index} mainMenuPath={mainMenuPath.pathname} subMenuPath={menu.path} />
+          ))}
+      </div>
+    </>
   )
 }

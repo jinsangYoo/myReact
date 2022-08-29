@@ -8,9 +8,13 @@ import { TabPanel } from '../tabs/TabPanel'
 import { useMenus, useRouteMatch } from '../../hooks'
 import FactoryLeftVerticalPanels from '../navigator/FactoryLeftVerticalPanels'
 
+/**
+ * 모바일 웹페이지를 위한 layout
+ * @returns JSX.Element
+ */
 export default function AppLayout() {
-  const { menus, updateSelectMenuId } = useMenus()
-  const [mainMenuIndex, setMainMenuIndex] = React.useState('personal')
+  const { menus } = useMenus()
+  const [mainMenuPath, setMainMenuPath] = React.useState('personal')
 
   const { pathname } = useLocation()
   console.log(`pathname: ${pathname}`)
@@ -22,15 +26,14 @@ export default function AppLayout() {
   console.log(`routeMatch: ${JSON.stringify(routeMatch, null, 2)}`)
 
   const handleMainMenuChange = (event: React.SyntheticEvent, newValue: string) => {
-    setMainMenuIndex(newValue)
-    updateSelectMenuId(newValue)
+    setMainMenuPath(newValue)
   }
 
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ maxWidth: { xs: 320, sm: 480, lg: 1 }, bgcolor: 'background.paper' }}>
         <Tabs
-          value={mainMenuIndex}
+          value={mainMenuPath}
           onChange={handleMainMenuChange}
           variant="scrollable"
           scrollButtons="auto"
@@ -42,8 +45,8 @@ export default function AppLayout() {
         </Tabs>
       </Box>
       {menus.map((menu, index) => (
-        <TabPanel value={mainMenuIndex} index={menu.path} key={index}>
-          {<FactoryLeftVerticalPanels id={menu.id} path={menu.path} />}
+        <TabPanel value={mainMenuPath} index={menu.path} key={index}>
+          {<FactoryLeftVerticalPanels />}
         </TabPanel>
       ))}
     </Box>

@@ -12,13 +12,13 @@ interface FactoryContentPanelsProps {
 
 export default function FactoryContentPanels({ mainMenuPath, subMenuPath }: FactoryContentPanelsProps) {
   switch (mainMenuPath) {
-    case 'personal':
+    case '/personal':
       return <FactoryContentPanelForPersonal path={subMenuPath} />
-    case 'myReact':
+    case '/myReact':
       return <FactoryContentPanelForMyReact path={subMenuPath} />
-    case 'mall':
+    case '/mall':
       return <FactoryContentPanelForMall path={subMenuPath} />
-    case 'etc':
+    case '/etc':
       return <FactoryContentPanelForEtc path={subMenuPath} />
     default: {
       console.log(`mainMenuPath: ${mainMenuPath}`)
