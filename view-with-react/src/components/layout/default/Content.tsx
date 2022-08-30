@@ -1,9 +1,9 @@
 import * as React from 'react'
 
-interface SideBarProps {
+interface ContentProps {
   children: React.ReactNode
 }
 
-export default function SideBar(props: SideBarProps) {
+export default function Content(props: ContentProps) {
   return <div>{props.children}</div>
 }

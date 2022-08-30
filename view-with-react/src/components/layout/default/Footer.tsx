@@ -5,10 +5,5 @@ interface FooterProps {
 }
 
 export default function Footer(props: FooterProps) {
-  return (
-    <>
-      <p>Footer</p>
-      {props.children}
-    </>
-  )
+  return <>{props.children}</>
 }

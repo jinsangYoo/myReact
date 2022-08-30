@@ -31,8 +31,6 @@ export default function FactoryLeftVerticalPanels() {
             </ul>
           ))}
       </div>
-
-      {<FactoryContentPanels />}
       <Outlet />
     </>
   )

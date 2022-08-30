@@ -1,5 +1,5 @@
 import React from 'react'
 
 export default function PersonalMain() {
-  return <p>PersonalMain</p>
+  return <p>진상 메인 입니다.</p>
 }
