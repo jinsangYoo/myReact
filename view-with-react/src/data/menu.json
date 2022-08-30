@@ -1,0 +1,43 @@
+{
+  "version": "0.1",
+  "menu": [
+    {
+      "id": "personal",
+      "name": "진상",
+      "path": "personal",
+      "subMenu": [
+        { "id": "main", "name": "메인", "path": "main" },
+        { "id": "community", "name": "게시판", "path": "community" },
+        { "id": "about", "name": "여긴 어디", "path": "about" }
+      ]
+    },
+    {
+      "id": "myReact",
+      "name": "myReact",
+      "path": "myReact",
+      "subMenu": [
+        { "id": "main", "name": "메인", "path": "main" },
+        { "id": "openSourceLicense", "name": "라이센스", "path": "openSourceLicense" }
+      ]
+    },
+    {
+      "id": "mall",
+      "name": "쇼핑몰(가상)",
+      "path": "mall",
+      "subMenu": [
+        { "id": "main", "name": "메인", "path": "main" },
+        { "id": "cart", "name": "장바구니", "path": "cart" },
+        { "id": "order", "name": "주문", "path": "order" }
+      ]
+    },
+    {
+      "id": "etc",
+      "name": "기타",
+      "path": "etc",
+      "subMenu": [
+        { "id": "main", "name": "메인", "path": "main" },
+        { "id": "grid", "name": "그리드", "path": "grid" }
+      ]
+    }
+  ]
+}
