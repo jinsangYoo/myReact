@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { menuData } from '../data'
-import { useParams } from 'react-router-dom'
 
 export interface SubMenuProps {
   id: string
@@ -39,12 +38,9 @@ export const useMenus = () => useContext(MenuContext)
 
 export function MenuProvider(props: any) {
   const [menus, setMenus] = useState(menuData.menu)
+
   const [selectMainMenuId, setSelectMainMenuId] = useState(menus[0].path)
   const [selectSubMenuId, setSelectSubMenuId] = useState(menus[0].subMenu[0].path)
-
-  var { mainMenu, subMenu } = useParams()
-  if (mainMenu) setSelectMainMenuId(mainMenu)
-  if (subMenu) setSelectSubMenuId(subMenu)
 
   const addMenu = (id: string, name: string, path: string, subMenu: [SubMenuProps]) =>
     setMenus([...menus, { id, name, path, subMenu }])

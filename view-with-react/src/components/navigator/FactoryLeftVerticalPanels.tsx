@@ -5,8 +5,7 @@ import { useMenus } from '../../hooks'
 import FactoryContentPanels from '../menu/FactoryContentPanels'
 
 export default function FactoryLeftVerticalPanels() {
-  const { menus, getSelectMainMenuId, updateSelectMainMenuId, getSelectSubMenuId, updateSelectSubMenuId } =
-    useMenus()
+  const { menus, getSelectMainMenuId, getSelectSubMenuId, updateSelectSubMenuId } = useMenus()
   console.log(`FactoryLeftVerticalPanels::mainMenu: >>${getSelectMainMenuId()}<<`)
   console.log(`FactoryLeftVerticalPanels::subMenu: >>${getSelectSubMenuId()}<<`)
 
