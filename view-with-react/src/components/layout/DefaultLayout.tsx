@@ -17,13 +17,13 @@ export default function DefaultLayout() {
     <>
       <Header>
         <Routes>
-          <Route path="*" element={<MainNav />} />
+          <Route index element={<MainNav />} />
+          <Route path="/:mainMenu" element={<MainNav />} />
+          <Route path="/:mainMenu/:subMenu" element={<MainNav />} />
         </Routes>
       </Header>
       <SideBar>
-        <Routes>
-          <Route path="*" element={<MainSideBar />} />
-        </Routes>
+        <MainSideBar />
       </SideBar>
       <Footer>
         <Routes>

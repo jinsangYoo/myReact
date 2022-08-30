@@ -1,35 +1,40 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams, Outlet } from 'react-router-dom'
 
-import { useMenus, useWrapperRouteMatchForMenu } from '../../hooks'
+import { useMenus } from '../../hooks'
 import FactoryContentPanels from '../menu/FactoryContentPanels'
 
 export default function FactoryLeftVerticalPanels() {
-  const { menus } = useMenus()
+  const { menus, getSelectMainMenuId, updateSelectMainMenuId, getSelectSubMenuId, updateSelectSubMenuId } =
+    useMenus()
+  console.log(`FactoryLeftVerticalPanels::mainMenu: >>${getSelectMainMenuId()}<<`)
+  console.log(`FactoryLeftVerticalPanels::subMenu: >>${getSelectSubMenuId()}<<`)
 
-  const mainMenuPath = useWrapperRouteMatchForMenu()
-  console.log(`FactoryLeftVerticalPanels::mainMenuPath: >>${JSON.stringify(mainMenuPath, null, 2)}<<`)
+  var { mainMenu, subMenu } = useParams()
+  console.log(`1. FactoryLeftVerticalPanels::mainMenu: >>${mainMenu}<<, subMenu: >>${subMenu}<<`)
+  if (!mainMenu) mainMenu = getSelectMainMenuId()
+  if (!subMenu) subMenu = getSelectSubMenuId()
 
-  const mainMenu = menus.find((menu) => menu.path === mainMenuPath.pathname)
-  const subMenus = mainMenu?.subMenu
+  const mainMenuObj = menus.find((menu) => menu.id === mainMenu)
+  const subMenus = mainMenuObj?.subMenu
+
+  const handleMainMenuChange = (newValue: string) => {
+    updateSelectSubMenuId(newValue)
+  }
 
   return (
     <>
       <div>
         {subMenus &&
           subMenus.map((menu, index) => (
-            <Link key={index} to={menu.path}>
-              {menu.name}
-              {' | '}
-            </Link>
+            <ul key={index}>
+              <button onClick={() => handleMainMenuChange(menu.path)}>{menu.name}</button>
+            </ul>
           ))}
       </div>
-      <div>
-        {subMenus &&
-          subMenus.map((menu, index) => (
-            <FactoryContentPanels key={index} mainMenuPath={mainMenuPath.pathname} subMenuPath={menu.path} />
-          ))}
-      </div>
+
+      {<FactoryContentPanels />}
+      <Outlet />
     </>
   )
 }

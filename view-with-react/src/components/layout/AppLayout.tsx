@@ -20,7 +20,7 @@ export default function AppLayout() {
   console.log(`pathname: ${pathname}`)
 
   const pathArrays: string[] = []
-  menus.map((menu, index) => (pathArrays[index] = menu.path))
+  menus.map((menu, index) => pathArrays.push(menu.path))
   console.log(`pathArrays: ${pathArrays.join(', ')}`)
   const routeMatch = useRouteMatch(pathArrays)
   console.log(`routeMatch: ${JSON.stringify(routeMatch, null, 2)}`)
@@ -40,12 +40,12 @@ export default function AppLayout() {
           aria-labelledby="navigation top menus"
         >
           {menus.map((menu, index) => (
-            <Tab key={index} label={menu.name} value={menu.path} to={menu.path} component={Link} />
+            <Tab key={index} label={menu.name} value={menu.id} to={menu.path} component={Link} />
           ))}
         </Tabs>
       </Box>
       {menus.map((menu, index) => (
-        <TabPanel value={mainMenuPath} index={menu.path} key={index}>
+        <TabPanel value={mainMenuPath} index={menu.id} key={index}>
           {<FactoryLeftVerticalPanels />}
         </TabPanel>
       ))}

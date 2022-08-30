@@ -1,27 +1,28 @@
 import React from 'react'
 
+import { useMenus } from '../../hooks'
+
 import FactoryContentPanelForPersonal from './FactoryContentPanelForPersonal'
 import FactoryContentPanelForMyReact from './FactoryContentPanelForMyReact'
-import FactoryContentPanelForMall from './FactoryContentPanelForMall'
 import FactoryContentPanelForEtc from './FactoryContentPanelForEtc'
+import FactoryContentPanelForMall from './FactoryContentPanelForMall'
 
-interface FactoryContentPanelsProps {
-  mainMenuPath: string
-  subMenuPath: string
-}
+export default function FactoryContentPanels() {
+  const { getSelectMainMenuId, getSelectSubMenuId } = useMenus()
+  console.log(`FactoryContentPanels::mainMenu: >>${getSelectMainMenuId()}<<`)
+  console.log(`FactoryContentPanels::subMenu: >>${getSelectSubMenuId()}<<`)
 
-export default function FactoryContentPanels({ mainMenuPath, subMenuPath }: FactoryContentPanelsProps) {
-  switch (mainMenuPath) {
-    case '/personal':
-      return <FactoryContentPanelForPersonal path={subMenuPath} />
-    case '/myReact':
-      return <FactoryContentPanelForMyReact path={subMenuPath} />
-    case '/mall':
-      return <FactoryContentPanelForMall path={subMenuPath} />
-    case '/etc':
-      return <FactoryContentPanelForEtc path={subMenuPath} />
+  switch (getSelectMainMenuId()) {
+    case 'personal':
+      return <FactoryContentPanelForPersonal id={getSelectSubMenuId()} />
+    case 'myReact':
+      return <FactoryContentPanelForMyReact id={getSelectSubMenuId()} />
+    case 'mall':
+      return <FactoryContentPanelForMall id={getSelectSubMenuId()} />
+    case 'etc':
+      return <FactoryContentPanelForEtc id={getSelectSubMenuId()} />
     default: {
-      console.log(`mainMenuPath: ${mainMenuPath}`)
+      console.log(`subMenuPath: ${getSelectSubMenuId()}`)
       return <p>not find content.</p>
     }
   }
