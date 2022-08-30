@@ -2,7 +2,6 @@ import React from 'react'
 import { useParams, Outlet } from 'react-router-dom'
 
 import { useMenus } from '../../hooks'
-import FactoryContentPanels from '../menu/FactoryContentPanels'
 
 export default function FactoryLeftVerticalPanels() {
   const { menus, getSelectMainMenuId, getSelectSubMenuId, updateSelectSubMenuId } = useMenus()
