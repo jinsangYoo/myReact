@@ -11,20 +11,18 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, './view-with-react/build/index.html'))
 })
 
-const Users = []
-const Products = []
-
 function createRandomProduct() {
   return {
     productId: faker.datatype.uuid(),
-    productName: faker.commerce.productName(),
     productDescription: faker.commerce.productDescription(),
+    productImg: faker.image.business(200, 80, true),
+    productName: faker.commerce.productName(),
+    productPrice: faker.commerce.price(100, 200, 0),
+    sellerAvatar: faker.image.people(200, 200, true),
     sellerName: faker.internet.userName(),
     sellerEmail: faker.internet.email(),
     company: faker.company.name(),
     companyDomain: faker.internet.url(),
-    productImg: faker.image.business(200, 200, true),
-    price: faker.commerce.price(100, 200, 0),
     registeredAt: faker.date.past()
   }
 }
@@ -50,7 +48,7 @@ app.get('/products', function (req, res) {
   console.log('***** req.query: ' + JSON.stringify(req.query))
   console.log('***** req.body: ' + JSON.stringify(req.body))
 
-  Products.length = 0
+  const Products = []
   Array.from({ length: 10 }).forEach(() => {
     Products.push(createRandomProduct())
   })
@@ -66,7 +64,7 @@ app.get('/users', function (req, res) {
   console.log('***** req.query: ' + JSON.stringify(req.query))
   console.log('***** req.body: ' + JSON.stringify(req.body))
 
-  Users.length = 0
+  const Users = []
   Array.from({ length: 10 }).forEach(() => {
     Users.push(createRandomUser())
   })

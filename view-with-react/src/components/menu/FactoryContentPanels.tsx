@@ -9,8 +9,6 @@ import FactoryContentPanelForMall from './FactoryContentPanelForMall'
 
 export default function FactoryContentPanels() {
   const { getSelectMainMenuId, getSelectSubMenuId } = useMenus()
-  console.log(`FactoryContentPanels::mainMenu: >>${getSelectMainMenuId()}<<`)
-  console.log(`FactoryContentPanels::subMenu: >>${getSelectSubMenuId()}<<`)
 
   switch (getSelectMainMenuId()) {
     case 'personal':
