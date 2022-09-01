@@ -29,31 +29,19 @@ export default function MallMain() {
 
   if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
   return (
-    <Grid container spacing={1}>
-      <Grid container item spacing={4}>
-        <Grid item xs>
-          <Product loading={loading} product={products?.at(0)} />
-        </Grid>
-        <Grid item xs>
-          <Product loading={loading} product={products?.at(1)} />
-        </Grid>
-        <Grid item xs>
-          <Product loading={loading} product={products?.at(2)} />
-        </Grid>
-      </Grid>
-
-      <Grid container item spacing={4}>
-        <Grid item xs zeroMinWidth>
-          <Product loading={loading} product={products?.at(3)} />
-        </Grid>
-        <Grid item xs zeroMinWidth>
-          <Product loading={loading} product={products?.at(4)} />
-        </Grid>
-        <Grid item xs zeroMinWidth>
-          <Product loading={loading} product={products?.at(5)} />
-        </Grid>
-      </Grid>
-    </Grid>
+    <Box
+      sx={{
+        display: 'grid',
+        columnGap: 3,
+        rowGap: 1,
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        px: 3
+      }}
+    >
+      {loading
+        ? Array.from({ length: 10 }).map((noUse, index) => <Product key={index} loading={loading} />)
+        : products?.map((product, index) => <Product key={index} loading={loading} product={product} />)}
+    </Box>
   )
 }
 
