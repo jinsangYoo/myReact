@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import Grid from '@mui/material/Grid'
 import Skeleton from '@mui/material/Skeleton'
 
 const Image = styled('img')({
@@ -11,6 +10,34 @@ const Image = styled('img')({
 })
 
 export default function MallMain() {
+  useEffect(() => {
+    console.log(`document.getElementById(app)?.innerText: ${document.getElementById('root')?.innerText}`)
+  }, [])
+
+  // const [y, setY] = useState(window.scrollY)
+
+  // const handleNavigation = useCallback(
+  //   (e: Event) => {
+  //     const window = e.currentTarget
+  //     if (y > global.window.scrollY) {
+  //       console.log('scrolling up')
+  //     } else if (y < global.window.scrollY) {
+  //       console.log('scrolling down')
+  //     }
+  //     setY(global.window.scrollY)
+  //   },
+  //   [y]
+  // )
+
+  // useEffect(() => {
+  //   setY(window.scrollY)
+  //   window.addEventListener('scroll', handleNavigation)
+
+  //   return () => {
+  //     window.removeEventListener('scroll', handleNavigation)
+  //   }
+  // }, [handleNavigation])
+
   const [products, setProducts] = useState<typeOfProductsResponse[]>()
   const [error, setError] = useState()
   const [loading, setLoading] = useState(true)
