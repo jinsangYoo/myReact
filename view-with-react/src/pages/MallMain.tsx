@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useReducer, useEffect, useCallback } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -10,49 +10,47 @@ const Image = styled('img')({
 })
 
 export default function MallMain() {
-  useEffect(() => {
-    console.log(`document.getElementById(app)?.innerText: ${document.getElementById('root')?.innerText}`)
-  }, [])
-
-  // const [y, setY] = useState(window.scrollY)
-
-  // const handleNavigation = useCallback(
-  //   (e: Event) => {
-  //     const window = e.currentTarget
-  //     if (y > global.window.scrollY) {
-  //       console.log('scrolling up')
-  //     } else if (y < global.window.scrollY) {
-  //       console.log('scrolling down')
-  //     }
-  //     setY(global.window.scrollY)
-  //   },
-  //   [y]
-  // )
-
-  // useEffect(() => {
-  //   setY(window.scrollY)
-  //   window.addEventListener('scroll', handleNavigation)
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleNavigation)
-  //   }
-  // }, [handleNavigation])
-
-  const [products, setProducts] = useState<typeOfProductsResponse[]>()
+  const [products, setProducts] = useReducer(
+    (products: typeOfProductsResponse[], newProducts: typeOfProductsResponse[]) => [
+      ...products,
+      ...newProducts
+    ],
+    []
+  )
   const [error, setError] = useState()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setTimeout(() => {
-      fetch(`http://localhost:8080/products`)
-        .then((res) => res.json())
-        .then(setProducts)
-        .then(() => setLoading(false))
-        .catch(setError)
+      getProducts(setProducts, setError, setLoading)
     }, 3000)
 
     return () => setProducts([])
   }, [])
+
+  const root = document.getElementById('root')
+  const [y, setY] = useState(window.scrollY)
+  const handleScroll = useCallback(
+    (e: Event) => {
+      const window = e.currentTarget as Window
+      const clientHeight = root?.clientHeight || 1
+      const rate = ((window.scrollY + window.innerHeight) / clientHeight) * 100
+      if (rate > 95) {
+        getProducts(setProducts, setError)
+      }
+      setY(window.scrollY)
+    },
+    [y]
+  )
+
+  useEffect(() => {
+    setY(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [handleScroll])
 
   if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
   return (
@@ -66,10 +64,26 @@ export default function MallMain() {
       }}
     >
       {loading
-        ? Array.from({ length: 10 }).map((noUse, index) => <Product key={index} loading={loading} />)
-        : products?.map((product, index) => <Product key={index} loading={loading} product={product} />)}
+        ? Array.from({ length: 10 }).map((noUse, index) => (
+            <Product key={index} index={index} loading={loading} />
+          ))
+        : products?.map((product, index) => (
+            <Product key={index} index={index} loading={loading} product={product} />
+          ))}
     </Box>
   )
+}
+
+function getProducts(
+  setProducts: React.Dispatch<typeOfProductsResponse[]>,
+  setError: React.Dispatch<React.SetStateAction<undefined>>,
+  setLoading?: (value: React.SetStateAction<boolean>) => void
+) {
+  fetch(`http://localhost:8080/products`)
+    .then((res) => res.json())
+    .then((res) => setProducts(res))
+    .then(() => setLoading && setLoading(false))
+    .catch(setError)
 }
 
 type typeOfProductsResponse = {
@@ -86,7 +100,7 @@ type typeOfProductsResponse = {
   registeredAt: string
 }
 
-function Product(props: { loading?: boolean; product?: typeOfProductsResponse }) {
+function Product(props: { index: number; loading?: boolean; product?: typeOfProductsResponse }) {
   return (
     <div>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -105,7 +119,11 @@ function Product(props: { loading?: boolean; product?: typeOfProductsResponse })
               <Typography>.</Typography>
             </Skeleton>
           ) : (
-            props.product && <Typography>{props.product.productName}</Typography>
+            props.product && (
+              <Typography>
+                {props.index + 1}. {props.product.productName}
+              </Typography>
+            )
           )}
         </Box>
       </Box>
