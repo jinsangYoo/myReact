@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { MenuProvider } from './hooks'
+import { MenuProvider, ProductProvider } from './hooks'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <MenuProvider>
-      <App />
+      <ProductProvider>
+        <App />
+      </ProductProvider>
     </MenuProvider>
   </React.StrictMode>
 )

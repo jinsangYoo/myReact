@@ -9,7 +9,7 @@ export default function FactoryContentPanelForMall() {
       <Routes>
         <Route path="order" element={<MallOrder />} />
         <Route path="cart" element={<MallCart />} />
-        <Route path="main" element={<MallMain />} />
+        <Route path="main/*" element={<MallMain />} />
         <Route path="/*" element={<MallMain />} />
       </Routes>
     </div>

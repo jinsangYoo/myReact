@@ -1,19 +1,15 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react'
-import { Routes, Route } from 'react-router'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
 import Skeleton from '@mui/material/Skeleton'
-import ProductDetailInMall from './ProductDetailInMall'
-import { ProductForType, useProduct } from '../hooks'
-import { Link } from 'react-router-dom'
 
 const Image = styled('img')({
   width: '100%'
 })
 
-export default function MallMain() {
+export default function ProductDetailInMall() {
   const [products, setProducts] = useReducer(
     (products: typeOfProductsResponse[], newProducts: typeOfProductsResponse[]) => [
       ...products,
@@ -23,13 +19,31 @@ export default function MallMain() {
   )
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState(true)
+  const [product, setProduct] = useReducer(
+    (product: typeOfProductsResponse, newProduct: typeOfProductsResponse) => ({
+      ...product,
+      ...newProduct
+    }),
+    {
+      productId: '',
+      productDescription: '',
+      productImg: '',
+      productName: '',
+      productPrice: '',
+      sellerAvatar: '',
+      sellerName: '',
+      sellerEmail: '',
+      company: '',
+      companyDomain: '',
+      registeredAt: ''
+    }
+  )
 
   useEffect(() => {
-    setTimeout(() => {
-      getProducts(setProducts, setError, setLoading)
-    }, 1200)
-
-    return () => setProducts([])
+    // setTimeout(() => {
+    //   getProducts(setProducts, setError, setLoading)
+    // }, 1200)
+    // return () => setProducts([])
   }, [])
 
   const [y, setY] = useState(window.scrollY)
@@ -56,44 +70,13 @@ export default function MallMain() {
     }
   }, [handleScroll])
 
-  const { updateProduct } = useProduct()
-  const handleProductClick = (product: ProductForType | undefined) => {
-    if (!product) return
-    console.log(`product: ${JSON.stringify(product, null, 2)}`)
-    updateProduct(product)
-  }
-
   if (error)
     return (
       <pre>
         {error.name} - {error.message}
       </pre>
     )
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        columnGap: 3,
-        rowGap: 1,
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        px: 3
-      }}
-    >
-      {loading
-        ? Array.from({ length: 10 }).map((noUse, index) => (
-            <Product key={index} index={index} loading={loading} onPress={handleProductClick} />
-          ))
-        : products.map((product, index) => (
-            <Product
-              key={index}
-              index={index}
-              loading={loading}
-              product={product}
-              onPress={handleProductClick}
-            />
-          ))}
-    </Box>
-  )
+  return <>{loading ? <Product loading={loading} /> : <Product loading={loading} product={product} />}</>
 }
 
 function getProducts(
@@ -124,12 +107,7 @@ type typeOfProductsResponse = {
   registeredAt: string
 }
 
-function Product(props: {
-  index: number
-  onPress: (p: ProductForType | undefined) => void
-  loading?: boolean
-  product?: typeOfProductsResponse
-}) {
+function Product(props: { loading?: boolean; product?: typeOfProductsResponse }) {
   return (
     <div>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -139,14 +117,7 @@ function Product(props: {
               <Avatar />
             </Skeleton>
           ) : (
-            props.product && (
-              <Avatar
-                src={props.product.sellerAvatar}
-                component={Link}
-                to={'/mall/detail'}
-                onClick={() => props.onPress(props.product)}
-              />
-            )
+            props.product && <Avatar src={props.product.sellerAvatar} />
           )}
         </Box>
         <Box sx={{ width: '100%' }}>
@@ -155,11 +126,7 @@ function Product(props: {
               <Typography>.</Typography>
             </Skeleton>
           ) : (
-            props.product && (
-              <Typography>
-                {props.index + 1}. {props.product.productName}
-              </Typography>
-            )
+            props.product && <Typography>{props.product.productName}</Typography>
           )}
         </Box>
       </Box>
@@ -189,9 +156,6 @@ function Product(props: {
           )
         )}
       </Box>
-      <Routes>
-        <Route path="detail" element={<ProductDetailInMall />} />
-      </Routes>
     </div>
   )
 }

@@ -9,6 +9,7 @@ export default function MainSideBar() {
     <Box sx={{ maxWidth: { xs: 320, sm: 480, lg: 1 }, bgcolor: 'background.paper', float: 'left' }}>
       <Routes>
         <Route path="etc" element={<EtcSideBar />} />
+        <Route path="/:mainMenu/:subMenu/*" element={<FactoryLeftVerticalPanels />} />
         <Route path="/:mainMenu/*" element={<FactoryLeftVerticalPanels />} />
         <Route path="/*" element={<FactoryLeftVerticalPanels />} />
       </Routes>
