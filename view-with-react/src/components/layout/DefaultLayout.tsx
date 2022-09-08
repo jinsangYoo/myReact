@@ -20,10 +20,9 @@ export default function DefaultLayout() {
     <>
       <Header>
         <Routes>
-          <Route index element={<MainNav />} />
-          <Route path="/:mainMenu" element={<MainNav />} />
-          <Route path="/:mainMenu/:subMenu" element={<MainNav />} />
-          <Route path="/:mainMenu/:subMenu/:id" element={<MainNav />} />
+          <Route path="/:mainMenu/:subMenu/*" element={<MainNav />} />
+          <Route path="/:mainMenu/*" element={<MainNav />} />
+          <Route path="/*" element={<MainNav />} />
         </Routes>
       </Header>
       <SideBar>
@@ -31,10 +30,7 @@ export default function DefaultLayout() {
       </SideBar>
       <Content>
         <Routes>
-          <Route index element={<FactoryContentPanels />} />
-          <Route path="/:mainMenu" element={<FactoryContentPanels />} />
-          <Route path="/:mainMenu/:subMenu" element={<FactoryContentPanels />} />
-          <Route path="/:mainMenu/:subMenu/:id" element={<FactoryContentPanels />} />
+          <Route path="/*" element={<FactoryContentPanels />} />
         </Routes>
       </Content>
       <Footer>

@@ -1,20 +1,17 @@
 import React from 'react'
+import { Routes, Route } from 'react-router'
 
 import { MallMain, MallCart, MallOrder } from '../../pages'
 
-interface FactoryContentPanelForMallProps {
-  id: string
-}
-
-export default function FactoryContentPanelForMall({ id }: FactoryContentPanelForMallProps) {
-  switch (id) {
-    case 'main':
-      return <MallMain />
-    case 'cart':
-      return <MallCart />
-    case 'order':
-      return <MallOrder />
-    default:
-      return <p>not find Mall content.</p>
-  }
+export default function FactoryContentPanelForMall() {
+  return (
+    <div>
+      <Routes>
+        <Route path="order" element={<MallOrder />} />
+        <Route path="cart" element={<MallCart />} />
+        <Route path="main" element={<MallMain />} />
+        <Route path="/*" element={<MallMain />} />
+      </Routes>
+    </div>
+  )
 }

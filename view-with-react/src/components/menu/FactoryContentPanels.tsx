@@ -1,4 +1,5 @@
 import React from 'react'
+import { Routes, Route } from 'react-router'
 import { useParams } from 'react-router-dom'
 
 import { useMenus } from '../../hooks'
@@ -14,18 +15,15 @@ export default function FactoryContentPanels() {
   if (!mainMenu) mainMenu = getDefaultMainMenuId()
   if (!subMenu) subMenu = getDefaultSubMenuId()
 
-  switch (mainMenu) {
-    case 'personal':
-      return <FactoryContentPanelForPersonal id={subMenu} />
-    case 'myReact':
-      return <FactoryContentPanelForMyReact id={subMenu} />
-    case 'mall':
-      return <FactoryContentPanelForMall id={subMenu} />
-    case 'etc':
-      return <FactoryContentPanelForEtc id={subMenu} />
-    default: {
-      console.log(`mainMenu: ${mainMenu}`)
-      return <p>not find content.</p>
-    }
-  }
+  return (
+    <div>
+      <Routes>
+        <Route path="etc/*" element={<FactoryContentPanelForEtc />} />
+        <Route path="mall/*" element={<FactoryContentPanelForMall />} />
+        <Route path="myReact/*" element={<FactoryContentPanelForMyReact />} />
+        <Route path="personal/*" element={<FactoryContentPanelForPersonal />} />
+        <Route path="*" element={<FactoryContentPanelForPersonal />} />
+      </Routes>
+    </div>
+  )
 }

@@ -1,18 +1,16 @@
 import React from 'react'
+import { Routes, Route } from 'react-router'
 
 import { MyReactMain, MyReactOpenSourceLicense } from '../../pages'
 
-interface FactoryContentPanelForMyReactProps {
-  id: string
-}
-
-export default function FactoryContentPanelForMyReact({ id }: FactoryContentPanelForMyReactProps) {
-  switch (id) {
-    case 'main':
-      return <MyReactMain />
-    case 'openSourceLicense':
-      return <MyReactOpenSourceLicense />
-    default:
-      return <p>not find content.</p>
-  }
+export default function FactoryContentPanelForMyReact() {
+  return (
+    <div>
+      <Routes>
+        <Route path="openSourceLicense" element={<MyReactOpenSourceLicense />} />
+        <Route path="main" element={<MyReactMain />} />
+        <Route path="/*" element={<MyReactMain />} />
+      </Routes>
+    </div>
+  )
 }

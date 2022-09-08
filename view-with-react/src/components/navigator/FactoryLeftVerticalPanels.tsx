@@ -1,6 +1,6 @@
-import { Button } from '@mui/material'
 import React from 'react'
-import { useParams, Outlet, Link } from 'react-router-dom'
+import { Button } from '@mui/material'
+import { useParams, Link } from 'react-router-dom'
 
 import { useMenus } from '../../hooks'
 
@@ -32,7 +32,6 @@ export default function FactoryLeftVerticalPanels() {
             </ul>
           ))}
       </div>
-      <Outlet />
     </>
   )
 }

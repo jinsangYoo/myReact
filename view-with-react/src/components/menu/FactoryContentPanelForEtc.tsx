@@ -1,18 +1,16 @@
 import React from 'react'
+import { Routes, Route } from 'react-router'
 
 import { EtcMain, EtcGrid } from '../../pages'
 
-interface FactoryContentPanelForEtcProps {
-  id: string
-}
-
-export default function FactoryContentPanelForEtc({ id }: FactoryContentPanelForEtcProps) {
-  switch (id) {
-    case 'main':
-      return <EtcMain />
-    case 'grid':
-      return <EtcGrid />
-    default:
-      return <p>not find Etc content.</p>
-  }
+export default function FactoryContentPanelForEtc() {
+  return (
+    <div>
+      <Routes>
+        <Route path="grid" element={<EtcGrid />} />
+        <Route path="main" element={<EtcMain />} />
+        <Route path="/*" element={<EtcMain />} />
+      </Routes>
+    </div>
+  )
 }
