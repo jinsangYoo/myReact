@@ -23,22 +23,19 @@ export default function DefaultLayout() {
           <Route index element={<MainNav />} />
           <Route path="/:mainMenu" element={<MainNav />} />
           <Route path="/:mainMenu/:subMenu" element={<MainNav />} />
+          <Route path="/:mainMenu/:subMenu/:id" element={<MainNav />} />
         </Routes>
       </Header>
       <SideBar>
         <MainSideBar />
       </SideBar>
       <Content>
-        <Box
-          sx={{
-            height: 'auto',
-            minHeight: '100%',
-            bgcolor: 'background.paper',
-            paddingBottom: '160px'
-          }}
-        >
-          {<FactoryContentPanels />}
-        </Box>
+        <Routes>
+          <Route index element={<FactoryContentPanels />} />
+          <Route path="/:mainMenu" element={<FactoryContentPanels />} />
+          <Route path="/:mainMenu/:subMenu" element={<FactoryContentPanels />} />
+          <Route path="/:mainMenu/:subMenu/:id" element={<FactoryContentPanels />} />
+        </Routes>
       </Content>
       <Footer>
         <Routes>

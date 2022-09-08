@@ -11,6 +11,7 @@ export default function MainSideBar() {
         <Route path="/" element={<FactoryLeftVerticalPanels />} />
         <Route path="/:mainMenu" element={<FactoryLeftVerticalPanels />} />
         <Route path="/:mainMenu/:subMenu" element={<FactoryLeftVerticalPanels />} />
+        <Route path="/:mainMenu/:subMenu/:id" element={<FactoryLeftVerticalPanels />} />
         <Route path="etc" element={<EtcSideBar />} />
       </Routes>
     </Box>

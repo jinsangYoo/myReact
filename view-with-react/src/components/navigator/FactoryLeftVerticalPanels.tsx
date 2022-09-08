@@ -1,21 +1,20 @@
+import { Button } from '@mui/material'
 import React from 'react'
-import { useParams, Outlet } from 'react-router-dom'
+import { useParams, Outlet, Link } from 'react-router-dom'
 
 import { useMenus } from '../../hooks'
 
 export default function FactoryLeftVerticalPanels() {
-  const { menus, getSelectMainMenuId, getSelectSubMenuId, updateSelectSubMenuId } = useMenus()
+  const { menus, getDefaultMainMenuId, getDefaultSubMenuId } = useMenus()
 
   var { mainMenu, subMenu } = useParams()
-  if (!mainMenu) mainMenu = getSelectMainMenuId()
-  if (!subMenu) subMenu = getSelectSubMenuId()
+  if (!mainMenu) mainMenu = getDefaultMainMenuId()
+  if (!subMenu) subMenu = getDefaultSubMenuId()
 
   const mainMenuObj = menus.find((menu) => menu.id === mainMenu)
   const subMenus = mainMenuObj?.subMenu
 
-  const handleMainMenuChange = (newValue: string) => {
-    updateSelectSubMenuId(newValue)
-  }
+  const handleMainMenuChange = (newValue: string) => {}
 
   return (
     <>
@@ -23,7 +22,13 @@ export default function FactoryLeftVerticalPanels() {
         {subMenus &&
           subMenus.map((menu, index) => (
             <ul key={index}>
-              <button onClick={() => handleMainMenuChange(menu.path)}>{menu.name}</button>
+              <Button
+                onClick={() => handleMainMenuChange(menu.path)}
+                component={Link}
+                to={`/${mainMenu}/${menu.path}`}
+              >
+                {menu.name}
+              </Button>
             </ul>
           ))}
       </div>

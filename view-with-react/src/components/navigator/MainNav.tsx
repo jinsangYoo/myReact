@@ -3,22 +3,20 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import { useMenus } from '../../hooks'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 /**
  * MainNav
  * @returns JSX.Element
  */
 export default function MainNav() {
-  const { menus, getSelectMainMenuId, updateSelectMainMenuId, updateSelectSubMenuId } = useMenus()
+  const { menus, getDefaultMainMenuId, getDefaultSubMenuId } = useMenus()
 
-  var { mainMenu } = useParams()
-  if (!mainMenu) mainMenu = getSelectMainMenuId()
+  var { mainMenu, subMenu } = useParams()
+  if (!mainMenu) mainMenu = getDefaultMainMenuId()
+  if (!subMenu) subMenu = getDefaultSubMenuId()
 
-  const handleMainMenuChange = (event: React.SyntheticEvent, newValue: string) => {
-    updateSelectMainMenuId(newValue)
-    updateSelectSubMenuId('main')
-  }
+  const handleMainMenuChange = (event: React.SyntheticEvent, newValue: string) => {}
 
   return (
     <Box sx={{ width: '100%', maxWidth: { xs: 320, sm: 480, lg: 1 }, bgcolor: 'background.paper' }}>
@@ -30,7 +28,7 @@ export default function MainNav() {
         aria-labelledby="navigation top menus"
       >
         {menus.map((menu, index) => (
-          <Tab key={index} label={menu.name} value={menu.path} />
+          <Tab key={index} label={menu.name} value={menu.path} to={`/${menu.path}`} component={Link} />
         ))}
       </Tabs>
     </Box>

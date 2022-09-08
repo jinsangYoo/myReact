@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 
 import { useMenus } from '../../hooks'
 
@@ -8,19 +9,22 @@ import FactoryContentPanelForEtc from './FactoryContentPanelForEtc'
 import FactoryContentPanelForMall from './FactoryContentPanelForMall'
 
 export default function FactoryContentPanels() {
-  const { getSelectMainMenuId, getSelectSubMenuId } = useMenus()
+  const { getDefaultMainMenuId, getDefaultSubMenuId } = useMenus()
+  var { mainMenu, subMenu } = useParams()
+  if (!mainMenu) mainMenu = getDefaultMainMenuId()
+  if (!subMenu) subMenu = getDefaultSubMenuId()
 
-  switch (getSelectMainMenuId()) {
+  switch (mainMenu) {
     case 'personal':
-      return <FactoryContentPanelForPersonal id={getSelectSubMenuId()} />
+      return <FactoryContentPanelForPersonal id={subMenu} />
     case 'myReact':
-      return <FactoryContentPanelForMyReact id={getSelectSubMenuId()} />
+      return <FactoryContentPanelForMyReact id={subMenu} />
     case 'mall':
-      return <FactoryContentPanelForMall id={getSelectSubMenuId()} />
+      return <FactoryContentPanelForMall id={subMenu} />
     case 'etc':
-      return <FactoryContentPanelForEtc id={getSelectSubMenuId()} />
+      return <FactoryContentPanelForEtc id={subMenu} />
     default: {
-      console.log(`getSelectMainMenuId: ${getSelectMainMenuId()}`)
+      console.log(`mainMenu: ${mainMenu}`)
       return <p>not find content.</p>
     }
   }

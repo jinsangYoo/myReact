@@ -23,7 +23,7 @@ export default function MallMain() {
   useEffect(() => {
     setTimeout(() => {
       getProducts(setProducts, setError, setLoading)
-    }, 3000)
+    }, 2000)
 
     return () => setProducts([])
   }, [])
