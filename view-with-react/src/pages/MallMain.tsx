@@ -17,7 +17,7 @@ export default function MallMain() {
     ],
     []
   )
-  const [error, setError] = useState()
+  const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -28,11 +28,11 @@ export default function MallMain() {
     return () => setProducts([])
   }, [])
 
-  const root = document.getElementById('root')
   const [y, setY] = useState(window.scrollY)
   const handleScroll = useCallback(
     (e: Event) => {
       const window = e.currentTarget as Window
+      const root = document.getElementById('root')
       const clientHeight = root?.clientHeight || 1
       const rate = ((window.scrollY + window.innerHeight) / clientHeight) * 100
       if (rate > 95) {
@@ -52,7 +52,12 @@ export default function MallMain() {
     }
   }, [handleScroll])
 
-  if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
+  if (error)
+    return (
+      <pre>
+        {error.name} - {error.message}
+      </pre>
+    )
   return (
     <Box
       sx={{
@@ -67,7 +72,7 @@ export default function MallMain() {
         ? Array.from({ length: 10 }).map((noUse, index) => (
             <Product key={index} index={index} loading={loading} />
           ))
-        : products?.map((product, index) => (
+        : products.map((product, index) => (
             <Product key={index} index={index} loading={loading} product={product} />
           ))}
     </Box>
@@ -76,14 +81,16 @@ export default function MallMain() {
 
 function getProducts(
   setProducts: React.Dispatch<typeOfProductsResponse[]>,
-  setError: React.Dispatch<React.SetStateAction<undefined>>,
+  setError: React.Dispatch<React.SetStateAction<Error | null>>,
   setLoading?: (value: React.SetStateAction<boolean>) => void
 ) {
   fetch(`http://localhost:8080/products`)
     .then((res) => res.json())
     .then((res) => setProducts(res))
     .then(() => setLoading && setLoading(false))
-    .catch(setError)
+    .catch((error: Error) => {
+      setError(error)
+    })
 }
 
 type typeOfProductsResponse = {

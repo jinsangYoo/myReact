@@ -20,7 +20,7 @@ export default function FactoryContentPanels() {
     case 'etc':
       return <FactoryContentPanelForEtc id={getSelectSubMenuId()} />
     default: {
-      console.log(`subMenuPath: ${getSelectSubMenuId()}`)
+      console.log(`getSelectMainMenuId: ${getSelectMainMenuId()}`)
       return <p>not find content.</p>
     }
   }
