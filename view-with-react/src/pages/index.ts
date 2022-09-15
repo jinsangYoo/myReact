@@ -6,6 +6,8 @@ import MyReactMain from './MyReactMain'
 import MyReactOpenSourceLicense from './MyReactOpenSourceLicense'
 
 import MallMain from './MallMain'
+import MallInRouter from './MallInRouter'
+import ProductDetailInMall from './ProductDetailInMall'
 import MallCart from './MallCart'
 import MallOrder from './MallOrder'
 
@@ -19,6 +21,8 @@ export {
   MyReactMain,
   MyReactOpenSourceLicense,
   MallMain,
+  MallInRouter,
+  ProductDetailInMall,
   MallCart,
   MallOrder,
   EtcMain,

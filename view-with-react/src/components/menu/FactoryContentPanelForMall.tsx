@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router'
 
-import { MallMain, MallCart, MallOrder } from '../../pages'
+import { MallMain, MallInRouter, MallCart, MallOrder } from '../../pages'
 
 export default function FactoryContentPanelForMall() {
   return (
@@ -9,8 +9,8 @@ export default function FactoryContentPanelForMall() {
       <Routes>
         <Route path="order" element={<MallOrder />} />
         <Route path="cart" element={<MallCart />} />
-        <Route path="main/*" element={<MallMain />} />
-        <Route path="/*" element={<MallMain />} />
+        <Route path="main/*" element={<MallInRouter />} />
+        <Route path="*" element={<MallInRouter />} />
       </Routes>
     </div>
   )

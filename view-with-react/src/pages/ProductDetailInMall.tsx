@@ -4,93 +4,21 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
 import Skeleton from '@mui/material/Skeleton'
+import { ProductForType, useProduct } from '../hooks'
 
 const Image = styled('img')({
   width: '100%'
 })
 
 export default function ProductDetailInMall() {
-  const [products, setProducts] = useReducer(
-    (products: typeOfProductsResponse[], newProducts: typeOfProductsResponse[]) => [
-      ...products,
-      ...newProducts
-    ],
-    []
+  const { product } = useProduct()
+
+  return (
+    <>
+      <h1>제품 상세페이지</h1>
+      <Product product={product} />
+    </>
   )
-  const [error, setError] = useState<Error | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [product, setProduct] = useReducer(
-    (product: typeOfProductsResponse, newProduct: typeOfProductsResponse) => ({
-      ...product,
-      ...newProduct
-    }),
-    {
-      productId: '',
-      productDescription: '',
-      productImg: '',
-      productName: '',
-      productPrice: '',
-      sellerAvatar: '',
-      sellerName: '',
-      sellerEmail: '',
-      company: '',
-      companyDomain: '',
-      registeredAt: ''
-    }
-  )
-
-  useEffect(() => {
-    // setTimeout(() => {
-    //   getProducts(setProducts, setError, setLoading)
-    // }, 1200)
-    // return () => setProducts([])
-  }, [])
-
-  const [y, setY] = useState(window.scrollY)
-  const handleScroll = useCallback(
-    (e: Event) => {
-      const window = e.currentTarget as Window
-      const root = document.getElementById('root')
-      const clientHeight = root?.clientHeight || 1
-      const rate = ((window.scrollY + window.innerHeight) / clientHeight) * 100
-      if (rate > 95) {
-        getProducts(setProducts, setError)
-      }
-      setY(window.scrollY)
-    },
-    [y]
-  )
-
-  useEffect(() => {
-    setY(window.scrollY)
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [handleScroll])
-
-  if (error)
-    return (
-      <pre>
-        {error.name} - {error.message}
-      </pre>
-    )
-  return <>{loading ? <Product loading={loading} /> : <Product loading={loading} product={product} />}</>
-}
-
-function getProducts(
-  setProducts: React.Dispatch<typeOfProductsResponse[]>,
-  setError: React.Dispatch<React.SetStateAction<Error | null>>,
-  setLoading?: (value: React.SetStateAction<boolean>) => void
-) {
-  fetch(`http://localhost:8080/products`)
-    .then((res) => res.json())
-    .then((res) => setProducts(res))
-    .then(() => setLoading && setLoading(false))
-    .catch((error: Error) => {
-      setError(error)
-    })
 }
 
 type typeOfProductsResponse = {

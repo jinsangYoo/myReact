@@ -1,11 +1,9 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react'
-import { Routes, Route } from 'react-router'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
 import Skeleton from '@mui/material/Skeleton'
-import ProductDetailInMall from './ProductDetailInMall'
 import { ProductForType, useProduct } from '../hooks'
 import { Link } from 'react-router-dom'
 
@@ -189,9 +187,6 @@ function Product(props: {
           )
         )}
       </Box>
-      <Routes>
-        <Route path="detail" element={<ProductDetailInMall />} />
-      </Routes>
     </div>
   )
 }
