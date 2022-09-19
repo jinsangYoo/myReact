@@ -8,6 +8,7 @@ app.use(cors())
 app.use(express.static(path.join(__dirname, './view-with-react/build')))
 
 app.get('/', function (req, res) {
+  res.header('Set-Cookie', 'cross-site-cookie=whatever; SameSite=None; Secure')
   res.sendFile(path.join(__dirname, './view-with-react/build/index.html'))
 })
 
@@ -17,7 +18,7 @@ function createRandomProduct() {
     productDescription: faker.commerce.productDescription(),
     productImg: faker.image.business(450, 200, true),
     productName: faker.commerce.productName(),
-    productPrice: faker.commerce.price(100, 200, 0),
+    productPrice: faker.commerce.price(1000, 2000, 0),
     sellerAvatar: faker.image.people(200, 200, true),
     sellerName: faker.internet.userName(),
     sellerEmail: faker.internet.email(),
@@ -53,6 +54,7 @@ app.get('/products', function (req, res) {
     Products.push(createRandomProduct())
   })
 
+  res.header('Set-Cookie', 'cross-site-cookie=whatever; SameSite=None; Secure')
   res.json(Products)
 })
 
@@ -73,6 +75,7 @@ app.get('/users', function (req, res) {
 })
 
 app.get('*', function (req, res) {
+  res.header('Set-Cookie', 'cross-site-cookie=whatever; SameSite=None; Secure')
   res.sendFile(path.join(__dirname, './view-with-react/build/index.html'))
 })
 

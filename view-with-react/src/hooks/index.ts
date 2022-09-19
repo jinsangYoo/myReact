@@ -3,6 +3,7 @@ import useRouteMatch from './useRouteMatch'
 import { ScrollDirection, useScrollDirection } from './useScrollDirection'
 import type { ProductForType } from './product-hooks'
 import { ProductProvider, useProduct } from './product-hooks'
+import { CartProvider, useCart } from './cart-hooks'
 
 export {
   MenuProvider,
@@ -12,5 +13,7 @@ export {
   useScrollDirection,
   ProductForType,
   ProductProvider,
-  useProduct
+  useProduct,
+  CartProvider,
+  useCart
 }

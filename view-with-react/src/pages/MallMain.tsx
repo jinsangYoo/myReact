@@ -187,7 +187,11 @@ function Product(props: {
                 </Typography>
               </Link>
               <Typography display="block" variant="caption" color="text.secondary">
-                가격: {props.product.productPrice} 원
+                제품 가격:{' '}
+                {Number(props.product.productPrice).toLocaleString(navigator.language, {
+                  minimumFractionDigits: 0
+                })}{' '}
+                원
               </Typography>
             </Box>
           )

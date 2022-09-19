@@ -17,7 +17,7 @@ export type ProductForType = {
 
 export interface IProductContext {
   product: ProductForType
-  newFakeProduct: () => void
+  newFakeProduct: () => ProductForType
   updateProduct: (newProduct: ProductForType) => void
 }
 
@@ -39,8 +39,8 @@ export function ProductProvider(props: any) {
     registeredAt: ''
   })
 
-  const newFakeProduct = () =>
-    setProduct({
+  const newFakeProduct = () => {
+    return {
       productId: faker.datatype.uuid(),
       productDescription: faker.commerce.productDescription(),
       productImg: faker.image.business(200, 80, true),
@@ -52,8 +52,10 @@ export function ProductProvider(props: any) {
       company: faker.company.name(),
       companyDomain: faker.internet.url(),
       registeredAt: faker.date.past().toLocaleDateString()
-    })
-  const updateProduct = (newProduct: ProductForType) => setProduct({ ...product, ...newProduct })
+    }
+  }
+  const updateProduct = (newProduct: ProductForType) =>
+    setProduct(product ? { ...product, ...newProduct } : { ...newProduct })
 
   return (
     <ProductContext.Provider

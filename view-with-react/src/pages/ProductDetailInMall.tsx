@@ -3,8 +3,8 @@ import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import Skeleton from '@mui/material/Skeleton'
-import { ProductForType, useProduct } from '../hooks'
+import { ProductForType, useProduct, useCart } from '../hooks'
+import { Button } from '@mui/material'
 
 const Image = styled('img')({
   width: '100%'
@@ -12,78 +12,66 @@ const Image = styled('img')({
 
 export default function ProductDetailInMall() {
   const { product } = useProduct()
+  const { addProduct, printProducts } = useCart()
   console.log(`product: ${JSON.stringify(product, null, 2)}`)
+
+  const handleAddCart = (product: ProductForType) => {
+    if (!product) return
+    console.log(`handleAddCart::product: ${JSON.stringify(product, null, 2)}`)
+    addProduct(product)
+    printProducts()
+  }
+
+  const handleGoToOrder = (product: ProductForType) => {
+    if (!product) return
+    console.log(`handleGoToOrder::product: ${JSON.stringify(product, null, 2)}`)
+  }
 
   return (
     <>
-      <h1>제품 상세페이지</h1>
-      <Product product={product} />
+      <Product product={product} onPressAddCart={handleAddCart} onPressGoToOrder={handleGoToOrder} />
     </>
   )
 }
 
-type typeOfProductsResponse = {
-  productId: string
-  productDescription: string
-  productImg: string
-  productName: string
-  productPrice: string
-  sellerAvatar: string
-  sellerName: string
-  sellerEmail: string
-  company: string
-  companyDomain: string
-  registeredAt: string
-}
-
-function Product(props: { loading?: boolean; product?: typeOfProductsResponse }) {
+function Product(props: {
+  product: ProductForType
+  onPressAddCart: (p: ProductForType) => void
+  onPressGoToOrder: (p: ProductForType) => void
+}) {
   return (
     <div>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Box sx={{ margin: 1 }}>
-          {props.loading ? (
-            <Skeleton variant="circular" animation="wave">
-              <Avatar />
-            </Skeleton>
-          ) : (
-            props.product && <Avatar src={props.product.sellerAvatar} />
-          )}
+      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'right', alignItems: 'center' }}>
+        <Box sx={{ m: 1 }}>
+          <Avatar src={props.product.sellerAvatar} />
         </Box>
-        <Box sx={{ width: '100%' }}>
-          {props.loading ? (
-            <Skeleton width="100%" animation="wave">
-              <Typography>.</Typography>
-            </Skeleton>
-          ) : (
-            props.product && <Typography>{props.product.productName}</Typography>
-          )}
+
+        <Box sx={{ mr: 2 }}>
+          판매자: <Typography>{props.product.productName}</Typography>
         </Box>
       </Box>
-      {props.loading ? (
-        <Skeleton variant="rectangular" width="100%" animation="wave">
-          <div style={{ paddingTop: '57%' }} />
-        </Skeleton>
-      ) : (
-        props.product && <Image src={props.product.productImg} alt="" />
-      )}
+      <Image src={props.product.productImg} alt="" />
       <Box sx={{ width: '100%' }}>
-        {props.loading ? (
-          <Box sx={{ pt: 0.5 }}>
-            <Skeleton animation="wave" />
-            <Skeleton width="60%" animation="wave" />
-          </Box>
-        ) : (
-          props.product && (
-            <Box sx={{ pr: 2 }}>
-              <Typography gutterBottom variant="body2">
-                {props.product.productDescription}
-              </Typography>
-              <Typography display="block" variant="caption" color="text.secondary">
-                가격: {props.product.productPrice} 원
-              </Typography>
-            </Box>
-          )
-        )}
+        <Box sx={{ pr: 2 }}>
+          <Typography gutterBottom variant="body2">
+            제품 설명: {props.product.productDescription}
+          </Typography>
+          <Typography display="block" variant="caption" color="text.secondary">
+            제품 가격:{' '}
+            {Number(props.product.productPrice).toLocaleString(navigator.language, {
+              minimumFractionDigits: 0
+            })}{' '}
+            원
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
+          <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressAddCart(props.product)}>
+            장바구니 추가
+          </Button>
+          <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
+            구매
+          </Button>
+        </Box>
       </Box>
     </div>
   )
