@@ -28,8 +28,6 @@ export default function MallCart() {
     updateProduct(product)
   }
   const handleGoToOrder = (product: ProductForType) => {
-    if (!product) return
-    console.log(`handleRemoveCart::product: ${JSON.stringify(product, null, 2)}`)
     handleGoToOrders([product])
   }
   const handleGoToOrders = (products: ProductForType[]) => {
@@ -77,11 +75,6 @@ function Product(props: {
         <Image sx={{ width: '30%' }} src={props.product.productImg} alt="" />
       </Link>
       <Box sx={{ width: '100%' }}>
-        <Link to={'/mall/detail'} onClick={() => props.onPressGoToProductDetailAddCart(props.product)}>
-          <Typography gutterBottom variant="body2">
-            제품 설명: {props.product.productDescription}
-          </Typography>
-        </Link>
         <Typography display="block" variant="caption" color="text.secondary">
           제품 가격:{' '}
           {Number(props.product.productPrice).toLocaleString(navigator.language, {
