@@ -26,7 +26,7 @@ function reducer(state: ProductForType[], action: ICartAction) {
     case 'add':
       return [...state, action.product]
     case 'remove':
-      return state.filter((product) => product.productId === action.product.productId)
+      return state.filter((product) => product.productId !== action.product.productId)
     case 'update':
       return state.map((product) =>
         product.productId === action.product.productId ? action.product : product
