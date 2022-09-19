@@ -23,8 +23,12 @@ const initialState: ProductForType[] = []
 
 function reducer(state: ProductForType[], action: ICartAction) {
   switch (action.type) {
-    case 'add':
-      return [...state, action.product]
+    case 'add': {
+      const result = state.findIndex((product) => product.productId === action.product.productId)
+      return result === -1
+        ? [...state, action.product]
+        : [...state, { ...action.product, productId: faker.datatype.uuid() }]
+    }
     case 'remove':
       return state.filter((product) => product.productId !== action.product.productId)
     case 'update':
