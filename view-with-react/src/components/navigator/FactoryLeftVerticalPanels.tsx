@@ -17,21 +17,20 @@ export default function FactoryLeftVerticalPanels() {
   const handleMainMenuChange = (newValue: string) => {}
 
   return (
-    <>
-      <div>
-        {subMenus &&
-          subMenus.map((menu, index) => (
-            <ul key={index}>
-              <Button
-                onClick={() => handleMainMenuChange(menu.path)}
-                component={Link}
-                to={`/${mainMenu}/${menu.path}`}
-              >
-                {menu.name}
-              </Button>
-            </ul>
-          ))}
-      </div>
-    </>
+    <div>
+      {subMenus &&
+        subMenus.map((menu, index) => (
+          <ul key={index}>
+            <Button
+              variant="outlined"
+              onClick={() => handleMainMenuChange(menu.path)}
+              component={Link}
+              to={`/${mainMenu}/${menu.path}`}
+            >
+              {menu.name}
+            </Button>
+          </ul>
+        ))}
+    </div>
   )
 }

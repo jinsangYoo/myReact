@@ -7,7 +7,8 @@ import { ProductForType, useProduct, useCart } from '../hooks'
 import { Button } from '@mui/material'
 
 const Image = styled('img')({
-  width: '100%'
+  width: '100%',
+  borderRadius: 10
 })
 
 export default function ProductDetailInMall() {

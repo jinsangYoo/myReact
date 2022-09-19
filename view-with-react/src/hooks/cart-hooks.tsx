@@ -7,7 +7,7 @@ export interface ICartContext {
   addFakeProduct: (cnt: number) => void
   addProduct: (newProduct: ProductForType) => void
   removeProduct: (newProduct: ProductForType) => void
-  updateProduct: (newProduct: ProductForType) => void
+  updateProductInCart: (newProduct: ProductForType) => void
   printProducts: () => void
 }
 
@@ -69,7 +69,7 @@ export function CartProvider(props: any) {
       type: 'remove',
       product: newProduct
     })
-  const updateProduct = (newProduct: ProductForType) =>
+  const updateProductInCart = (newProduct: ProductForType) =>
     dispatch({
       type: 'update',
       product: newProduct
@@ -86,7 +86,7 @@ export function CartProvider(props: any) {
         addFakeProduct,
         addProduct,
         removeProduct,
-        updateProduct,
+        updateProductInCart,
         printProducts
       }}
     >

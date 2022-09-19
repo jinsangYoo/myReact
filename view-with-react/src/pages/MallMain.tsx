@@ -8,7 +8,8 @@ import { ProductForType, useProduct } from '../hooks'
 import { Link } from 'react-router-dom'
 
 const Image = styled('img')({
-  width: '100%'
+  width: '100%',
+  borderRadius: 10
 })
 
 export default function MallMain() {
