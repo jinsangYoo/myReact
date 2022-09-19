@@ -20,7 +20,7 @@ export default function FactoryLeftVerticalPanels() {
     <div>
       {subMenus &&
         subMenus.map((menu, index) => (
-          <ul key={index}>
+          <ul key={index} style={{ display: 'inline' }}>
             <Button
               variant="outlined"
               onClick={() => handleMainMenuChange(menu.path)}

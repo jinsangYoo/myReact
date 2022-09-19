@@ -6,14 +6,7 @@ import FactoryLeftVerticalPanels from '../navigator/FactoryLeftVerticalPanels'
 
 export default function MainSideBar() {
   return (
-    <Box
-      sx={{
-        height: '500vh',
-        maxWidth: { xs: 320, sm: 480, lg: 1 },
-        bgcolor: 'background.paper',
-        display: 'inline'
-      }}
-    >
+    <Box>
       <Routes>
         <Route path="etc" element={<EtcSideBar />} />
         <Route path="/:mainMenu/:subMenu/*" element={<FactoryLeftVerticalPanels />} />
