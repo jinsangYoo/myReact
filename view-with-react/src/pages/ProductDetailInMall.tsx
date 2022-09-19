@@ -12,6 +12,7 @@ const Image = styled('img')({
 
 export default function ProductDetailInMall() {
   const { product } = useProduct()
+  console.log(`product: ${JSON.stringify(product, null, 2)}`)
 
   return (
     <>

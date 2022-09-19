@@ -166,7 +166,11 @@ function Product(props: {
           <div style={{ paddingTop: '57%' }} />
         </Skeleton>
       ) : (
-        props.product && <Image src={props.product.productImg} alt="" />
+        props.product && (
+          <Link to={'/mall/detail'} onClick={() => props.onPress(props.product)}>
+            <Image src={props.product.productImg} alt="" />
+          </Link>
+        )
       )}
       <Box sx={{ width: '100%' }}>
         {props.loading ? (
@@ -177,9 +181,11 @@ function Product(props: {
         ) : (
           props.product && (
             <Box sx={{ pr: 2 }}>
-              <Typography gutterBottom variant="body2">
-                {props.product.productDescription}
-              </Typography>
+              <Link to={'/mall/detail'} onClick={() => props.onPress(props.product)}>
+                <Typography gutterBottom variant="body2">
+                  {props.product.productDescription}
+                </Typography>
+              </Link>
               <Typography display="block" variant="caption" color="text.secondary">
                 가격: {props.product.productPrice} 원
               </Typography>

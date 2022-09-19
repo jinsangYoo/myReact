@@ -15,7 +15,7 @@ function createRandomProduct() {
   return {
     productId: faker.datatype.uuid(),
     productDescription: faker.commerce.productDescription(),
-    productImg: faker.image.business(200, 80, true),
+    productImg: faker.image.business(450, 200, true),
     productName: faker.commerce.productName(),
     productPrice: faker.commerce.price(100, 200, 0),
     sellerAvatar: faker.image.people(200, 200, true),
