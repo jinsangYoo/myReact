@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import { ProductForType, useProduct, useCart } from '../hooks'
+import { ProductForType, useProduct, useCart, CustomizedHook } from '../hooks'
 import { Button } from '@mui/material'
 
 const Image = styled('img')({
@@ -14,7 +14,6 @@ const Image = styled('img')({
 export default function ProductDetailInMall() {
   const { product } = useProduct()
   const { addProduct, printProducts } = useCart()
-  console.log(`product: ${JSON.stringify(product, null, 2)}`)
 
   const handleAddCart = (product: ProductForType) => {
     if (!product) return
@@ -26,6 +25,10 @@ export default function ProductDetailInMall() {
   const handleGoToOrder = (product: ProductForType) => {
     if (!product) return
     console.log(`handleGoToOrder::product: ${JSON.stringify(product, null, 2)}`)
+  }
+
+  const handleSelectedOptions = (e: React.SyntheticEvent, value: string[]) => {
+    console.log(value)
   }
 
   return (
@@ -66,6 +69,7 @@ function Product(props: {
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
+          <CustomizedHook labelName="옵션 구성" />
           <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressAddCart(props.product)}>
             장바구니 추가
           </Button>

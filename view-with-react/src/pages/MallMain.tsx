@@ -14,10 +14,7 @@ const Image = styled('img')({
 
 export default function MallMain() {
   const [products, setProducts] = useReducer(
-    (products: typeOfProductsResponse[], newProducts: typeOfProductsResponse[]) => [
-      ...products,
-      ...newProducts
-    ],
+    (products: ProductForType[], newProducts: ProductForType[]) => [...products, ...newProducts],
     []
   )
   const [error, setError] = useState<Error | null>(null)
@@ -96,7 +93,7 @@ export default function MallMain() {
 }
 
 function getProducts(
-  setProducts: React.Dispatch<typeOfProductsResponse[]>,
+  setProducts: React.Dispatch<ProductForType[]>,
   setError: React.Dispatch<React.SetStateAction<Error | null>>,
   setLoading?: (value: React.SetStateAction<boolean>) => void
 ) {
@@ -109,25 +106,11 @@ function getProducts(
     })
 }
 
-type typeOfProductsResponse = {
-  productId: string
-  productDescription: string
-  productImg: string
-  productName: string
-  productPrice: string
-  sellerAvatar: string
-  sellerName: string
-  sellerEmail: string
-  company: string
-  companyDomain: string
-  registeredAt: string
-}
-
 function Product(props: {
   index: number
   onPress: (p: ProductForType | undefined) => void
   loading?: boolean
-  product?: typeOfProductsResponse
+  product?: ProductForType
 }) {
   return (
     <div>

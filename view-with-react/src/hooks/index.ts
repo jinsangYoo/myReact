@@ -4,6 +4,7 @@ import { ScrollDirection, useScrollDirection } from './useScrollDirection'
 import type { ProductForType } from './product-hooks'
 import { ProductProvider, useProduct } from './product-hooks'
 import { CartProvider, useCart } from './cart-hooks'
+import CustomizedHook from './customizedHookForComboBox'
 
 export {
   MenuProvider,
@@ -15,5 +16,6 @@ export {
   ProductProvider,
   useProduct,
   CartProvider,
-  useCart
+  useCart,
+  CustomizedHook
 }

@@ -53,6 +53,7 @@ export function CartProvider(props: any) {
           productDescription: faker.commerce.productDescription(),
           productImg: faker.image.business(450, 200, true),
           productName: faker.commerce.productName(),
+          productCategory: faker.commerce.productAdjective(),
           productPrice: faker.commerce.price(1000, 2000, 0),
           sellerAvatar: faker.image.people(200, 200, true),
           sellerName: faker.internet.userName(),

@@ -6,6 +6,7 @@ export type ProductForType = {
   productDescription: string
   productImg: string
   productName: string
+  productCategory: string
   productPrice: string
   sellerAvatar: string
   sellerName: string
@@ -30,6 +31,7 @@ export function ProductProvider(props: any) {
     productDescription: '',
     productImg: '',
     productName: '',
+    productCategory: '',
     productPrice: '',
     sellerAvatar: '',
     sellerName: '',
@@ -45,6 +47,7 @@ export function ProductProvider(props: any) {
       productDescription: faker.commerce.productDescription(),
       productImg: faker.image.business(200, 80, true),
       productName: faker.commerce.productName(),
+      productCategory: faker.commerce.productAdjective(),
       productPrice: faker.commerce.price(100, 200, 0),
       sellerAvatar: faker.image.people(200, 200, true),
       sellerName: faker.internet.userName(),
