@@ -15,7 +15,7 @@ export type OrderStateType =
 export type ProductForOrderType = {
   quantity: number
   optionCode?: string
-  totalPrice: number
+  totalPrice?: number
 } & ProductForType
 
 export type OrderType = {
@@ -45,7 +45,7 @@ export interface IOrderContext {
   order: OrderType
   setFakeOrderInTempOrder: (cnt: number) => void
   setProductInTempOrder: (newProduct: ProductForOrderType) => void
-  setProductInTempOrderWithCalculateToTalPrice: (newProduct: ProductForOrderType) => void
+  setProductInTempOrderWithCalculateTotalPrice: (newProduct: ProductForOrderType) => void
   removeOrderInTempOrder: (product: ProductForOrderType) => void
   printOrder: () => void
   orders: OrderType[]
@@ -57,7 +57,7 @@ export interface IOrderContext {
 function reducer(state: OrderType, action: IOrderAction) {
   switch (action.type) {
     case 'setInOrder':
-      return { ...state, ...action }
+      return { ...state, ...action.product }
     case 'removeInOrder':
       return resetOrder()
 
@@ -99,7 +99,7 @@ export function OrderProvider(props: any) {
       type: 'setInOrder',
       product: newProduct
     })
-  const setProductInTempOrderWithCalculateToTalPrice = (newProduct: ProductForOrderType) => {
+  const setProductInTempOrderWithCalculateTotalPrice = (newProduct: ProductForOrderType) => {
     const productPrice = isNaN(Number(newProduct.productPrice)) ? 1 : Number(newProduct.productPrice)
     newProduct.totalPrice = newProduct.quantity * productPrice
     dispatch({
@@ -144,7 +144,7 @@ export function OrderProvider(props: any) {
         order,
         setFakeOrderInTempOrder,
         setProductInTempOrder,
-        setProductInTempOrderWithCalculateToTalPrice,
+        setProductInTempOrderWithCalculateTotalPrice,
         removeOrderInTempOrder,
         printOrder,
         orders,

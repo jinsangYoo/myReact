@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import { ProductForType, useProduct, useCart, CustomizedHook } from '../hooks'
+import { ProductForType, useProduct, useCart, CustomizedHook, useOrder } from '../hooks'
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { getRandomIntInclusive } from '../utils'
@@ -23,12 +23,13 @@ export default function ProductDetailInMall() {
   const [productQuantity, setProductQuantity] = useState(getRandomIntInclusive(1, 10))
   const [productOption, setProductOption] = useState('')
   const { product } = useProduct()
-  const { addProduct, printProducts } = useCart()
+  const { addProductWithCalculateTotalPrice, printProducts } = useCart()
+  const { setProductInTempOrderWithCalculateTotalPrice } = useOrder()
 
   const handleAddCart = (product: ProductForType) => {
     if (!product) return
     console.log(`handleAddCart::product: ${JSON.stringify(product, null, 2)}`)
-    addProduct(product)
+    addProductWithCalculateTotalPrice({ ...product, quantity: productQuantity, optionCode: productOption })
     printProducts()
   }
 
@@ -37,6 +38,11 @@ export default function ProductDetailInMall() {
     console.log(`handleGoToOrder::productQuantity: ${productQuantity}`)
     console.log(`handleGoToOrder::productOption: ${productOption}`)
     console.log(`handleGoToOrder::product: ${JSON.stringify(product, null, 2)}`)
+    setProductInTempOrderWithCalculateTotalPrice({
+      ...product,
+      quantity: productQuantity,
+      optionCode: productOption
+    })
   }
 
   const handleSelectedOptions = (code: string) => {
@@ -130,7 +136,7 @@ function Product(props: {
             장바구니 추가
           </Button>
           <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
-            구매
+            주문서 작성
           </Button>
         </Box>
       </Box>
