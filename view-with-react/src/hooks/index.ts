@@ -5,6 +5,8 @@ import type { ProductForType } from './product-hooks'
 import { ProductProvider, useProduct } from './product-hooks'
 import { CartProvider, useCart } from './cart-hooks'
 import CustomizedHook from './customizedHookForComboBox'
+import type { OrderStateType, ProductForOrderType, OrderType } from './order-hooks'
+import { OrderProvider, useOrder } from './order-hooks'
 
 export {
   MenuProvider,
@@ -17,5 +19,10 @@ export {
   useProduct,
   CartProvider,
   useCart,
-  CustomizedHook
+  CustomizedHook,
+  OrderStateType,
+  ProductForOrderType,
+  OrderType,
+  OrderProvider,
+  useOrder
 }

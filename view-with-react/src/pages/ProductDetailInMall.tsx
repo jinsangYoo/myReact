@@ -45,7 +45,7 @@ export default function ProductDetailInMall() {
   }
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.currentTarget.value) ?? -1
+    const value = isNaN(Number(e.currentTarget.value)) ? 1 : Number(e.currentTarget.value)
     console.log(`e.currentTarget.value: ${value}`)
     setProductQuantity(value)
   }
