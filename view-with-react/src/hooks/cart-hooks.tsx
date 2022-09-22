@@ -1,15 +1,15 @@
 import React, { useState, useContext, useEffect, useReducer } from 'react'
 import { faker } from '@faker-js/faker'
-import { ProductForOrderType } from './order-hooks'
+import { ProductForType } from './product-hooks'
 import { getRandomIntInclusive } from '../utils'
 
 export interface ICartContext {
-  products: ProductForOrderType[]
+  products: ProductForType[]
   addFakeProduct: (cnt: number) => void
-  addProduct: (newProduct: ProductForOrderType) => void
-  addProductWithCalculateTotalPrice: (newProduct: ProductForOrderType) => void
-  removeProduct: (product: ProductForOrderType) => void
-  updateProductInCart: (product: ProductForOrderType) => void
+  addProduct: (newProduct: ProductForType) => void
+  addProductWithCalculateTotalPrice: (newProduct: ProductForType) => void
+  removeProduct: (product: ProductForType) => void
+  updateProductInCart: (product: ProductForType) => void
   printProducts: () => void
 }
 
@@ -18,12 +18,12 @@ export const useCart = () => useContext(CartContext)
 
 interface ICartAction {
   type: string
-  product: ProductForOrderType
+  product: ProductForType
 }
 
-const initialState: ProductForOrderType[] = []
+const initialState: ProductForType[] = []
 
-function reducer(state: ProductForOrderType[], action: ICartAction) {
+function reducer(state: ProductForType[], action: ICartAction) {
   switch (action.type) {
     case 'add': {
       const result = state.findIndex((product) => product.productId === action.product.productId)
@@ -71,12 +71,12 @@ export function CartProvider(props: any) {
         }
       })
     })
-  const addProduct = (newProduct: ProductForOrderType) =>
+  const addProduct = (newProduct: ProductForType) =>
     dispatch({
       type: 'add',
       product: newProduct
     })
-  const addProductWithCalculateTotalPrice = (newProduct: ProductForOrderType) => {
+  const addProductWithCalculateTotalPrice = (newProduct: ProductForType) => {
     const productPrice = isNaN(Number(newProduct.productPrice)) ? 1 : Number(newProduct.productPrice)
     newProduct.totalPrice = newProduct.quantity * productPrice
     dispatch({
@@ -84,12 +84,12 @@ export function CartProvider(props: any) {
       product: newProduct
     })
   }
-  const removeProduct = (product: ProductForOrderType) =>
+  const removeProduct = (product: ProductForType) =>
     dispatch({
       type: 'remove',
       product: product
     })
-  const updateProductInCart = (product: ProductForOrderType) =>
+  const updateProductInCart = (product: ProductForType) =>
     dispatch({
       type: 'update',
       product: product

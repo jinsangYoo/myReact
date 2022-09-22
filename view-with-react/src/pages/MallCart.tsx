@@ -2,7 +2,7 @@ import React, { useState, useReducer, useEffect, useCallback } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useCart, ProductForOrderType, useProduct } from '../hooks'
+import { useCart, ProductForType, useProduct } from '../hooks'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
 
@@ -14,23 +14,23 @@ const Image = styled('img')({
 export default function MallCart() {
   const { updateProduct } = useProduct()
   const { products, updateProductInCart, removeProduct } = useCart()
-  const handleUpdateCart = (product: ProductForOrderType) => {
+  const handleUpdateCart = (product: ProductForType) => {
     if (!product) return
     console.log(`handleUpdateCart::product: ${JSON.stringify(product, null, 2)}`)
   }
-  const handleRemoveCart = (product: ProductForOrderType) => {
+  const handleRemoveCart = (product: ProductForType) => {
     if (!product) return
     console.log(`handleRemoveCart::product: ${JSON.stringify(product, null, 2)}`)
     removeProduct(product)
   }
-  const handleGoToProductDetail = (product: ProductForOrderType) => {
+  const handleGoToProductDetail = (product: ProductForType) => {
     if (!product) return
     updateProduct(product)
   }
-  const handleGoToOrder = (product: ProductForOrderType) => {
+  const handleGoToOrder = (product: ProductForType) => {
     handleGoToOrders([product])
   }
-  const handleGoToOrders = (products: ProductForOrderType[]) => {
+  const handleGoToOrders = (products: ProductForType[]) => {
     if (products.length < 1) return
     console.log(`handleGoToOrder::products: ${products.map((product) => JSON.stringify(product, null, 2))}`)
   }
@@ -58,11 +58,11 @@ export default function MallCart() {
 
 function Product(props: {
   index: number
-  product: ProductForOrderType
-  onPressUpdateCart: (p: ProductForOrderType) => void
-  onPressRemoveCart: (p: ProductForOrderType) => void
-  onPressGoToProductDetailAddCart: (p: ProductForOrderType) => void
-  onPressGoToOrder: (p: ProductForOrderType) => void
+  product: ProductForType
+  onPressUpdateCart: (p: ProductForType) => void
+  onPressRemoveCart: (p: ProductForType) => void
+  onPressGoToProductDetailAddCart: (p: ProductForType) => void
+  onPressGoToOrder: (p: ProductForType) => void
 }) {
   return (
     <div style={{ borderBottom: '1px', borderBottomColor: '#eee', borderBottomStyle: 'solid' }}>

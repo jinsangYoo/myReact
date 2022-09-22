@@ -12,17 +12,11 @@ export type OrderStateType =
   | 'Done'
   | 'None'
 
-export type ProductForOrderType = {
-  quantity: number
-  optionCode?: string
-  totalPrice?: number
-} & ProductForType
-
 export type OrderType = {
   orderState: OrderStateType
   orderNumber: string
   payMethodName: string
-  products?: ProductForOrderType[]
+  products?: ProductForType[]
 }
 
 const OrderContext = React.createContext({} as IOrderContext)
@@ -30,7 +24,7 @@ export const useOrder = () => useContext(OrderContext)
 
 interface IOrderAction {
   type: string
-  product: ProductForOrderType
+  product: ProductForType
 }
 
 interface IOrdersAction {
@@ -44,9 +38,9 @@ const initialTemporaryOrderState: OrderType = resetOrder()
 export interface IOrderContext {
   order: OrderType
   setFakeOrderInTempOrder: (cnt: number) => void
-  setProductInTempOrder: (newProduct: ProductForOrderType) => void
-  setProductInTempOrderWithCalculateTotalPrice: (newProduct: ProductForOrderType) => void
-  removeOrderInTempOrder: (product: ProductForOrderType) => void
+  setProductInTempOrder: (newProduct: ProductForType) => void
+  setProductInTempOrderWithCalculateTotalPrice: (newProduct: ProductForType) => void
+  removeOrderInTempOrder: (product: ProductForType) => void
   printOrder: () => void
   orders: OrderType[]
   addOrder: (newOrder: OrderType) => void
@@ -94,12 +88,12 @@ export function OrderProvider(props: any) {
         }
       })
     })
-  const setProductInTempOrder = (newProduct: ProductForOrderType) =>
+  const setProductInTempOrder = (newProduct: ProductForType) =>
     dispatch({
       type: 'setInOrder',
       product: newProduct
     })
-  const setProductInTempOrderWithCalculateTotalPrice = (newProduct: ProductForOrderType) => {
+  const setProductInTempOrderWithCalculateTotalPrice = (newProduct: ProductForType) => {
     const productPrice = isNaN(Number(newProduct.productPrice)) ? 1 : Number(newProduct.productPrice)
     newProduct.totalPrice = newProduct.quantity * productPrice
     dispatch({
@@ -107,7 +101,7 @@ export function OrderProvider(props: any) {
       product: newProduct
     })
   }
-  const removeOrderInTempOrder = (product: ProductForOrderType) =>
+  const removeOrderInTempOrder = (product: ProductForType) =>
     dispatch({
       type: 'removeInOrder',
       product: product

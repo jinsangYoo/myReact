@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { faker } from '@faker-js/faker'
+import { getRandomIntInclusive } from '../utils'
 
 export type ProductForType = {
   productId: string
@@ -14,6 +15,9 @@ export type ProductForType = {
   company: string
   companyDomain: string
   registeredAt: string
+  quantity: number
+  optionCode?: string
+  totalPrice?: number
 }
 
 export interface IProductContext {
@@ -38,10 +42,13 @@ export function ProductProvider(props: any) {
     sellerEmail: '',
     company: '',
     companyDomain: '',
-    registeredAt: ''
+    registeredAt: '',
+    quantity: 0
   })
 
   const newFakeProduct = () => {
+    const quantity = getRandomIntInclusive(1, 10)
+    const productPrice = Number(faker.commerce.price(1000, 2000, 0))
     return {
       productId: faker.datatype.uuid(),
       productDescription: faker.commerce.productDescription(),
@@ -54,7 +61,10 @@ export function ProductProvider(props: any) {
       sellerEmail: faker.internet.email(),
       company: faker.company.name(),
       companyDomain: faker.internet.url(),
-      registeredAt: faker.date.past().toLocaleDateString()
+      registeredAt: faker.date.past().toLocaleDateString(),
+      quantity: quantity,
+      optionCode: getRandomIntInclusive(1, 10).toString(),
+      totalPrice: quantity * productPrice
     }
   }
   const updateProduct = (newProduct: ProductForType) =>

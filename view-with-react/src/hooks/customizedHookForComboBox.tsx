@@ -70,7 +70,7 @@ export default function CustomizedHook({
         }}
         id="controllable-states-demo"
         options={samples}
-        sx={{ width: 300 }}
+        sx={{ width: 100 }}
         renderInput={(params) => <TextField {...params} label={labelName} />}
       />
     </div>

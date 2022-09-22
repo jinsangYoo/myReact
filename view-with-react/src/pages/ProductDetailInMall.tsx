@@ -19,10 +19,12 @@ export interface SampleType {
 }
 
 export default function ProductDetailInMall() {
-  const optionIndex = getRandomIntInclusive(1, 30)
-  const [productQuantity, setProductQuantity] = useState(getRandomIntInclusive(1, 10))
-  const [productOption, setProductOption] = useState('')
   const { product } = useProduct()
+  const optionIndex = product.optionCode ? Number(product.optionCode) - 1 : getRandomIntInclusive(1, 30)
+  const [productQuantity, setProductQuantity] = useState(
+    product.quantity !== 0 ? product.quantity : getRandomIntInclusive(1, 10)
+  )
+  const [productOption, setProductOption] = useState('')
   const { addProductWithCalculateTotalPrice, printProducts } = useCart()
   const { setProductInTempOrderWithCalculateTotalPrice } = useOrder()
 
