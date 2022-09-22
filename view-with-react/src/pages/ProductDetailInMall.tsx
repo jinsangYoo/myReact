@@ -7,6 +7,7 @@ import { ProductForType, useProduct, useCart, CustomizedHook, useOrder } from '.
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { getRandomIntInclusive } from '../utils'
+import { Link } from 'react-router-dom'
 
 const Image = styled('img')({
   width: '100%',
@@ -137,9 +138,11 @@ function Product(props: {
           <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressAddCart(props.product)}>
             장바구니 추가
           </Button>
-          <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
-            주문서 작성
-          </Button>
+          <Link to="/mall/makeorder" style={{ textDecoration: 'none' }}>
+            <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
+              주문서 작성
+            </Button>
+          </Link>
         </Box>
       </Box>
     </div>
