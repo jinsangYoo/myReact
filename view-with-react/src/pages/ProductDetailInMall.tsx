@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback, useMemo, useRef } from 'react'
+import React, { useState, useReducer, useEffect, useCallback, useMemo } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -19,11 +19,9 @@ export interface SampleType {
 }
 
 export default function ProductDetailInMall() {
-  const quantiity = getRandomIntInclusive(1, 10)
   const optionIndex = getRandomIntInclusive(1, 30)
-  const [productQuantity, setProductQuantity] = useState(quantiity)
+  const [productQuantity, setProductQuantity] = useState(getRandomIntInclusive(1, 10))
   const [productOption, setProductOption] = useState('')
-  const inputRef = React.createRef<HTMLDivElement>()
   const { product } = useProduct()
   const { addProduct, printProducts } = useCart()
 
@@ -36,7 +34,6 @@ export default function ProductDetailInMall() {
 
   const handleGoToOrder = (product: ProductForType) => {
     if (!product) return
-    console.log(`handleGoToOrder::inputRef.current: ${JSON.stringify(inputRef.current, null, 2)}`)
     console.log(`handleGoToOrder::productQuantity: ${productQuantity}`)
     console.log(`handleGoToOrder::productOption: ${productOption}`)
     console.log(`handleGoToOrder::product: ${JSON.stringify(product, null, 2)}`)
@@ -44,20 +41,20 @@ export default function ProductDetailInMall() {
 
   const handleSelectedOptions = (code: string) => {
     console.log(`code: ${code}`)
-    // setProductOption(code)
+    setProductOption(code)
   }
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.currentTarget.value) ?? -1
     console.log(`e.currentTarget.value: ${value}`)
-    // setProductQuantity(value)
+    setProductQuantity(value)
   }
 
   return (
     <>
       <Product
         product={product}
-        defaultQuantity={quantiity}
+        defaultQuantity={productQuantity}
         defaultOptionIndex={optionIndex}
         onChangeQuantity={handleQuantityChange}
         onPressAddCart={handleAddCart}
@@ -121,10 +118,12 @@ function Product(props: {
               size="small"
               inputProps={{ inputMode: 'numeric' }}
             />
+          </Box>
+          <Box sx={{ mr: 1 }}>
             <CustomizedHook
-              labelName="옵션 구성"
-              onSelectedOptions={props.onSelectedOptions}
+              labelName="옵션 선택"
               defaultValueIndex={props.defaultOptionIndex}
+              onSelectedOptions={props.onSelectedOptions}
             />
           </Box>
           <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressAddCart(props.product)}>
