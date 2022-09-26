@@ -36,7 +36,11 @@ export default function MallMakeOrder() {
   if (state.myState.from === 'cart') {
     const { products } = useCart()
     newOrder.orderNumber = faker.datatype.uuid()
-    newOrder.products = products
+    if (state.myState.productId) {
+      newOrder.products = products.filter((product) => product.productId === state.myState.productId)
+    } else {
+      newOrder.products = products
+    }
   } else if (state.myState.from === 'detail') {
     const { order } = useOrder()
     newOrder = order
@@ -88,6 +92,7 @@ export default function MallMakeOrder() {
 }
 
 function Product(props: { index: number; product: ProductForType }) {
+  console.log(`MallMakeOrder::product: ${JSON.stringify(props.product, null, 2)}`)
   return (
     <div style={{ borderBottom: '1px', borderBottomColor: '#eee', borderBottomStyle: 'solid' }}>
       <Box sx={{ display: 'flex', p: 1, m: 1, alignItems: 'center' }}>

@@ -51,11 +51,11 @@ export default function MallCart() {
               style={{ textDecoration: 'none' }}
             >
               <Button variant="outlined" sx={{ mr: 1 }} onClick={() => handleGoToOrders(products)}>
-                모두 주문
+                전체 주문
               </Button>
             </Link>
             <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRemoveAllInCart()}>
-              모두 삭제
+              전체 삭제
             </Button>
           </Box>
           <div>
@@ -130,11 +130,11 @@ function Product(props: {
         </Button>
         <Link
           to="/mall/makeorder"
-          state={{ myState: { from: 'cart' } as IStateToOrder }}
+          state={{ myState: { from: 'cart', prodcutId: props.product.productId } as IStateToOrder }}
           style={{ textDecoration: 'none' }}
         >
           <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
-            주문
+            개별 주문
           </Button>
         </Link>
       </Box>
