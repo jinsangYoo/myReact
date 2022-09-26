@@ -6,7 +6,7 @@ import { ProductProvider, useProduct } from './product-hooks'
 import { CartProvider, useCart } from './cart-hooks'
 import CustomizedHook from './customizedHookForComboBox'
 import type { OrderStateType, OrderType } from './order-hooks'
-import { OrderProvider, useOrder } from './order-hooks'
+import { OrderProvider, useOrder, randomGetPayMethod } from './order-hooks'
 import type { IStateToOrder } from './location-hooks'
 
 export {
@@ -24,6 +24,7 @@ export {
   OrderStateType,
   OrderType,
   OrderProvider,
+  randomGetPayMethod,
   useOrder,
   IStateToOrder
 }

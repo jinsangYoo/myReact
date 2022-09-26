@@ -11,6 +11,8 @@ import ProductDetailInMall from './ProductDetailInMall'
 import MallCart from './MallCart'
 import MallOrders from './MallOrders'
 import MallMakeOrder from './MallMakeOrder'
+import MallOrderDone from './MallOrderDone'
+import MallOrderList from './MallOrderList'
 
 import EtcMain from './EtcMain'
 import EtcGrid from './EtcGrid'
@@ -27,6 +29,8 @@ export {
   MallCart,
   MallOrders,
   MallMakeOrder,
+  MallOrderDone,
+  MallOrderList,
   EtcMain,
   EtcGrid
 }

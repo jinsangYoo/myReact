@@ -14,6 +14,7 @@ export type OrderStateType =
   | 'None'
 
 export type OrderType = {
+  ordererName: string
   orderState: OrderStateType
   orderNumber: string
   payMethodName: string
@@ -41,7 +42,7 @@ export interface IOrderContext {
   setFakeOrderInTempOrder: (cnt: number) => void
   setProductInTempOrder: (newProduct: ProductForType) => void
   setProductsInTempOrder: (newProducts: ProductForType[]) => void
-  setProductInTempOrderWithCalculateTotalPrice: (newProduct: ProductForType) => void
+  setProductInTempNewOrderWithCalculateTotalPrice: (newProduct: ProductForType) => void
   removeOrderInTempOrder: (product: ProductForType) => void
   printOrder: () => void
   updateOrderState: (order: OrderType, newState: OrderStateType) => void
@@ -53,6 +54,11 @@ export interface IOrderContext {
 
 function reducer(state: OrderType, action: IOrderAction) {
   switch (action.type) {
+    case 'setNewOrder':
+      state.orderState = 'MakeOrder'
+      state.orderNumber = faker.datatype.uuid()
+      state.payMethodName = randomGetPayMethod()
+      return { ...state, products: [...action.products] }
     case 'setInOrder':
       return { ...state, products: [...state.products, ...action.products] }
     case 'removeInOrder':
@@ -103,11 +109,11 @@ export function OrderProvider(props: any) {
       type: 'setInOrder',
       products: newProducts
     })
-  const setProductInTempOrderWithCalculateTotalPrice = (newProduct: ProductForType) => {
+  const setProductInTempNewOrderWithCalculateTotalPrice = (newProduct: ProductForType) => {
     const productPrice = isNaN(Number(newProduct.productPrice)) ? 1 : Number(newProduct.productPrice)
     newProduct.totalPrice = newProduct.quantity * productPrice
     dispatch({
-      type: 'setInOrder',
+      type: 'setNewOrder',
       products: [newProduct]
     })
   }
@@ -149,7 +155,7 @@ export function OrderProvider(props: any) {
         setFakeOrderInTempOrder,
         setProductInTempOrder,
         setProductsInTempOrder,
-        setProductInTempOrderWithCalculateTotalPrice,
+        setProductInTempNewOrderWithCalculateTotalPrice,
         removeOrderInTempOrder,
         printOrder,
         orders,
@@ -183,6 +189,7 @@ function reducerForOrders(state: OrderType[], action: IOrdersAction) {
 
 function resetOrder(): OrderType {
   return {
+    ordererName: '',
     orderState: 'None',
     orderNumber: '',
     payMethodName: '',
@@ -192,9 +199,20 @@ function resetOrder(): OrderType {
 
 function randomGetOrderState(value: number): OrderStateType {
   if (value < 10) return 'RequestForDelivery'
-  else if (value < 20) return 'DoneForDelivery'
-  else if (value < 30) return 'Cancel'
-  else if (value < 40) return 'RequestForCancel'
-  else if (value < 50) return 'CancelBySeller'
+  else if (value < 20) return 'RequestForDelivery'
+  else if (value < 30) return 'DoneForDelivery'
+  else if (value < 40) return 'Cancel'
+  else if (value < 50) return 'RequestForCancel'
+  else if (value < 60) return 'CancelBySeller'
   else return 'Done'
+}
+
+export function randomGetPayMethod(): string {
+  const value = getRandomIntInclusive(1, 60)
+  if (value < 10) return 'cash'
+  else if (value < 20) return 'kakao pay'
+  else if (value < 30) return 'naver pay'
+  else if (value < 40) return 'credit card'
+  else if (value < 50) return 'smile pay'
+  else return 'payco'
 }

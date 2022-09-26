@@ -27,7 +27,7 @@ export default function ProductDetailInMall() {
   )
   const [productOption, setProductOption] = useState('')
   const { addProductWithCalculateTotalPrice, printProducts } = useCart()
-  const { setProductInTempOrderWithCalculateTotalPrice } = useOrder()
+  const { setProductInTempNewOrderWithCalculateTotalPrice } = useOrder()
 
   const handleAddCart = (product: ProductForType) => {
     if (!product) return
@@ -41,7 +41,7 @@ export default function ProductDetailInMall() {
     console.log(`handleGoToOrder::productQuantity: ${productQuantity}`)
     console.log(`handleGoToOrder::productOption: ${productOption}`)
     console.log(`handleGoToOrder::product: ${JSON.stringify(product, null, 2)}`)
-    setProductInTempOrderWithCalculateTotalPrice({
+    setProductInTempNewOrderWithCalculateTotalPrice({
       ...product,
       quantity: productQuantity,
       optionCode: productOption

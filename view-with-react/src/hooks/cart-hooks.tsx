@@ -11,6 +11,7 @@ export interface ICartContext {
   removeProduct: (product: ProductForType) => void
   updateProductInCart: (product: ProductForType) => void
   printProducts: () => void
+  removeAll: () => void
 }
 
 const CartContext = React.createContext({} as ICartContext)
@@ -33,9 +34,11 @@ function reducer(state: ProductForType[], action: ICartAction) {
     }
     case 'remove':
       return state.filter((product) => product.productId !== action.product.productId)
+    case 'removeAll':
+      return []
     case 'update':
       return state.map((product) =>
-        product.productId === action.product.productId ? action.product : product
+        product.productId === action.product?.productId ? action.product : product
       )
 
     default:
@@ -98,6 +101,11 @@ export function CartProvider(props: any) {
     console.log(`products.length: ${products.length}`)
     products.map((product) => console.log(JSON.stringify(product, null, 2)))
   }
+  const removeAll = () =>
+    dispatch({
+      type: 'removeAll',
+      product: {} as ProductForType
+    })
 
   return (
     <CartContext.Provider
@@ -108,7 +116,8 @@ export function CartProvider(props: any) {
         addProductWithCalculateTotalPrice,
         removeProduct,
         updateProductInCart,
-        printProducts
+        printProducts,
+        removeAll
       }}
     >
       {props.children}

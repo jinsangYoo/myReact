@@ -7,16 +7,7 @@ import Typography from '@mui/material/Typography'
 import { Link, useLocation } from 'react-router-dom'
 
 import { faker } from '@faker-js/faker'
-import { getRandomIntInclusive } from '../utils'
-import {
-  ProductForType,
-  useProduct,
-  useCart,
-  CustomizedHook,
-  useOrder,
-  IStateToOrder,
-  OrderType
-} from '../hooks'
+import { ProductForType, useCart, useOrder, IStateToOrder, OrderType, randomGetPayMethod } from '../hooks'
 
 const Image = styled('img')({
   width: '100%',
@@ -31,20 +22,29 @@ interface StateTypeForLocationOrder {
 
 export default function MallMakeOrder() {
   const { state } = useLocation() as StateTypeForLocationOrder
-  console.log(`from: ${state.myState.from}`)
+  const { addOrder } = useOrder()
+  const [orderName, setOrderName] = useState(faker.name.firstName())
 
   var newOrder: OrderType = {
+    ordererName: '',
     orderState: 'MakeOrder',
     orderNumber: '',
-    payMethodName: '',
+    payMethodName: randomGetPayMethod(),
     products: []
   }
   if (state.myState.from === 'cart') {
     const { products } = useCart()
+    newOrder.orderNumber = faker.datatype.uuid()
     newOrder.products = products
   } else if (state.myState.from === 'detail') {
     const { order } = useOrder()
     newOrder = order
+  }
+
+  const handlePay = () => {
+    console.log(`handlePay::orderName: ${orderName}`)
+    newOrder.ordererName = orderName
+    addOrder(newOrder)
   }
 
   return (
@@ -56,8 +56,28 @@ export default function MallMakeOrder() {
           newOrder.products.map((product, index) => <Product key={index} index={index} product={product} />)
         )}
       </div>
-      <div style={{ width: '80%', border: '3px solid #eee' }}>
-        <h1>주문 정보</h1>
+      <h1>주문자 정보</h1>
+      <div style={{ width: '80%', border: '3px solid #eee', display: 'flex' }}>
+        <div style={{ marginLeft: '20px' }}>
+          이름:
+          <TextField
+            sx={{ ml: 1 }}
+            required
+            id="filled-required"
+            label="Required"
+            defaultValue={orderName}
+            variant="filled"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOrderName(e.currentTarget.value)}
+          />
+        </div>
+        <div style={{ marginLeft: '20px' }}>
+          결제:
+          <Link to="/mall/orderDone" style={{ textDecoration: 'none' }}>
+            <Button variant="outlined" sx={{ ml: 1 }} onClick={handlePay}>
+              결제
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   )
@@ -104,3 +124,19 @@ function Product(props: { index: number; product: ProductForType }) {
     </div>
   )
 }
+
+interface CountryType {
+  code: string
+  label: string
+  phone: string
+  suggested?: boolean
+}
+
+const countries: readonly CountryType[] = [
+  {
+    code: 'KP',
+    label: "Korea, Democratic People's Republic of",
+    phone: '850'
+  },
+  { code: 'KR', label: 'Korea, Republic of', phone: '82' }
+]
