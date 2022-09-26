@@ -13,7 +13,7 @@ const Image = styled('img')({
 
 export default function MallCart() {
   const { updateProduct } = useProduct()
-  const { products, removeAll, removeProduct } = useCart()
+  const { products, removeAllInCart, removeProduct } = useCart()
   const handleUpdateCart = (product: ProductForType) => {
     if (!product) return
     console.log(`handleUpdateCart::product: ${JSON.stringify(product, null, 2)}`)
@@ -35,7 +35,7 @@ export default function MallCart() {
     console.log(`handleGoToOrder::products: ${products.map((product) => JSON.stringify(product, null, 2))}`)
   }
   const handleRemoveAllInCart = () => {
-    removeAll()
+    removeAllInCart()
   }
 
   return (

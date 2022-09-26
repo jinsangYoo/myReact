@@ -24,6 +24,7 @@ export default function MallMakeOrder() {
   const { state } = useLocation() as StateTypeForLocationOrder
   const { addOrder } = useOrder()
   const [orderName, setOrderName] = useState(faker.name.firstName())
+  const { removeAllInCart } = useCart()
 
   var newOrder: OrderType = {
     ordererName: '',
@@ -42,6 +43,9 @@ export default function MallMakeOrder() {
   }
 
   const handlePay = () => {
+    if (state.myState.from === 'cart') {
+      removeAllInCart()
+    }
     console.log(`handlePay::orderName: ${orderName}`)
     newOrder.ordererName = orderName
     addOrder(newOrder)

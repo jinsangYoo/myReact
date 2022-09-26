@@ -11,7 +11,7 @@ export interface ICartContext {
   removeProduct: (product: ProductForType) => void
   updateProductInCart: (product: ProductForType) => void
   printProducts: () => void
-  removeAll: () => void
+  removeAllInCart: () => void
 }
 
 const CartContext = React.createContext({} as ICartContext)
@@ -101,7 +101,7 @@ export function CartProvider(props: any) {
     console.log(`products.length: ${products.length}`)
     products.map((product) => console.log(JSON.stringify(product, null, 2)))
   }
-  const removeAll = () =>
+  const removeAllInCart = () =>
     dispatch({
       type: 'removeAll',
       product: {} as ProductForType
@@ -117,7 +117,7 @@ export function CartProvider(props: any) {
         removeProduct,
         updateProductInCart,
         printProducts,
-        removeAll
+        removeAllInCart
       }}
     >
       {props.children}
