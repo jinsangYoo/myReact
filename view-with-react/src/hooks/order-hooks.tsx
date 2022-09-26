@@ -4,6 +4,7 @@ import { ProductForType } from './product-hooks'
 import { getRandomIntInclusive } from '../utils'
 
 export type OrderStateType =
+  | 'MakeOrder'
   | 'RequestForDelivery'
   | 'DoneForDelivery'
   | 'Cancel'
@@ -16,7 +17,7 @@ export type OrderType = {
   orderState: OrderStateType
   orderNumber: string
   payMethodName: string
-  products?: ProductForType[]
+  products: ProductForType[]
 }
 
 const OrderContext = React.createContext({} as IOrderContext)
@@ -24,7 +25,7 @@ export const useOrder = () => useContext(OrderContext)
 
 interface IOrderAction {
   type: string
-  product: ProductForType
+  products: ProductForType[]
 }
 
 interface IOrdersAction {
@@ -39,19 +40,21 @@ export interface IOrderContext {
   order: OrderType
   setFakeOrderInTempOrder: (cnt: number) => void
   setProductInTempOrder: (newProduct: ProductForType) => void
+  setProductsInTempOrder: (newProducts: ProductForType[]) => void
   setProductInTempOrderWithCalculateTotalPrice: (newProduct: ProductForType) => void
   removeOrderInTempOrder: (product: ProductForType) => void
   printOrder: () => void
+  updateOrderState: (order: OrderType, newState: OrderStateType) => void
+
   orders: OrderType[]
   addOrder: (newOrder: OrderType) => void
   removeOrder: (order: OrderType) => void
-  updateOrderState: (order: OrderType, newState: OrderStateType) => void
 }
 
 function reducer(state: OrderType, action: IOrderAction) {
   switch (action.type) {
     case 'setInOrder':
-      return { ...state, ...action.product }
+      return { ...state, products: [...state.products, ...action.products] }
     case 'removeInOrder':
       return resetOrder()
 
@@ -69,48 +72,62 @@ export function OrderProvider(props: any) {
       const productPrice = Number(faker.commerce.price(1000, 2000, 0))
       dispatch({
         type: 'setInOrder',
-        product: {
-          productId: faker.datatype.uuid(),
-          productDescription: faker.commerce.productDescription(),
-          productImg: faker.image.business(450, 200, true),
-          productName: faker.commerce.productName(),
-          productCategory: faker.commerce.productAdjective(),
-          productPrice: productPrice.toString(),
-          sellerAvatar: faker.image.people(200, 200, true),
-          sellerName: faker.internet.userName(),
-          sellerEmail: faker.internet.email(),
-          company: faker.company.name(),
-          companyDomain: faker.internet.url(),
-          registeredAt: faker.date.past().toLocaleDateString(),
-          quantity: quantity,
-          optionCode: getRandomIntInclusive(1, 10).toString(),
-          totalPrice: quantity * productPrice
-        }
+        products: [
+          {
+            productId: faker.datatype.uuid(),
+            productDescription: faker.commerce.productDescription(),
+            productImg: faker.image.business(450, 200, true),
+            productName: faker.commerce.productName(),
+            productCategory: faker.commerce.productAdjective(),
+            productPrice: productPrice.toString(),
+            sellerAvatar: faker.image.people(200, 200, true),
+            sellerName: faker.internet.userName(),
+            sellerEmail: faker.internet.email(),
+            company: faker.company.name(),
+            companyDomain: faker.internet.url(),
+            registeredAt: faker.date.past().toLocaleDateString(),
+            quantity: quantity,
+            optionCode: getRandomIntInclusive(1, 10).toString(),
+            totalPrice: quantity * productPrice
+          }
+        ]
       })
     })
   const setProductInTempOrder = (newProduct: ProductForType) =>
     dispatch({
       type: 'setInOrder',
-      product: newProduct
+      products: [newProduct]
+    })
+  const setProductsInTempOrder = (newProducts: ProductForType[]) =>
+    dispatch({
+      type: 'setInOrder',
+      products: newProducts
     })
   const setProductInTempOrderWithCalculateTotalPrice = (newProduct: ProductForType) => {
     const productPrice = isNaN(Number(newProduct.productPrice)) ? 1 : Number(newProduct.productPrice)
     newProduct.totalPrice = newProduct.quantity * productPrice
     dispatch({
       type: 'setInOrder',
-      product: newProduct
+      products: [newProduct]
     })
   }
   const removeOrderInTempOrder = (product: ProductForType) =>
     dispatch({
       type: 'removeInOrder',
-      product: product
+      products: [product]
     })
   const printOrder = () => {
     console.log(`orderState: ${order.orderState}`)
     console.log(`orderNumber: ${order.orderNumber}`)
     console.log(`payMethodName: ${order.payMethodName}`)
     order.products?.map((product) => console.log(JSON.stringify(product, null, 2)))
+  }
+  const updateOrderState = (order: OrderType, newState: OrderStateType) => {
+    order.orderState = newState
+    dispatchForOrders({
+      type: 'updateOrder',
+      order: order
+    })
   }
 
   const [orders, dispatchForOrders] = useReducer(reducerForOrders, initialOrderListState)
@@ -124,13 +141,6 @@ export function OrderProvider(props: any) {
       type: 'removeOrder',
       order: order
     })
-  const updateOrderState = (order: OrderType, newState: OrderStateType) => {
-    order.orderState = newState
-    dispatchForOrders({
-      type: 'updateOrder',
-      order: order
-    })
-  }
 
   return (
     <OrderContext.Provider
@@ -138,6 +148,7 @@ export function OrderProvider(props: any) {
         order,
         setFakeOrderInTempOrder,
         setProductInTempOrder,
+        setProductsInTempOrder,
         setProductInTempOrderWithCalculateTotalPrice,
         removeOrderInTempOrder,
         printOrder,

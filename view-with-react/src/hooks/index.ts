@@ -7,6 +7,7 @@ import { CartProvider, useCart } from './cart-hooks'
 import CustomizedHook from './customizedHookForComboBox'
 import type { OrderStateType, OrderType } from './order-hooks'
 import { OrderProvider, useOrder } from './order-hooks'
+import type { IStateToOrder } from './location-hooks'
 
 export {
   MenuProvider,
@@ -23,5 +24,6 @@ export {
   OrderStateType,
   OrderType,
   OrderProvider,
-  useOrder
+  useOrder,
+  IStateToOrder
 }

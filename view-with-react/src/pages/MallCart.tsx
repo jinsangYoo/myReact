@@ -2,7 +2,7 @@ import React, { useState, useReducer, useEffect, useCallback } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useCart, ProductForType, useProduct } from '../hooks'
+import { useCart, ProductForType, useProduct, IStateToOrder } from '../hooks'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
 
@@ -107,9 +107,15 @@ function Product(props: {
         <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressRemoveCart(props.product)}>
           장바구니 제거
         </Button>
-        <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
-          주문
-        </Button>
+        <Link
+          to="/mall/makeorder"
+          state={{ myState: { from: 'cart' } as IStateToOrder }}
+          style={{ textDecoration: 'none' }}
+        >
+          <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
+            주문
+          </Button>
+        </Link>
       </Box>
     </div>
   )

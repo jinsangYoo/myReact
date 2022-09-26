@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import { ProductForType, useProduct, useCart, CustomizedHook, useOrder } from '../hooks'
+import { ProductForType, useProduct, useCart, CustomizedHook, useOrder, IStateToOrder } from '../hooks'
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { getRandomIntInclusive } from '../utils'
@@ -138,7 +138,11 @@ function Product(props: {
           <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressAddCart(props.product)}>
             장바구니 추가
           </Button>
-          <Link to="/mall/makeorder" style={{ textDecoration: 'none' }}>
+          <Link
+            to="/mall/makeorder"
+            state={{ myState: { from: 'detail' } as IStateToOrder }}
+            style={{ textDecoration: 'none' }}
+          >
             <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
               주문서 작성
             </Button>
