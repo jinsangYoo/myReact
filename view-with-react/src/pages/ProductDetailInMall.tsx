@@ -8,6 +8,7 @@ import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { getRandomIntInclusive } from '../utils'
 import { Link, useNavigate } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 
 const Image = styled('img')({
   width: '100%',
@@ -20,6 +21,7 @@ export interface SampleType {
 }
 
 export default function ProductDetailInMall() {
+  const { enqueueSnackbar } = useSnackbar()
   const _nav = useNavigate()
   const { product } = useProduct()
   const optionIndex = product.optionCode ? Number(product.optionCode) - 1 : getRandomIntInclusive(0, 29)
@@ -32,13 +34,13 @@ export default function ProductDetailInMall() {
 
   const handleRandom5AddCart = () => {
     addFakeProductInCart(5)
-    alert('장바구니에 추가 했습니다.')
+    enqueueSnackbar('장바구니에 추가 했습니다.', { variant: 'success' })
   }
 
   const handleAddCart = (product: ProductForType) => {
     if (!product) return
     addProductWithCalculateTotalPrice({ ...product, quantity: productQuantity, optionCode: productOption })
-    alert('장바구니에 추가 했습니다.')
+    enqueueSnackbar('장바구니에 추가 했습니다.', { variant: 'success' })
   }
 
   const handleGoToOrder = (product: ProductForType) => {

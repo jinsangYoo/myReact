@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import { useCart, ProductForType, useProduct, IStateToOrder } from '../hooks'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
+import { VariantType, useSnackbar } from 'notistack'
 
 const Image = styled('img')({
   width: '100%',
@@ -12,6 +13,7 @@ const Image = styled('img')({
 })
 
 export default function MallCart() {
+  const { enqueueSnackbar } = useSnackbar()
   const { updateProduct } = useProduct()
   const { products, removeAllInCart, removeProduct, addFakeProductInCart } = useCart()
   const handleUpdateCart = (product: ProductForType) => {
@@ -20,7 +22,7 @@ export default function MallCart() {
   const handleRemoveCart = (product: ProductForType) => {
     if (!product) return
     removeProduct(product)
-    alert('제품을 제거 했습니다.')
+    enqueueSnackbar('제품을 제거 했습니다.', { variant: 'success' })
   }
   const handleGoToProductDetail = (product: ProductForType) => {
     if (!product) return
@@ -34,10 +36,14 @@ export default function MallCart() {
   }
   const handleRemoveAllInCart = () => {
     removeAllInCart()
-    alert('제품을 제거 했습니다.')
+    handleClickVariant('제품을 제거 했습니다.', 'success')
   }
   const handleRandom5AddCart = () => {
     addFakeProductInCart(5)
+  }
+  const handleClickVariant = (message: string, variant: VariantType) => () => {
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(message, { variant })
   }
 
   return (
