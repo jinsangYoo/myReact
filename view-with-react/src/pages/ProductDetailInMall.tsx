@@ -7,7 +7,7 @@ import { ProductForType, useProduct, useCart, CustomizedHook, useOrder, IStateTo
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { getRandomIntInclusive } from '../utils'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Image = styled('img')({
   width: '100%',
@@ -20,6 +20,7 @@ export interface SampleType {
 }
 
 export default function ProductDetailInMall() {
+  const _nav = useNavigate()
   const { product } = useProduct()
   const optionIndex = product.optionCode ? Number(product.optionCode) - 1 : getRandomIntInclusive(0, 29)
   const [productQuantity, setProductQuantity] = useState(
@@ -57,6 +58,12 @@ export default function ProductDetailInMall() {
     const value = isNaN(Number(e.currentTarget.value)) ? 1 : Number(e.currentTarget.value)
     setProductQuantity(value)
   }
+
+  useEffect(() => {
+    if (product.productId.length === 0) {
+      _nav('/mall/main')
+    }
+  }, [])
 
   return (
     <>
