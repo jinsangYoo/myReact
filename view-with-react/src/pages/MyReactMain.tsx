@@ -1,5 +1,5 @@
 import React from 'react'
 
 export default function MyReactMain() {
-  return <p>MyReactMain</p>
+  return <p>MyReact 메인 입니다.</p>
 }

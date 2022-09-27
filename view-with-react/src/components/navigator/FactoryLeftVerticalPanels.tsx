@@ -1,39 +1,36 @@
 import React from 'react'
-import { useParams, Outlet } from 'react-router-dom'
+import { Button } from '@mui/material'
+import { useParams, Link } from 'react-router-dom'
 
 import { useMenus } from '../../hooks'
-import FactoryContentPanels from '../menu/FactoryContentPanels'
 
 export default function FactoryLeftVerticalPanels() {
-  const { menus, getSelectMainMenuId, getSelectSubMenuId, updateSelectSubMenuId } = useMenus()
-  console.log(`FactoryLeftVerticalPanels::mainMenu: >>${getSelectMainMenuId()}<<`)
-  console.log(`FactoryLeftVerticalPanels::subMenu: >>${getSelectSubMenuId()}<<`)
+  const { menus, getDefaultMainMenuId, getDefaultSubMenuId } = useMenus()
 
   var { mainMenu, subMenu } = useParams()
-  console.log(`1. FactoryLeftVerticalPanels::mainMenu: >>${mainMenu}<<, subMenu: >>${subMenu}<<`)
-  if (!mainMenu) mainMenu = getSelectMainMenuId()
-  if (!subMenu) subMenu = getSelectSubMenuId()
+  if (!mainMenu) mainMenu = getDefaultMainMenuId()
+  if (!subMenu) subMenu = getDefaultSubMenuId()
 
   const mainMenuObj = menus.find((menu) => menu.id === mainMenu)
   const subMenus = mainMenuObj?.subMenu
 
-  const handleMainMenuChange = (newValue: string) => {
-    updateSelectSubMenuId(newValue)
-  }
+  const handleMainMenuChange = (newValue: string) => {}
 
   return (
-    <>
-      <div>
-        {subMenus &&
-          subMenus.map((menu, index) => (
-            <ul key={index}>
-              <button onClick={() => handleMainMenuChange(menu.path)}>{menu.name}</button>
-            </ul>
-          ))}
-      </div>
-
-      {<FactoryContentPanels />}
-      <Outlet />
-    </>
+    <div>
+      {subMenus &&
+        subMenus.map((menu, index) => (
+          <ul key={index} style={{ display: 'inline' }}>
+            <Button
+              variant="outlined"
+              onClick={() => handleMainMenuChange(menu.path)}
+              component={Link}
+              to={`/${mainMenu}/${menu.path}`}
+            >
+              {menu.name}
+            </Button>
+          </ul>
+        ))}
+    </div>
   )
 }

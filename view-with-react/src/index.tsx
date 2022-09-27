@@ -3,14 +3,23 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { MenuProvider } from './hooks'
+import { MenuProvider, ProductProvider, CartProvider, OrderProvider } from './hooks'
+import { SnackbarProvider } from 'notistack'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <MenuProvider>
-      <App />
-    </MenuProvider>
+    <SnackbarProvider>
+      <MenuProvider>
+        <OrderProvider>
+          <CartProvider>
+            <ProductProvider>
+              <App />
+            </ProductProvider>
+          </CartProvider>
+        </OrderProvider>
+      </MenuProvider>
+    </SnackbarProvider>
   </React.StrictMode>
 )
 

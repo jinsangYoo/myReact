@@ -6,8 +6,13 @@ import MyReactMain from './MyReactMain'
 import MyReactOpenSourceLicense from './MyReactOpenSourceLicense'
 
 import MallMain from './MallMain'
+import MallInRouter from './MallInRouter'
+import ProductDetailInMall from './ProductDetailInMall'
 import MallCart from './MallCart'
-import MallOrder from './MallOrder'
+import MallOrders from './MallOrders'
+import MallMakeOrder from './MallMakeOrder'
+import MallOrderDone from './MallOrderDone'
+import MallOrderList from './MallOrderList'
 
 import EtcMain from './EtcMain'
 import EtcGrid from './EtcGrid'
@@ -19,8 +24,13 @@ export {
   MyReactMain,
   MyReactOpenSourceLicense,
   MallMain,
+  MallInRouter,
+  ProductDetailInMall,
   MallCart,
-  MallOrder,
+  MallOrders,
+  MallMakeOrder,
+  MallOrderDone,
+  MallOrderList,
   EtcMain,
   EtcGrid
 }
