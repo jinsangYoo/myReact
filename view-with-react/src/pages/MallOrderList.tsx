@@ -7,10 +7,13 @@ import Typography from '@mui/material/Typography'
 import { useOrder, OrderType } from '../hooks'
 
 export default function MallOrderList() {
-  const { orders, removeOrder } = useOrder()
+  const { orders, removeOrder, removeAllInOrders } = useOrder()
   const handleRemoveOrder = (order: OrderType) => {
     console.log(`삭제 대상 order: ${JSON.stringify(order, null, 2)}`)
     removeOrder(order)
+  }
+  const handleRemoveAllInOrders = () => {
+    removeAllInOrders()
   }
 
   return (
@@ -20,9 +23,21 @@ export default function MallOrderList() {
         {orders.length < 1 ? (
           <p>주문 내역이 없습니다.</p>
         ) : (
-          orders.map((order, index) => (
-            <Order key={index} index={index} order={order} onPressRemoveOrder={handleRemoveOrder} />
-          ))
+          <>
+            <div>
+              <Box
+                sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}
+              >
+                <Typography sx={{ mr: 2, color: 'red' }}>주문 수: {orders.length}</Typography>
+                <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRemoveAllInOrders()}>
+                  전체 삭제
+                </Button>
+              </Box>
+              {orders.map((order, index) => (
+                <Order key={index} index={index} order={order} onPressRemoveOrder={handleRemoveOrder} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>

@@ -50,6 +50,7 @@ export interface IOrderContext {
   orders: OrderType[]
   addOrder: (newOrder: OrderType) => void
   removeOrder: (order: OrderType) => void
+  removeAllInOrders: () => void
 }
 
 function reducer(state: OrderType, action: IOrderAction) {
@@ -147,6 +148,11 @@ export function OrderProvider(props: any) {
       type: 'removeOrder',
       order: order
     })
+  const removeAllInOrders = () =>
+    dispatchForOrders({
+      type: 'removeAllOrders',
+      order: {} as OrderType
+    })
 
   return (
     <OrderContext.Provider
@@ -161,6 +167,7 @@ export function OrderProvider(props: any) {
         orders,
         addOrder,
         removeOrder,
+        removeAllInOrders,
         updateOrderState
       }}
     >
@@ -179,6 +186,8 @@ function reducerForOrders(state: OrderType[], action: IOrdersAction) {
     }
     case 'removeOrder':
       return state.filter((order) => order.orderNumber !== action.order.orderNumber)
+    case 'removeAllOrders':
+      return [] as OrderType[]
     case 'updateOrder':
       return state.map((order) => (order.orderNumber === action.order.orderNumber ? action.order : order))
 
