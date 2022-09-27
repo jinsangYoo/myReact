@@ -19,7 +19,7 @@ export default function MallOrderList() {
   return (
     <div>
       <h2>주문 내역</h2>
-      <div style={{ width: '80%', border: '3px solid #eee' }}>
+      <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
         {orders.length < 1 ? (
           <p>주문 내역이 없습니다.</p>
         ) : (

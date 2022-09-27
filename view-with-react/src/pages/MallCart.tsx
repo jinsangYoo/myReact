@@ -43,7 +43,7 @@ export default function MallCart() {
   return (
     <>
       <h2>장바구니</h2>
-      <div style={{ width: '80%', border: '3px solid #eee' }}>
+      <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
         {products.length < 1 ? (
           <>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>

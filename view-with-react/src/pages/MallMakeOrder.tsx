@@ -92,7 +92,7 @@ export default function MallMakeOrder() {
         )}
       </div>
       <h2>결제 정보</h2>
-      <div style={{ width: '80%', border: '3px solid #eee', display: 'flex' }}>
+      <div style={{ width: '80%', border: '3px solid #eee', display: 'flex', padding: 10 }}>
         <div style={{ marginLeft: '20px' }}>
           전체 주문 가격:{' '}
           {newOrder.products
@@ -113,7 +113,7 @@ export default function MallMakeOrder() {
         </div>
       </div>
       <h2>주문자 정보</h2>
-      <div style={{ width: '80%', border: '3px solid #eee', display: 'flex' }}>
+      <div style={{ width: '80%', border: '3px solid #eee', display: 'flex', padding: 10 }}>
         <div style={{ marginLeft: '20px' }}>
           이름:
           <TextField
