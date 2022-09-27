@@ -22,7 +22,7 @@ export default function MallCart() {
   const handleRemoveCart = (product: ProductForType) => {
     if (!product) return
     removeProduct(product)
-    enqueueSnackbar('제품을 제거 했습니다.', { variant: 'success' })
+    enqueueSnackbar('장바구니 제품을 제거 했습니다.', { variant: 'success' })
   }
   const handleGoToProductDetail = (product: ProductForType) => {
     if (!product) return
@@ -36,7 +36,7 @@ export default function MallCart() {
   }
   const handleRemoveAllInCart = () => {
     removeAllInCart()
-    handleClickVariant('제품을 제거 했습니다.', 'success')
+    handleClickVariant('전체 장바구니 제품을 제거 했습니다.', 'success')
   }
   const handleRandom5AddCart = () => {
     addFakeProductInCart(5)

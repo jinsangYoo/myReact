@@ -5,15 +5,18 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
 import { useOrder, OrderType } from '../hooks'
+import { useSnackbar } from 'notistack'
 
 export default function MallOrderList() {
+  const { enqueueSnackbar } = useSnackbar()
   const { orders, removeOrder, removeAllInOrders } = useOrder()
   const handleRemoveOrder = (order: OrderType) => {
-    console.log(`삭제 대상 order: ${JSON.stringify(order, null, 2)}`)
     removeOrder(order)
+    enqueueSnackbar('주문 내역을 삭제 했습니다.', { variant: 'success' })
   }
   const handleRemoveAllInOrders = () => {
     removeAllInOrders()
+    enqueueSnackbar('전체 주문 내역을 삭제 했습니다.', { variant: 'success' })
   }
 
   return (
