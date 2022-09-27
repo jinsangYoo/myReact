@@ -129,7 +129,7 @@ function Product(props: {
           장바구니 제거
         </Button>
         <Link
-          to="/mall/makeorder"
+          {...{ to: `/mall/makeorder/${props.product.productId}` }}
           state={{ myState: { from: 'cart', prodcutId: props.product.productId } as IStateToOrder }}
           style={{ textDecoration: 'none' }}
         >

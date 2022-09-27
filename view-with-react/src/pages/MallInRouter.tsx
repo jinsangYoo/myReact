@@ -8,6 +8,7 @@ export default function MallInRouter() {
     <div>
       <Routes>
         <Route path="orderDone" element={<MallOrderDone />} />
+        <Route path="makeorder/:productId" element={<MallMakeOrder />} />
         <Route path="makeorder" element={<MallMakeOrder />} />
         <Route path="detail" element={<ProductDetailInMall />} />
         <Route path="orderList" element={<MallOrderList />} />

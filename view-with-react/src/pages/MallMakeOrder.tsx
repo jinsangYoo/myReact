@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 
 import { faker } from '@faker-js/faker'
 import { ProductForType, useCart, useOrder, IStateToOrder, OrderType, randomGetPayMethod } from '../hooks'
@@ -21,10 +21,11 @@ interface StateTypeForLocationOrder {
 }
 
 export default function MallMakeOrder() {
+  let { productId } = useParams()
   const { state } = useLocation() as StateTypeForLocationOrder
   const { addOrder } = useOrder()
   const [orderName, setOrderName] = useState(faker.name.firstName())
-  const { removeAllInCart } = useCart()
+  const { removeAllInCart, removeProduct } = useCart()
 
   var newOrder: OrderType = {
     ordererName: '',
@@ -36,8 +37,8 @@ export default function MallMakeOrder() {
   if (state.myState.from === 'cart') {
     const { products } = useCart()
     newOrder.orderNumber = faker.datatype.uuid()
-    if (state.myState.productId) {
-      newOrder.products = products.filter((product) => product.productId === state.myState.productId)
+    if (productId) {
+      newOrder.products = products.filter((product) => product.productId === productId)
     } else {
       newOrder.products = products
     }
@@ -48,7 +49,12 @@ export default function MallMakeOrder() {
 
   const handlePay = () => {
     if (state.myState.from === 'cart') {
-      removeAllInCart()
+      if (productId) {
+        const willRemoveProduct = newOrder.products.find((product) => product.productId === productId)
+        willRemoveProduct && removeProduct(willRemoveProduct)
+      } else {
+        removeAllInCart()
+      }
     }
     console.log(`handlePay::orderName: ${orderName}`)
     newOrder.ordererName = orderName

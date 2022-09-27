@@ -31,7 +31,6 @@ export default function ProductDetailInMall() {
 
   const handleAddCart = (product: ProductForType) => {
     if (!product) return
-    console.log(`handleAddCart::product: ${JSON.stringify(product, null, 2)}`)
     addProductWithCalculateTotalPrice({ ...product, quantity: productQuantity, optionCode: productOption })
     printProducts()
   }
