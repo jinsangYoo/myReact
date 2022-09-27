@@ -7,7 +7,16 @@ import Typography from '@mui/material/Typography'
 import { Link, useLocation, useParams } from 'react-router-dom'
 
 import { faker } from '@faker-js/faker'
-import { ProductForType, useCart, useOrder, IStateToOrder, OrderType, randomGetPayMethod } from '../hooks'
+import {
+  ProductForType,
+  useCart,
+  useOrder,
+  IStateToOrder,
+  OrderType,
+  CustomizedHook,
+  useProduct
+} from '../hooks'
+import { getRandomIntInclusive } from '../utils'
 
 const Image = styled('img')({
   width: '100%',
@@ -21,17 +30,26 @@ interface StateTypeForLocationOrder {
 }
 
 export default function MallMakeOrder() {
-  let { productId } = useParams()
+  const { resetProduct } = useProduct()
+  const { productId } = useParams()
   const { state } = useLocation() as StateTypeForLocationOrder
   const { addOrder } = useOrder()
   const [orderName, setOrderName] = useState(faker.name.firstName())
   const { removeAllInCart, removeProduct } = useCart()
+  const [defaultPayMethodIndex] = useState(getRandomIntInclusive(0, 5))
+  const samplesPayMethods = React.useMemo(
+    () => ['cash', 'kakao pay', 'naver pay', 'credit card', 'smile pay', 'payco'],
+    []
+  )
+  useEffect(() => {
+    return () => resetProduct()
+  }, [])
 
   var newOrder: OrderType = {
     ordererName: '',
     orderState: 'MakeOrder',
     orderNumber: '',
-    payMethodName: randomGetPayMethod(),
+    payMethodName: samplesPayMethods[defaultPayMethodIndex],
     products: []
   }
   if (state.myState.from === 'cart') {
@@ -56,9 +74,12 @@ export default function MallMakeOrder() {
         removeAllInCart()
       }
     }
-    console.log(`handlePay::orderName: ${orderName}`)
     newOrder.ordererName = orderName
     addOrder(newOrder)
+  }
+
+  const handleSelectedOptions = (payMethod: string) => {
+    newOrder.payMethodName = payMethod
   }
 
   return (
@@ -70,7 +91,28 @@ export default function MallMakeOrder() {
           newOrder.products.map((product, index) => <Product key={index} index={index} product={product} />)
         )}
       </div>
-      <h1>주문자 정보</h1>
+      <h2>결제 정보</h2>
+      <div style={{ width: '80%', border: '3px solid #eee', display: 'flex' }}>
+        <div style={{ marginLeft: '20px' }}>
+          전체 주문 가격:{' '}
+          {newOrder.products
+            .reduce((preValue, product) => (product.totalPrice ?? 0) + preValue, 0)
+            .toLocaleString(navigator.language, {
+              minimumFractionDigits: 0
+            })}{' '}
+          원
+        </div>
+        <div style={{ marginLeft: '20px' }}>
+          <CustomizedHook
+            labelName="지불 방법 선택"
+            defaultValueIndex={defaultPayMethodIndex}
+            minWidth={200}
+            samples={samplesPayMethods}
+            onSelectedOptions={handleSelectedOptions}
+          />
+        </div>
+      </div>
+      <h2>주문자 정보</h2>
       <div style={{ width: '80%', border: '3px solid #eee', display: 'flex' }}>
         <div style={{ marginLeft: '20px' }}>
           이름:
@@ -98,7 +140,6 @@ export default function MallMakeOrder() {
 }
 
 function Product(props: { index: number; product: ProductForType }) {
-  console.log(`MallMakeOrder::product: ${JSON.stringify(props.product, null, 2)}`)
   return (
     <div style={{ borderBottom: '1px', borderBottomColor: '#eee', borderBottomStyle: 'solid' }}>
       <Box sx={{ display: 'flex', p: 1, m: 1, alignItems: 'center' }}>
@@ -109,7 +150,7 @@ function Product(props: { index: number; product: ProductForType }) {
       <Image sx={{ width: '30%' }} src={props.product.productImg} alt="" />
       <Box sx={{ width: '100%' }}>
         <Typography display="inline" variant="subtitle1" color="text.secondary">
-          제품 가격:{' '}
+          제품 단가:{' '}
           {Number(props.product.productPrice).toLocaleString(navigator.language, {
             minimumFractionDigits: 0
           })}{' '}
@@ -117,22 +158,23 @@ function Product(props: { index: number; product: ProductForType }) {
         </Typography>
 
         <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-          제품 수량:{' '}
+          수량:{' '}
           {Number(props.product.quantity).toLocaleString(navigator.language, {
             minimumFractionDigits: 0
           })}
         </Typography>
         {props.product.totalPrice && (
           <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-            전체 가격:{' '}
+            수량x가격:{' '}
             {props.product.totalPrice.toLocaleString(navigator.language, {
               minimumFractionDigits: 0
-            })}
+            })}{' '}
+            원
           </Typography>
         )}
         {props.product.optionCode && (
           <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-            옵션 코드: {props.product.optionCode}
+            옵션 코드명: {props.product.optionCode}
           </Typography>
         )}
       </Box>

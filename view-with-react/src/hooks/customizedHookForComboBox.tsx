@@ -6,49 +6,17 @@ interface CustomizedHookProps {
   labelName: string
   defaultValueIndex: number
   onSelectedOptions: (value: string) => void
+  minWidth?: number
+  samples: string[]
 }
 
 export default function CustomizedHook({
   labelName,
   onSelectedOptions,
+  samples,
+  minWidth = 100,
   defaultValueIndex = 0
 }: CustomizedHookProps) {
-  const samples = React.useMemo(
-    () => [
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-      '21',
-      '22',
-      '23',
-      '24',
-      '25',
-      '26',
-      '27',
-      '28',
-      '29',
-      '30'
-    ],
-    []
-  )
-
   const [value, setValue] = React.useState<string | null>(samples[defaultValueIndex])
   const [inputValue, setInputValue] = React.useState('')
 
@@ -70,7 +38,7 @@ export default function CustomizedHook({
         }}
         id="controllable-states-demo"
         options={samples}
-        sx={{ width: 100 }}
+        sx={{ width: minWidth }}
         renderInput={(params) => <TextField {...params} label={labelName} />}
       />
     </div>

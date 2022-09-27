@@ -1,15 +1,10 @@
 import React, { useState, useReducer, useEffect, useCallback, useMemo } from 'react'
-import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Link, useLocation } from 'react-router-dom'
-import Autocomplete from '@mui/material/Autocomplete'
 
-import { faker } from '@faker-js/faker'
-import { getRandomIntInclusive } from '../utils'
-import { ProductForType, useOrder, OrderType } from '../hooks'
+import { useOrder, OrderType } from '../hooks'
 
 export default function MallOrderList() {
   const { orders, removeOrder } = useOrder()
@@ -20,7 +15,7 @@ export default function MallOrderList() {
 
   return (
     <div>
-      <h1>주문 내역</h1>
+      <h2>주문 내역</h2>
       <div style={{ width: '80%', border: '3px solid #eee' }}>
         {orders.length < 1 ? (
           <p>주문 내역이 없습니다.</p>
@@ -37,36 +32,49 @@ export default function MallOrderList() {
 function Order(props: { index: number; order: OrderType; onPressRemoveOrder: (order: OrderType) => void }) {
   return (
     <div style={{ borderBottom: '1px', borderBottomColor: '#eee', borderBottomStyle: 'solid' }}>
-      <Box sx={{ display: 'flex', p: 1, m: 1, alignItems: 'center' }}>
-        <Typography>
-          {props.index + 1}. 주문자: {props.order.ordererName}
-        </Typography>
-      </Box>
-      <Box sx={{ width: '100%' }}>
-        <Typography display="inline" variant="subtitle1" color="text.secondary">
-          주문 상태: {props.order.orderState}원
-        </Typography>
+      <div>
+        <Box sx={{ display: 'flex', p: 1, m: 1, alignItems: 'center' }}>
+          <Typography sx={{ color: 'magenta' }}>
+            {props.index + 1}. 주문자: {props.order.ordererName}
+          </Typography>
+        </Box>
+        <Box sx={{ width: '100%' }}>
+          <Typography display="inline" variant="subtitle1" color="text.secondary">
+            주문 상태: {props.order.orderState}
+          </Typography>
 
-        {
           <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
             주문 번호: {props.order.orderNumber}
           </Typography>
-        }
-
-        {/* {props.product.totalPrice && (
-          <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-            전체 가격:{' '}
-            {props.product.totalPrice.toLocaleString(navigator.language, {
-              minimumFractionDigits: 0
-            })}
+        </Box>
+      </div>
+      <div>
+        <Box sx={{ width: '100%' }}>
+          <Typography display="inline" variant="subtitle1" color="text.secondary">
+            지불 방법: {props.order.payMethodName}
           </Typography>
-        )} */}
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
-        <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressRemoveOrder(props.order)}>
-          주문 제거
-        </Button>
-      </Box>
+
+          <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
+            주문 가격:{' '}
+            {props.order.products
+              .reduce((preValue, product) => (product.totalPrice ?? 0) + preValue, 0)
+              .toLocaleString(navigator.language, {
+                minimumFractionDigits: 0
+              })}{' '}
+            원
+          </Typography>
+        </Box>
+      </div>
+      <div>
+        <Box sx={{ width: '100%' }}></Box>
+      </div>
+      <div>
+        <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
+          <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressRemoveOrder(props.order)}>
+            주문 제거
+          </Button>
+        </Box>
+      </div>
     </div>
   )
 }

@@ -24,6 +24,7 @@ export interface IProductContext {
   product: ProductForType
   newFakeProduct: () => ProductForType
   updateProduct: (newProduct: ProductForType) => void
+  resetProduct: () => void
 }
 
 const ProductContext = React.createContext({} as IProductContext)
@@ -69,13 +70,30 @@ export function ProductProvider(props: any) {
   }
   const updateProduct = (newProduct: ProductForType) =>
     setProduct(product ? { ...product, ...newProduct } : { ...newProduct })
+  const resetProduct = () =>
+    setProduct({
+      productId: '',
+      productDescription: '',
+      productImg: '',
+      productName: '',
+      productCategory: '',
+      productPrice: '',
+      sellerAvatar: '',
+      sellerName: '',
+      sellerEmail: '',
+      company: '',
+      companyDomain: '',
+      registeredAt: '',
+      quantity: 0
+    })
 
   return (
     <ProductContext.Provider
       value={{
         product,
         newFakeProduct,
-        updateProduct
+        updateProduct,
+        resetProduct
       }}
     >
       {props.children}

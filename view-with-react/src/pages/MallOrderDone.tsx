@@ -27,7 +27,7 @@ export default function MallOrderDone() {
 
   return (
     <div>
-      <h1>주문 완료</h1>
+      <h2>주문 완료</h2>
       <div style={{ marginLeft: '20px' }}>
         <Link to="/mall/orderList" style={{ textDecoration: 'none' }}>
           <Button variant="outlined" sx={{ ml: 1 }} onClick={handlePay}>

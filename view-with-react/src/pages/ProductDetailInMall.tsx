@@ -21,25 +21,27 @@ export interface SampleType {
 
 export default function ProductDetailInMall() {
   const { product } = useProduct()
-  const optionIndex = product.optionCode ? Number(product.optionCode) - 1 : getRandomIntInclusive(1, 30)
+  const optionIndex = product.optionCode ? Number(product.optionCode) - 1 : getRandomIntInclusive(0, 29)
   const [productQuantity, setProductQuantity] = useState(
-    product.quantity !== 0 ? product.quantity : getRandomIntInclusive(1, 10)
+    product.quantity !== 0 ? product.quantity : getRandomIntInclusive(1, 20)
   )
   const [productOption, setProductOption] = useState('')
-  const { addProductWithCalculateTotalPrice, printProducts } = useCart()
+  const { addProductWithCalculateTotalPrice, addFakeProductInCart } = useCart()
   const { setProductInTempNewOrderWithCalculateTotalPrice } = useOrder()
+
+  const handleRandom5AddCart = () => {
+    addFakeProductInCart(5)
+    alert('장바구니에 추가 했습니다.')
+  }
 
   const handleAddCart = (product: ProductForType) => {
     if (!product) return
     addProductWithCalculateTotalPrice({ ...product, quantity: productQuantity, optionCode: productOption })
-    printProducts()
+    alert('장바구니에 추가 했습니다.')
   }
 
   const handleGoToOrder = (product: ProductForType) => {
     if (!product) return
-    console.log(`handleGoToOrder::productQuantity: ${productQuantity}`)
-    console.log(`handleGoToOrder::productOption: ${productOption}`)
-    console.log(`handleGoToOrder::product: ${JSON.stringify(product, null, 2)}`)
     setProductInTempNewOrderWithCalculateTotalPrice({
       ...product,
       quantity: productQuantity,
@@ -48,13 +50,11 @@ export default function ProductDetailInMall() {
   }
 
   const handleSelectedOptions = (code: string) => {
-    console.log(`code: ${code}`)
     setProductOption(code)
   }
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = isNaN(Number(e.currentTarget.value)) ? 1 : Number(e.currentTarget.value)
-    console.log(`e.currentTarget.value: ${value}`)
     setProductQuantity(value)
   }
 
@@ -65,6 +65,7 @@ export default function ProductDetailInMall() {
         defaultQuantity={productQuantity}
         defaultOptionIndex={optionIndex}
         onChangeQuantity={handleQuantityChange}
+        onPressRandom5AddCart={handleRandom5AddCart}
         onPressAddCart={handleAddCart}
         onPressGoToOrder={handleGoToOrder}
         onSelectedOptions={handleSelectedOptions}
@@ -78,10 +79,47 @@ function Product(props: {
   defaultQuantity: number
   defaultOptionIndex: number
   onChangeQuantity: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onPressRandom5AddCart: () => void
   onPressAddCart: (p: ProductForType) => void
   onPressGoToOrder: (p: ProductForType) => void
   onSelectedOptions: (value: string) => void
 }) {
+  const samplesOptionCode = React.useMemo(
+    () => [
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21',
+      '22',
+      '23',
+      '24',
+      '25',
+      '26',
+      '27',
+      '28',
+      '29',
+      '30'
+    ],
+    []
+  )
+
   return (
     <div>
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'right', alignItems: 'center' }}>
@@ -100,7 +138,7 @@ function Product(props: {
             제품 설명: {props.product.productDescription}
           </Typography>
           <Typography display="block" variant="caption" color="text.secondary">
-            제품 가격:{' '}
+            제품 단가:{' '}
             {Number(props.product.productPrice).toLocaleString(navigator.language, {
               minimumFractionDigits: 0
             })}{' '}
@@ -120,7 +158,7 @@ function Product(props: {
             <TextField
               required
               id="outlined-required"
-              label="제품 수량"
+              label="수량"
               defaultValue={props.defaultQuantity}
               onChange={props.onChangeQuantity}
               size="small"
@@ -131,9 +169,13 @@ function Product(props: {
             <CustomizedHook
               labelName="옵션 선택"
               defaultValueIndex={props.defaultOptionIndex}
+              samples={samplesOptionCode}
               onSelectedOptions={props.onSelectedOptions}
             />
           </Box>
+          <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressRandom5AddCart()}>
+            Random 장바구니x5 추가
+          </Button>
           <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressAddCart(props.product)}>
             장바구니 추가
           </Button>

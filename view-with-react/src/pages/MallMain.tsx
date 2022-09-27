@@ -52,12 +52,16 @@ export default function MallMain() {
     }
   }, [handleScroll])
 
-  const { updateProduct } = useProduct()
+  const { updateProduct, resetProduct } = useProduct()
   const handleProductClick = (product: ProductForType | undefined) => {
     if (!product) return
     console.log(`product: ${JSON.stringify(product, null, 2)}`)
     updateProduct(product)
   }
+
+  useEffect(() => {
+    resetProduct()
+  }, [])
 
   if (error)
     return (
@@ -171,7 +175,7 @@ function Product(props: {
                 </Typography>
               </Link>
               <Typography display="block" variant="caption" color="text.secondary">
-                제품 가격:{' '}
+                제품 단가:{' '}
                 {Number(props.product.productPrice).toLocaleString(navigator.language, {
                   minimumFractionDigits: 0
                 })}{' '}

@@ -5,7 +5,7 @@ import { getRandomIntInclusive } from '../utils'
 
 export interface ICartContext {
   products: ProductForType[]
-  addFakeProduct: (cnt: number) => void
+  addFakeProductInCart: (cnt: number) => void
   addProduct: (newProduct: ProductForType) => void
   addProductWithCalculateTotalPrice: (newProduct: ProductForType) => void
   removeProduct: (product: ProductForType) => void
@@ -19,28 +19,28 @@ export const useCart = () => useContext(CartContext)
 
 interface ICartAction {
   type: string
-  product: ProductForType
+  products?: ProductForType[]
 }
 
 const initialState: ProductForType[] = []
 
 function reducer(state: ProductForType[], action: ICartAction) {
   switch (action.type) {
-    case 'add': {
-      const result = state.findIndex((product) => product.productId === action.product.productId)
-      return result === -1
-        ? [...state, action.product]
-        : [...state, { ...action.product, productId: faker.datatype.uuid() }]
+    case 'add':
+      return action.products ? [...state, ...action.products] : state
+    case 'remove': {
+      const [firstProduct] = action.products ? action.products : ([] as ProductForType[])
+      return firstProduct && state.filter((product) => product.productId !== firstProduct.productId)
     }
-    case 'remove':
-      return state.filter((product) => product.productId !== action.product.productId)
     case 'removeAll':
-      return []
-    case 'update':
-      return state.map((product) =>
-        product.productId === action.product?.productId ? action.product : product
+      return [] as ProductForType[]
+    case 'update': {
+      const [firstProduct] = action.products ? action.products : ([] as ProductForType[])
+      return (
+        firstProduct &&
+        state.map((product) => (product.productId === firstProduct.productId ? firstProduct : product))
       )
-
+    }
     default:
       throw new Error()
   }
@@ -49,13 +49,14 @@ function reducer(state: ProductForType[], action: ICartAction) {
 export function CartProvider(props: any) {
   const [products, dispatch] = useReducer(reducer, initialState)
 
-  const addFakeProduct = (cnt: number) =>
-    Array(cnt).map((noUse) => {
-      const quantity = getRandomIntInclusive(1, 10)
-      const productPrice = Number(faker.commerce.price(1000, 2000, 0))
-      dispatch({
-        type: 'add',
-        product: {
+  const addFakeProductInCart = (cnt: number) => {
+    const _products: ProductForType[] = []
+    Array(cnt)
+      .fill(undefined)
+      .map((noUse) => {
+        const quantity = getRandomIntInclusive(1, 20)
+        const productPrice = Number(faker.commerce.price(1000, 2000, 0))
+        _products.push({
           productId: faker.datatype.uuid(),
           productDescription: faker.commerce.productDescription(),
           productImg: faker.image.business(450, 200, true),
@@ -69,33 +70,42 @@ export function CartProvider(props: any) {
           companyDomain: faker.internet.url(),
           registeredAt: faker.date.past().toLocaleDateString(),
           quantity: quantity,
-          optionCode: getRandomIntInclusive(1, 10).toString(),
+          optionCode: getRandomIntInclusive(1, 30).toString(),
           totalPrice: quantity * productPrice
-        }
+        })
       })
-    })
-  const addProduct = (newProduct: ProductForType) =>
     dispatch({
       type: 'add',
-      product: newProduct
+      products: _products
     })
+  }
+  const addProduct = (newProduct: ProductForType) => {
+    const result = products.findIndex((product) => product.productId === newProduct.productId)
+    const newUniqueProduct =
+      result === -1 ? [newProduct] : [{ ...newProduct, productId: faker.datatype.uuid() }]
+
+    dispatch({
+      type: 'add',
+      products: newUniqueProduct
+    })
+  }
   const addProductWithCalculateTotalPrice = (newProduct: ProductForType) => {
     const productPrice = isNaN(Number(newProduct.productPrice)) ? 1 : Number(newProduct.productPrice)
     newProduct.totalPrice = newProduct.quantity * productPrice
     dispatch({
       type: 'add',
-      product: newProduct
+      products: [newProduct]
     })
   }
   const removeProduct = (product: ProductForType) =>
     dispatch({
       type: 'remove',
-      product: product
+      products: [product]
     })
   const updateProductInCart = (product: ProductForType) =>
     dispatch({
       type: 'update',
-      product: product
+      products: [product]
     })
   const printProducts = () => {
     console.log(`products.length: ${products.length}`)
@@ -103,15 +113,14 @@ export function CartProvider(props: any) {
   }
   const removeAllInCart = () =>
     dispatch({
-      type: 'removeAll',
-      product: {} as ProductForType
+      type: 'removeAll'
     })
 
   return (
     <CartContext.Provider
       value={{
         products,
-        addFakeProduct,
+        addFakeProductInCart,
         addProduct,
         addProductWithCalculateTotalPrice,
         removeProduct,
