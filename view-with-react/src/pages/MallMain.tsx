@@ -65,9 +65,12 @@ export default function MallMain() {
 
   if (error)
     return (
-      <pre>
-        {error.name} - {error.message}
-      </pre>
+      <div>
+        <p>This list is empty.</p>
+        <pre>
+          reason: {error.name} - {error.message}
+        </pre>
+      </div>
     )
   return (
     <Box
