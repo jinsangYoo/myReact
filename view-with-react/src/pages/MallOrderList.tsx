@@ -84,7 +84,31 @@ function Order(props: { index: number; order: OrderType; onPressRemoveOrder: (or
         </Box>
       </div>
       <div>
-        <Box sx={{ width: '100%' }}></Box>
+        <Box sx={{ width: '100%', border: '1px solid #ccc' }}>
+          {props.order.products.map((product, index) => {
+            return (
+              <section
+                style={{
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  justifyContent: 'space-between',
+                  color: '#888'
+                }}
+                key={index}
+              >
+                <label style={{ flexGrow: 1 }}>
+                  {index + 1}. {product.productName}
+                </label>
+                <label>
+                  {product.totalPrice?.toLocaleString(navigator.language, {
+                    minimumFractionDigits: 0
+                  })}{' '}
+                  원
+                </label>
+              </section>
+            )
+          })}
+        </Box>
       </div>
       <div>
         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
