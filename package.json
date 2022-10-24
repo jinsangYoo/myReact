@@ -4,7 +4,10 @@
   "description": "my first homepage.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pm2 start ecosystem.config.js --only myReact-dev --env development",
+    "start": "pm2 start ecosystem.config.js --only myReact-pd --env production",
+    "del-dev": "pm2 dellete myReact-dev",
+    "del-pd": "pm2 dellete myReact-pd"
   },
   "repository": {
     "type": "git",

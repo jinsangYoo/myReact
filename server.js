@@ -8,6 +8,16 @@ app.use(cors())
 
 app.use(express.static(path.join(__dirname, './view-with-react/build')))
 
+let isDisableKeepAlive = false
+
+// keep-alive 해제용 미들웨어
+app.use(function (req, res, next) {
+  if (isDisableKeepAlive) {
+    res.set('Connection', 'close') // 만약 전역 변수가 true면 요청 오면 connection을 강제로 닫는다.
+  }
+  next()
+})
+
 app.get('/', function (req, res) {
   res.header('Set-Cookie', 'cross-site-cookie=whatever; SameSite=None; Secure')
   res.sendFile(path.join(__dirname, './view-with-react/build/index.html'))
@@ -167,6 +177,17 @@ app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, './view-with-react/build/index.html'))
 })
 
-app.listen(8080, function () {
+const server = app.listen(8080, function () {
   console.log('listening on 8080')
+})
+
+// 만일 process로부터 SIGINT 이벤트를 받으면..
+process.on('SIGINT', function () {
+  // SIGINT 시그널을 받으면 전역변수를 true로 만들어 앞으로 요청오면 종료해 버리게 만든다.
+  isDisableKeepAlive = true
+  // 어플리케이션을 닫음
+  server.close(function () {
+    console.log('server closed')
+    process.exit(0) // 정상 종료
+  })
 })
