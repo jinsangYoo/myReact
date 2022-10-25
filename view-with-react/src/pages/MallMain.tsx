@@ -65,9 +65,12 @@ export default function MallMain() {
 
   if (error)
     return (
-      <pre>
-        {error.name} - {error.message}
-      </pre>
+      <div>
+        <p>This list is empty.</p>
+        <pre>
+          reason: {error.name} - {error.message}
+        </pre>
+      </div>
     )
   return (
     <Box
@@ -171,7 +174,7 @@ function Product(props: {
             <Box sx={{ pr: 2 }}>
               <Link to={'/mall/detail'} onClick={() => props.onPress(props.product)}>
                 <Typography gutterBottom variant="body2">
-                  {props.product.productDescription}
+                  제품 설명: {props.product.productDescription}
                 </Typography>
               </Link>
               <Typography display="block" variant="caption" color="text.secondary">
