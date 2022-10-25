@@ -8,19 +8,17 @@ import { SnackbarProvider } from 'notistack'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  <React.StrictMode>
-    <SnackbarProvider>
-      <MenuProvider>
-        <OrderProvider>
-          <CartProvider>
-            <ProductProvider>
-              <App />
-            </ProductProvider>
-          </CartProvider>
-        </OrderProvider>
-      </MenuProvider>
-    </SnackbarProvider>
-  </React.StrictMode>
+  <SnackbarProvider>
+    <MenuProvider>
+      <OrderProvider>
+        <CartProvider>
+          <ProductProvider>
+            <App />
+          </ProductProvider>
+        </CartProvider>
+      </OrderProvider>
+    </MenuProvider>
+  </SnackbarProvider>
 )
 
 // If you want to start measuring performance in your app, pass a function
