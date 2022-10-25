@@ -21,9 +21,7 @@ export default function MallMain() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setTimeout(() => {
-      getProducts(setProducts, setError, setLoading)
-    }, 1200)
+    getProducts(setProducts, setError, setLoading)
 
     return () => setProducts([])
   }, [])
