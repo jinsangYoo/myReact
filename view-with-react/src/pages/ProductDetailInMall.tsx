@@ -3,7 +3,15 @@ import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import { ProductForType, useProduct, useCart, CustomizedHook, useOrder, IStateToOrder } from '../hooks'
+import {
+  ProductForType,
+  useProduct,
+  useCart,
+  CustomizedHook,
+  useOrder,
+  IStateToOrder,
+  useACSDKHelper
+} from '../hooks'
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { Link, useNavigate } from 'react-router-dom'
@@ -32,9 +40,10 @@ export interface SampleType {
 
 const title = 'mall_제품 노출'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-export default function ProductDetailInMall() {
-  useLayoutEffect(() => {
+const ProductDetailInMall = () => {
+  useEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    document.title = msg
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
     sendCommonWithPromise(msg, params)
   }, [])
@@ -42,6 +51,14 @@ export default function ProductDetailInMall() {
   const { enqueueSnackbar } = useSnackbar()
   const _nav = useNavigate()
   const { product } = useProduct()
+  console.log(`제품상세보기: ${JSON.stringify(product, null, 2)}`)
+  useACSDKHelper({
+    type: ACParams.TYPE.APPEAR_PRODUCT,
+    msg: `${title}_APPEAR_PRODUCT`,
+    randomValue: randomValueForScreen,
+    product
+  })
+
   const optionIndex = product.optionCode ? Number(product.optionCode) - 1 : getRandomIntInclusive(0, 29)
   const [productQuantity, setProductQuantity] = useState(
     product.quantity !== 0 ? product.quantity : getRandomIntInclusive(1, 20)
@@ -71,11 +88,13 @@ export default function ProductDetailInMall() {
   }
 
   const handleSelectedOptions = (code: string) => {
+    console.log(`제품옵션: ${code}`)
     setProductOption(code)
   }
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = isNaN(Number(e.currentTarget.value)) ? 1 : Number(e.currentTarget.value)
+    console.log(`제품수량: ${value}`)
     setProductQuantity(value)
   }
 
@@ -149,21 +168,41 @@ function Product(props: {
 
   return (
     <div>
-      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'right', alignItems: 'center' }}>
-        <Box sx={{ m: 1 }}>
-          <Avatar src={props.product.sellerAvatar} />
-        </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          m: 1
+        }}
+      >
+        <Typography gutterBottom variant="body2">
+          제품명: {props.product.productName}
+        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'right', alignItems: 'center' }}>
+          <Box sx={{ m: 1 }}>
+            <Avatar src={props.product.sellerAvatar} />
+          </Box>
 
-        <Box sx={{ mr: 2 }}>
-          판매자: <Typography>{props.product.productName}</Typography>
+          <Box sx={{ mr: 2 }}>
+            판매자: <Typography>{props.product.sellerName}</Typography>
+          </Box>
         </Box>
       </Box>
       <Image src={props.product.productImg} alt="" />
       <Box sx={{ width: '100%' }}>
         <Box sx={{ pr: 2 }}>
           <Typography gutterBottom variant="body2">
-            제품 설명: {props.product.productDescription}
+            제품 카테고리: {props.product.productCategory}
           </Typography>
+          <Typography gutterBottom variant="body2">
+            제품 ID: {props.product.productId}
+          </Typography>
+          <Typography gutterBottom variant="body2">
+            상세정보: {props.product.productDescription}
+          </Typography>
+
           <Typography display="block" variant="caption" color="text.secondary">
             제품 단가:{' '}
             {Number(props.product.productPrice).toLocaleString(navigator.language, {
@@ -220,3 +259,5 @@ function Product(props: {
     </div>
   )
 }
+
+export default ProductDetailInMall

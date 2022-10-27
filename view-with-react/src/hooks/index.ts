@@ -8,6 +8,7 @@ import CustomizedHook from './customizedHookForComboBox'
 import type { OrderStateType, OrderType } from './order-hooks'
 import { OrderProvider, useOrder, randomGetPayMethod } from './order-hooks'
 import type { IStateToOrder } from './location-hooks'
+import useACSDKHelper from './acsdk-hooks'
 
 export {
   MenuProvider,
@@ -26,5 +27,6 @@ export {
   OrderProvider,
   randomGetPayMethod,
   useOrder,
-  IStateToOrder
+  IStateToOrder,
+  useACSDKHelper
 }
