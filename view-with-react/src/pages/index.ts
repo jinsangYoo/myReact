@@ -9,7 +9,6 @@ import MallMain from './MallMain'
 import MallInRouter from './MallInRouter'
 import ProductDetailInMall from './ProductDetailInMall'
 import MallCart from './MallCart'
-import MallOrders from './MallOrders'
 import MallMakeOrder from './MallMakeOrder'
 import MallOrderDone from './MallOrderDone'
 import MallOrderList from './MallOrderList'
@@ -27,7 +26,6 @@ export {
   MallInRouter,
   ProductDetailInMall,
   MallCart,
-  MallOrders,
   MallMakeOrder,
   MallOrderDone,
   MallOrderList,

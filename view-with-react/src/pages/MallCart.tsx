@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback } from 'react'
+import React, { useState, useReducer, useEffect, useCallback, useLayoutEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -7,12 +7,31 @@ import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
 import { VariantType, useSnackbar } from 'notistack'
 
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus
+} from '@jinsang/slimer-react'
+import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+
 const Image = styled('img')({
   width: '100%',
   borderRadius: 10
 })
 
+const title = 'mall_장바구니'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function MallCart() {
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   const { enqueueSnackbar } = useSnackbar()
   const { updateProduct } = useProduct()
   const { products, removeAllInCart, removeProduct, addFakeProductInCart } = useCart()

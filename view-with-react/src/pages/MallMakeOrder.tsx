@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useReducer, useEffect, useCallback, useMemo, useLayoutEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
@@ -16,7 +16,17 @@ import {
   CustomizedHook,
   useProduct
 } from '../hooks'
-import { getRandomIntInclusive } from '../utils'
+
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus
+} from '@jinsang/slimer-react'
+import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 
 const Image = styled('img')({
   width: '100%',
@@ -29,7 +39,15 @@ interface StateTypeForLocationOrder {
   }
 }
 
+const title = 'mall_주문서_작성'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function MallMakeOrder() {
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   const { resetProduct } = useProduct()
   const { productId } = useParams()
   const { state } = useLocation() as StateTypeForLocationOrder

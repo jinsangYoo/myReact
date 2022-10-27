@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useReducer, useEffect, useCallback, useMemo, useLayoutEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -6,9 +6,19 @@ import Avatar from '@mui/material/Avatar'
 import { ProductForType, useProduct, useCart, CustomizedHook, useOrder, IStateToOrder } from '../hooks'
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField'
-import { getRandomIntInclusive } from '../utils'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus
+} from '@jinsang/slimer-react'
+import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 
 const Image = styled('img')({
   width: '100%',
@@ -20,7 +30,15 @@ export interface SampleType {
   year: number
 }
 
+const title = 'mall_제품 노출'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function ProductDetailInMall() {
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   const { enqueueSnackbar } = useSnackbar()
   const _nav = useNavigate()
   const { product } = useProduct()
