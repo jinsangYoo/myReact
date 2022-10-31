@@ -115,9 +115,11 @@ function Order(props: { index: number; order: OrderType; onPressRemoveOrder: (or
                 }}
                 key={index}
               >
-                <label style={{ flexGrow: 1 }}>
+                <label style={{ flexGrow: 2 }}>
                   {index + 1}. {product.productName}
                 </label>
+                <label style={{ flexGrow: 1 }}>수량: {product.quantity}</label>
+                <label style={{ flexGrow: 1 }}>옵션: {product.optionCode ?? 'none'}</label>
                 <label>
                   {product.totalPrice?.toLocaleString(navigator.language, {
                     minimumFractionDigits: 0

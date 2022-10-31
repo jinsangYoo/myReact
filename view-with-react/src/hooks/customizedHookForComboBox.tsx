@@ -20,10 +20,6 @@ export default function CustomizedHook({
   const [value, setValue] = React.useState<string | null>(samples[defaultValueIndex])
   const [inputValue, setInputValue] = React.useState('')
 
-  // React.useEffect(() => {
-  //   onSelectedOptions(samples[defaultValueIndex])
-  // }, [])
-
   return (
     <div>
       <Autocomplete

@@ -162,11 +162,9 @@ function Product(props: {
             원
           </Typography>
         )}
-        {props.product.optionCode && (
-          <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-            옵션 코드명: {props.product.optionCode}
-          </Typography>
-        )}
+        <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
+          옵션코드: {props.product.optionCode ?? 'none'}
+        </Typography>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
         <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressRemoveCart(props.product)}>

@@ -60,10 +60,46 @@ const ProductDetailInMall = () => {
   })
 
   const optionIndex = product.optionCode ? Number(product.optionCode) - 1 : getRandomIntInclusive(0, 29)
+  const samplesOptionCode = React.useMemo(
+    () => [
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21',
+      '22',
+      '23',
+      '24',
+      '25',
+      '26',
+      '27',
+      '28',
+      '29',
+      '30'
+    ],
+    []
+  )
+  const [productOption, setProductOption] = useState(samplesOptionCode[optionIndex])
+
   const [productQuantity, setProductQuantity] = useState(
     product.quantity !== 0 ? product.quantity : getRandomIntInclusive(1, 20)
   )
-  const [productOption, setProductOption] = useState('')
   const { addProductWithCalculateTotalPrice, addFakeProductInCart } = useCart()
   const { setProductInTempNewOrderWithCalculateTotalPrice } = useOrder()
 
@@ -110,6 +146,7 @@ const ProductDetailInMall = () => {
         product={product}
         defaultQuantity={productQuantity}
         defaultOptionIndex={optionIndex}
+        optionCodes={samplesOptionCode}
         onChangeQuantity={handleQuantityChange}
         onPressRandom5AddCart={handleRandom5AddCart}
         onPressAddCart={handleAddCart}
@@ -124,48 +161,13 @@ function Product(props: {
   product: ProductForType
   defaultQuantity: number
   defaultOptionIndex: number
+  optionCodes: string[]
   onChangeQuantity: (e: React.ChangeEvent<HTMLInputElement>) => void
   onPressRandom5AddCart: () => void
   onPressAddCart: (p: ProductForType) => void
   onPressGoToOrder: (p: ProductForType) => void
   onSelectedOptions: (value: string) => void
 }) {
-  const samplesOptionCode = React.useMemo(
-    () => [
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-      '21',
-      '22',
-      '23',
-      '24',
-      '25',
-      '26',
-      '27',
-      '28',
-      '29',
-      '30'
-    ],
-    []
-  )
-
   return (
     <div>
       <Box
@@ -235,7 +237,7 @@ function Product(props: {
             <CustomizedHook
               labelName="옵션 선택"
               defaultValueIndex={props.defaultOptionIndex}
-              samples={samplesOptionCode}
+              samples={props.optionCodes}
               onSelectedOptions={props.onSelectedOptions}
             />
           </Box>
