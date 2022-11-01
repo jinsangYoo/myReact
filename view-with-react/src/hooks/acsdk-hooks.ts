@@ -15,21 +15,45 @@ import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '
 interface ACSDKProps {
   type: any
   msg: string
-  randomValue: string
-  product: ProductForType
+  randomValue?: string
+  product?: ProductForType
+  login?: {
+    userId: string
+    userAge: number
+    userGender: ACEGender
+    userMaritalStatus: ACEMaritalStatus
+  }
 }
 
-const useACSDKHelper = ({ type, msg, randomValue, product }: ACSDKProps) => {
-  const memberKey = `멤버ID >>${randomValue + 0}<<`
-
+const useACSDK = ({ type, msg, randomValue, product, login }: ACSDKProps) => {
   const url = `>>${msg}<< >>${randomValue}<<`
   const params = ACParams.init(type, url)
-  params.memberKey = memberKey
-  params.productName = product.productName
-  params.productCategoryName = product.productCategory
-  params.productId = product.productId
-  params.productPrice = product.productPrice
+
+  switch (type) {
+    case ACParams.TYPE.APPEAR_PRODUCT:
+      params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
+      if (product) {
+        params.productName = product.productName
+        params.productCategoryName = product.productCategory
+        params.productId = product.productId
+        params.productPrice = product.productPrice
+      }
+      break
+
+    case ACParams.TYPE.LOGIN:
+      if (login) {
+        params.userId = login.userId
+        params.userAge = login.userAge
+        params.userGender = login.userGender
+        params.userMaritalStatus = login.userMaritalStatus
+      }
+      break
+
+    default:
+      break
+  }
+
   sendCommonWithPromise(url, params)
 }
 
-export default useACSDKHelper
+export default useACSDK

@@ -39,9 +39,9 @@ interface StateTypeForLocationOrder {
   }
 }
 
-const title = 'mall_주문서_작성'
+const title = 'memeber_회원가입'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-export default function MallMakeOrder() {
+export default function MemberJoin() {
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
@@ -199,3 +199,19 @@ function Product(props: { index: number; product: ProductForType }) {
     </div>
   )
 }
+
+interface CountryType {
+  code: string
+  label: string
+  phone: string
+  suggested?: boolean
+}
+
+const countries: readonly CountryType[] = [
+  {
+    code: 'KP',
+    label: "Korea, Democratic People's Republic of",
+    phone: '850'
+  },
+  { code: 'KR', label: 'Korea, Republic of', phone: '82' }
+]

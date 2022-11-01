@@ -10,7 +10,7 @@ import {
   CustomizedHook,
   useOrder,
   IStateToOrder,
-  useACSDKHelper
+  useACSDK
 } from '../hooks'
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField'
@@ -52,7 +52,7 @@ const ProductDetailInMall = () => {
   const _nav = useNavigate()
   const { product } = useProduct()
   console.log(`제품상세보기: ${JSON.stringify(product, null, 2)}`)
-  useACSDKHelper({
+  useACSDK({
     type: ACParams.TYPE.APPEAR_PRODUCT,
     msg: `${title}_APPEAR_PRODUCT`,
     randomValue: randomValueForScreen,

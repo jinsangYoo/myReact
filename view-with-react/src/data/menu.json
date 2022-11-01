@@ -31,6 +31,16 @@
       ]
     },
     {
+      "id": "member",
+      "name": "로그인/회원가입",
+      "path": "member",
+      "subMenu": [
+        { "id": "main", "name": "로그인", "path": "main" },
+        { "id": "join", "name": "회원 가입", "path": "join" },
+        { "id": "leave", "name": "회원 탈퇴", "path": "leave" }
+      ]
+    },
+    {
       "id": "etc",
       "name": "기타",
       "path": "etc",
