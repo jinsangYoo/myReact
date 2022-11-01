@@ -29,9 +29,12 @@ interface ACSDKProps {
     userGender: ACEGender
     userMaritalStatus: ACEMaritalStatus
   }
+  search?: {
+    keyword: string
+  }
 }
 
-const useACSDK = ({ type, msg, randomValue, product, join, leave, login }: ACSDKProps) => {
+const useACSDK = ({ type, msg, randomValue, product, join, leave, login, search }: ACSDKProps) => {
   const url = `>>${msg}<< >>${randomValue}<<`
   const params = ACParams.init(type, url)
 
@@ -55,9 +58,21 @@ const useACSDK = ({ type, msg, randomValue, product, join, leave, login }: ACSDK
       }
       break
 
+    case ACParams.TYPE.JOIN:
+      if (join) {
+        params.userId = join.userId
+      }
+      break
+
     case ACParams.TYPE.LEAVE:
       if (leave) {
         params.userId = leave.userId
+      }
+      break
+
+    case ACParams.TYPE.SEARCH:
+      if (search) {
+        params.keyword = search.keyword
       }
       break
 

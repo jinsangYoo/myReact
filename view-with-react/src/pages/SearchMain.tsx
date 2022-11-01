@@ -1,12 +1,10 @@
 import React, { useState, useReducer, useEffect, useCallback, useMemo } from 'react'
-import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { faker } from '@faker-js/faker'
-import Avatar from 'react-avatar'
 
-import { CustomizedHook, useACSDK } from '../hooks'
+import { useACSDK } from '../hooks'
 
 import {
   AceConfiguration,
@@ -18,26 +16,26 @@ import {
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
-import { useMember } from '../hooks'
 
-const title = 'memeber_회원가입'
+const title = 'search_키워드'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-const MemberJoin = () => {
+const SearchMain = () => {
   useACSDK({
     type: ACParams.TYPE.EVENT,
     msg: title,
     randomValue: randomValueForScreen
   })
 
-  const { member, isLogin, login } = useMember()
-  const [memberId, setMemberId] = useState(member?.id ?? faker.name.lastName)
+  const [keyword, setKeyword] = useState(
+    `${faker.commerce.product()}${getRandomIntInclusive(0, 999).toString()}`
+  )
   const handleAPI = () => {
     useACSDK({
-      type: ACParams.TYPE.JOIN,
-      msg: `${title}_join`,
+      type: ACParams.TYPE.SEARCH,
+      msg: `${title}_search`,
       randomValue: randomValueForScreen,
-      join: {
-        userId: memberId
+      search: {
+        keyword: keyword
       }
     })
   }
@@ -46,17 +44,16 @@ const MemberJoin = () => {
     <div>
       <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
         <>
-          {isLogin() ? <Avatar name={memberId ?? 'new'} /> : <Avatar name={'new'} size="50" round={true} />}
-          <Typography sx={{ display: 'inline', ml: 1 }}>ID: </Typography>
+          <Typography sx={{ display: 'inline', ml: 1 }}>키워드: </Typography>
 
           <TextField
             sx={{ ml: 1 }}
             required
             id="filled-required"
             label="Required"
-            defaultValue={memberId}
+            defaultValue={keyword}
             variant="filled"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMemberId(e.currentTarget.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.currentTarget.value)}
           />
         </>
       </div>
@@ -70,11 +67,11 @@ const MemberJoin = () => {
         }}
       >
         <Button variant="outlined" sx={{ ml: 1 }} onClick={handleAPI}>
-          가입
+          검색
         </Button>
       </div>
     </div>
   )
 }
 
-export default MemberJoin
+export default SearchMain

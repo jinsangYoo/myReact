@@ -9,6 +9,7 @@ import FactoryContentPanelForMyReact from './FactoryContentPanelForMyReact'
 import FactoryContentPanelForEtc from './FactoryContentPanelForEtc'
 import FactoryContentPanelForMall from './FactoryContentPanelForMall'
 import FactoryContentPanelForMemeber from './FactoryContentPanelForMemeber'
+import FactoryContentPanelForSearch from './FactoryContentPanelForSearch'
 
 export default function FactoryContentPanels() {
   const { getDefaultMainMenuId, getDefaultSubMenuId } = useMenus()
@@ -20,6 +21,7 @@ export default function FactoryContentPanels() {
     <div>
       <Routes>
         <Route path="etc/*" element={<FactoryContentPanelForEtc />} />
+        <Route path="search/*" element={<FactoryContentPanelForSearch />} />
         <Route path="member/*" element={<FactoryContentPanelForMemeber />} />
         <Route path="mall/*" element={<FactoryContentPanelForMall />} />
         <Route path="myReact/*" element={<FactoryContentPanelForMyReact />} />

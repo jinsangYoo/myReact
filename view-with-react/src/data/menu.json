@@ -41,6 +41,12 @@
       ]
     },
     {
+      "id": "search",
+      "name": "검색",
+      "path": "search",
+      "subMenu": [{ "id": "main", "name": "검색", "path": "main" }]
+    },
+    {
       "id": "etc",
       "name": "기타",
       "path": "etc",

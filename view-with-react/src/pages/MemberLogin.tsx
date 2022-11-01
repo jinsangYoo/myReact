@@ -20,11 +20,6 @@ import {
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 import { useMember } from '../hooks'
 
-const Image = styled('img')({
-  width: '100%',
-  borderRadius: 10
-})
-
 const title = 'memeber_로그인'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 const MemberLogin = () => {
