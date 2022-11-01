@@ -17,6 +17,12 @@ interface ACSDKProps {
   msg: string
   randomValue?: string
   product?: ProductForType
+  join?: {
+    userId: string
+  }
+  leave?: {
+    userId: string
+  }
   login?: {
     userId: string
     userAge: number
@@ -25,7 +31,7 @@ interface ACSDKProps {
   }
 }
 
-const useACSDK = ({ type, msg, randomValue, product, login }: ACSDKProps) => {
+const useACSDK = ({ type, msg, randomValue, product, join, leave, login }: ACSDKProps) => {
   const url = `>>${msg}<< >>${randomValue}<<`
   const params = ACParams.init(type, url)
 
@@ -46,6 +52,12 @@ const useACSDK = ({ type, msg, randomValue, product, login }: ACSDKProps) => {
         params.userAge = login.userAge
         params.userGender = login.userGender
         params.userMaritalStatus = login.userMaritalStatus
+      }
+      break
+
+    case ACParams.TYPE.LEAVE:
+      if (leave) {
+        params.userId = leave.userId
       }
       break
 
