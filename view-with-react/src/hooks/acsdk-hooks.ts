@@ -18,6 +18,10 @@ interface ACSDKProps {
   randomValue?: string
   product?: ProductForType
   products?: ProductForType[]
+  buy?: {
+    orderNumber: string
+    payMethodName: string
+  }
   join?: {
     userId: string
   }
@@ -47,7 +51,18 @@ const convertProductForTypeToACProduct = (products: ProductForType[]) =>
     )
   })
 
-const useACSDK = ({ type, msg, randomValue, product, products, join, leave, login, search }: ACSDKProps) => {
+const useACSDK = ({
+  type,
+  msg,
+  randomValue,
+  product,
+  products,
+  buy,
+  join,
+  leave,
+  login,
+  search
+}: ACSDKProps) => {
   const url = `>>${msg}<< >>${randomValue}<<`
   const params = ACParams.init(type, url)
 
@@ -57,6 +72,16 @@ const useACSDK = ({ type, msg, randomValue, product, products, join, leave, logi
       params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
       if (products) {
         params.products = convertProductForTypeToACProduct(products)
+      }
+      break
+    case ACParams.TYPE.BUY_DONE:
+      params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
+      if (products) {
+        params.products = convertProductForTypeToACProduct(products)
+      }
+      if (buy) {
+        params.orderNumber = buy.orderNumber
+        params.payMethodName = buy.payMethodName
       }
       break
     case ACParams.TYPE.APPEAR_PRODUCT:

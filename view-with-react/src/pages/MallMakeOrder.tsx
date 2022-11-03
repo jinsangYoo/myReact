@@ -14,7 +14,8 @@ import {
   IStateToOrder,
   OrderType,
   CustomizedHook,
-  useProduct
+  useProduct,
+  useACSDK
 } from '../hooks'
 
 import {
@@ -41,7 +42,7 @@ interface StateTypeForLocationOrder {
 
 const title = 'mall_주문서_작성'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-export default function MallMakeOrder() {
+const MallMakeOrder = () => {
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
@@ -94,9 +95,20 @@ export default function MallMakeOrder() {
     }
     newOrder.ordererName = orderName
     addOrder(newOrder)
+
+    useACSDK({
+      type: ACParams.TYPE.BUY_DONE,
+      msg: `${title}_BUY_DONE`,
+      randomValue: randomValueForScreen,
+      products: newOrder.products,
+      buy: {
+        orderNumber: newOrder.orderNumber,
+        payMethodName: newOrder.payMethodName
+      }
+    })
   }
 
-  const handleSelectedOptions = (payMethod: string) => {
+  const handleSelectedPayMethod = (payMethod: string) => {
     newOrder.payMethodName = payMethod
   }
 
@@ -126,7 +138,7 @@ export default function MallMakeOrder() {
             defaultValueIndex={defaultPayMethodIndex}
             minWidth={200}
             samples={samplesPayMethods}
-            onSelectedOptions={handleSelectedOptions}
+            onSelectedOptions={handleSelectedPayMethod}
           />
         </div>
       </div>
@@ -199,3 +211,5 @@ function Product(props: { index: number; product: ProductForType }) {
     </div>
   )
 }
+
+export default MallMakeOrder

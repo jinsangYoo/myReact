@@ -134,7 +134,7 @@ function Order(props: { index: number; order: OrderType; onPressRemoveOrder: (or
       <div>
         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
           <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressRemoveOrder(props.order)}>
-            주문 제거
+            주문 제거 및 취소
           </Button>
         </Box>
       </div>

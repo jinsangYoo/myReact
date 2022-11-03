@@ -128,14 +128,6 @@ const ProductDetailInMall = () => {
       randomValue: randomValueForScreen,
       products: [{ ...argProduct, quantity: productQuantity, optionCode: productOption }]
     })
-    console.log('will add in cart.')
-    console.log(
-      `제품상세보기: ${JSON.stringify(
-        { ...argProduct, quantity: productQuantity, optionCode: productOption },
-        null,
-        2
-      )}`
-    )
     enqueueSnackbar('장바구니에 추가 했습니다.', { variant: 'success' })
   }
 
