@@ -51,13 +51,15 @@ const ProductDetailInMall = () => {
   const { enqueueSnackbar } = useSnackbar()
   const _nav = useNavigate()
   const { product } = useProduct()
-  console.log(`제품상세보기: ${JSON.stringify(product, null, 2)}`)
-  useACSDK({
-    type: ACParams.TYPE.APPEAR_PRODUCT,
-    msg: `${title}_APPEAR_PRODUCT`,
-    randomValue: randomValueForScreen,
-    product
-  })
+  console.log(`init 제품: ${JSON.stringify(product, null, 2)}`)
+  useEffect(() => {
+    useACSDK({
+      type: ACParams.TYPE.APPEAR_PRODUCT,
+      msg: `${title}_APPEAR_PRODUCT`,
+      randomValue: randomValueForScreen,
+      product
+    })
+  }, [])
 
   const optionIndex = product.optionCode ? Number(product.optionCode) - 1 : getRandomIntInclusive(0, 29)
   const samplesOptionCode = React.useMemo(
@@ -100,17 +102,40 @@ const ProductDetailInMall = () => {
   const [productQuantity, setProductQuantity] = useState(
     product.quantity !== 0 ? product.quantity : getRandomIntInclusive(1, 20)
   )
-  const { addProductWithCalculateTotalPrice, addFakeProductInCart } = useCart()
+  const { productsInCart, addProductWithCalculateTotalPrice, makeFakeProducts, addProducts } = useCart()
   const { setProductInTempNewOrderWithCalculateTotalPrice } = useOrder()
 
   const handleRandom5AddCart = () => {
-    addFakeProductInCart(5)
+    const porducts = makeFakeProducts(5)
+    addProducts(porducts)
+    useACSDK({
+      type: ACParams.TYPE.ADDCART,
+      msg: `${title}_ADDCART`,
+      randomValue: randomValueForScreen,
+      products: porducts
+    })
     enqueueSnackbar('장바구니에 추가 했습니다.', { variant: 'success' })
   }
 
-  const handleAddCart = (product: ProductForType) => {
-    if (!product) return
-    addProductWithCalculateTotalPrice({ ...product, quantity: productQuantity, optionCode: productOption })
+  const handleAddCart = (argProduct: ProductForType) => {
+    addProductWithCalculateTotalPrice({ ...argProduct, quantity: productQuantity, optionCode: productOption })
+
+    const productPrice = isNaN(Number(argProduct.productPrice)) ? 0 : Number(argProduct.productPrice)
+    argProduct.totalPrice = productQuantity * productPrice
+    useACSDK({
+      type: ACParams.TYPE.ADDCART,
+      msg: `${title}_ADDCART`,
+      randomValue: randomValueForScreen,
+      products: [{ ...argProduct, quantity: productQuantity, optionCode: productOption }]
+    })
+    console.log('will add in cart.')
+    console.log(
+      `제품상세보기: ${JSON.stringify(
+        { ...argProduct, quantity: productQuantity, optionCode: productOption },
+        null,
+        2
+      )}`
+    )
     enqueueSnackbar('장바구니에 추가 했습니다.', { variant: 'success' })
   }
 

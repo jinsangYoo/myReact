@@ -17,6 +17,7 @@ interface ACSDKProps {
   msg: string
   randomValue?: string
   product?: ProductForType
+  products?: ProductForType[]
   join?: {
     userId: string
   }
@@ -34,11 +35,30 @@ interface ACSDKProps {
   }
 }
 
-const useACSDK = ({ type, msg, randomValue, product, join, leave, login, search }: ACSDKProps) => {
+const convertProductForTypeToACProduct = (products: ProductForType[]) =>
+  products.map((product) => {
+    return new ACProduct(
+      product.productName,
+      product.productCategory,
+      product.totalPrice?.toString() ?? '0',
+      product.quantity,
+      product.productId,
+      product.optionCode
+    )
+  })
+
+const useACSDK = ({ type, msg, randomValue, product, products, join, leave, login, search }: ACSDKProps) => {
   const url = `>>${msg}<< >>${randomValue}<<`
   const params = ACParams.init(type, url)
 
   switch (type) {
+    case ACParams.TYPE.ADDCART:
+    case ACParams.TYPE.DELCART:
+      params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
+      if (products) {
+        params.products = convertProductForTypeToACProduct(products)
+      }
+      break
     case ACParams.TYPE.APPEAR_PRODUCT:
       params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
       if (product) {

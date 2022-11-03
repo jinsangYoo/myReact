@@ -34,7 +34,7 @@ export default function MallCart() {
 
   const { enqueueSnackbar } = useSnackbar()
   const { updateProduct } = useProduct()
-  const { products, removeAllInCart, removeProduct, addFakeProductInCart } = useCart()
+  const { productsInCart, removeAllInCart, removeProduct, makeFakeProducts, addProducts } = useCart()
   const handleUpdateCart = (product: ProductForType) => {
     if (!product) return
   }
@@ -58,7 +58,8 @@ export default function MallCart() {
     handleClickVariant('전체 장바구니 제품을 제거 했습니다.', 'success')
   }
   const handleRandom5AddCart = () => {
-    addFakeProductInCart(5)
+    const products = makeFakeProducts(5)
+    addProducts(products)
   }
   const handleClickVariant = (message: string, variant: VariantType) => () => {
     // variant could be success, error, warning, info, or default
@@ -69,7 +70,7 @@ export default function MallCart() {
     <>
       <h2>장바구니</h2>
       <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
-        {products.length < 1 ? (
+        {productsInCart.length < 1 ? (
           <>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
               <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRandom5AddCart()}>
@@ -83,13 +84,13 @@ export default function MallCart() {
         ) : (
           <>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
-              <Typography sx={{ mr: 2, color: 'red' }}>제품 수: {products.length}</Typography>
+              <Typography sx={{ mr: 2, color: 'red' }}>제품 수: {productsInCart.length}</Typography>
               <Link
                 to="/mall/makeorder"
                 state={{ myState: { from: 'cart' } as IStateToOrder }}
                 style={{ textDecoration: 'none' }}
               >
-                <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleGoToOrders(products)}>
+                <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleGoToOrders(productsInCart)}>
                   전체 주문
                 </Button>
               </Link>
@@ -101,7 +102,7 @@ export default function MallCart() {
               </Button>
             </Box>
             <div>
-              {products.map((product, index) => (
+              {productsInCart.map((product, index) => (
                 <Product
                   key={index}
                   index={index}

@@ -71,12 +71,12 @@ export default function MallMakeOrder() {
     products: []
   }
   if (state.myState.from === 'cart') {
-    const { products } = useCart()
+    const { productsInCart } = useCart()
     newOrder.orderNumber = faker.datatype.uuid()
     if (productId) {
-      newOrder.products = products.filter((product) => product.productId === productId)
+      newOrder.products = productsInCart.filter((product) => product.productId === productId)
     } else {
-      newOrder.products = products
+      newOrder.products = productsInCart
     }
   } else if (state.myState.from === 'detail') {
     const { order } = useOrder()
