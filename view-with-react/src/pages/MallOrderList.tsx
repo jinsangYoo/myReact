@@ -4,7 +4,7 @@ import { Button } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
-import { useOrder, OrderType } from '../hooks'
+import { useOrder, OrderType, useACSDK } from '../hooks'
 import { useSnackbar } from 'notistack'
 
 import {
@@ -31,6 +31,16 @@ export default function MallOrderList() {
   const { orders, removeOrder, removeAllInOrders } = useOrder()
   const handleRemoveOrder = (order: OrderType) => {
     removeOrder(order)
+    useACSDK({
+      type: ACParams.TYPE.BUY_CANCEL,
+      msg: `${title}_BUY_CANCEL`,
+      randomValue: randomValueForScreen,
+      buy: {
+        orderNumber: order.orderNumber,
+        payMethodName: order.payMethodName,
+        products: order.products
+      }
+    })
     enqueueSnackbar('주문 내역을 삭제 했습니다.', { variant: 'success' })
   }
   const handleRemoveAllInOrders = () => {

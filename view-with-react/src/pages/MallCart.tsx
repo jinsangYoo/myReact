@@ -2,7 +2,7 @@ import React, { useState, useReducer, useEffect, useCallback, useLayoutEffect } 
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useCart, ProductForType, useProduct, IStateToOrder } from '../hooks'
+import { useCart, ProductForType, useProduct, IStateToOrder, useACSDK } from '../hooks'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
 import { VariantType, useSnackbar } from 'notistack'
@@ -41,6 +41,14 @@ export default function MallCart() {
   const handleRemoveCart = (product: ProductForType) => {
     if (!product) return
     removeProduct(product)
+    useACSDK({
+      type: ACParams.TYPE.DELCART,
+      msg: `${title}_DELCART`,
+      randomValue: randomValueForScreen,
+      cart: {
+        products: [product]
+      }
+    })
     enqueueSnackbar('장바구니 제품을 제거 했습니다.', { variant: 'success' })
   }
   const handleGoToProductDetail = (product: ProductForType) => {
@@ -58,8 +66,16 @@ export default function MallCart() {
     handleClickVariant('전체 장바구니 제품을 제거 했습니다.', 'success')
   }
   const handleRandom5AddCart = () => {
-    const products = makeFakeProducts(5)
-    addProducts(products)
+    const _products = makeFakeProducts(5)
+    addProducts(_products)
+    useACSDK({
+      type: ACParams.TYPE.ADDCART,
+      msg: `${title}_ADDCART`,
+      randomValue: randomValueForScreen,
+      cart: {
+        products: _products
+      }
+    })
   }
   const handleClickVariant = (message: string, variant: VariantType) => () => {
     // variant could be success, error, warning, info, or default

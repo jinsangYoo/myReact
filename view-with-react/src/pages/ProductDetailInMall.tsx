@@ -106,13 +106,15 @@ const ProductDetailInMall = () => {
   const { setProductInTempNewOrderWithCalculateTotalPrice } = useOrder()
 
   const handleRandom5AddCart = () => {
-    const porducts = makeFakeProducts(5)
-    addProducts(porducts)
+    const _products = makeFakeProducts(5)
+    addProducts(_products)
     useACSDK({
       type: ACParams.TYPE.ADDCART,
       msg: `${title}_ADDCART`,
       randomValue: randomValueForScreen,
-      products: porducts
+      cart: {
+        products: _products
+      }
     })
     enqueueSnackbar('장바구니에 추가 했습니다.', { variant: 'success' })
   }
@@ -126,7 +128,9 @@ const ProductDetailInMall = () => {
       type: ACParams.TYPE.ADDCART,
       msg: `${title}_ADDCART`,
       randomValue: randomValueForScreen,
-      products: [{ ...argProduct, quantity: productQuantity, optionCode: productOption }]
+      cart: {
+        products: [{ ...argProduct, quantity: productQuantity, optionCode: productOption }]
+      }
     })
     enqueueSnackbar('장바구니에 추가 했습니다.', { variant: 'success' })
   }

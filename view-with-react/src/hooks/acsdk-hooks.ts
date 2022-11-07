@@ -17,10 +17,13 @@ interface ACSDKProps {
   msg: string
   randomValue?: string
   product?: ProductForType
-  products?: ProductForType[]
   buy?: {
     orderNumber: string
     payMethodName: string
+    products?: ProductForType[]
+  }
+  cart?: {
+    products?: ProductForType[]
   }
   join?: {
     userId: string
@@ -51,18 +54,7 @@ const convertProductForTypeToACProduct = (products: ProductForType[]) =>
     )
   })
 
-const useACSDK = ({
-  type,
-  msg,
-  randomValue,
-  product,
-  products,
-  buy,
-  join,
-  leave,
-  login,
-  search
-}: ACSDKProps) => {
+const useACSDK = ({ type, msg, randomValue, product, buy, cart, join, leave, login, search }: ACSDKProps) => {
   const url = `>>${msg}<< >>${randomValue}<<`
   const params = ACParams.init(type, url)
 
@@ -70,18 +62,22 @@ const useACSDK = ({
     case ACParams.TYPE.ADDCART:
     case ACParams.TYPE.DELCART:
       params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
-      if (products) {
-        params.products = convertProductForTypeToACProduct(products)
+      if (cart) {
+        if (cart.products) {
+          params.products = convertProductForTypeToACProduct(cart.products)
+        }
       }
+
       break
     case ACParams.TYPE.BUY_DONE:
+    case ACParams.TYPE.BUY_CANCEL:
       params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
-      if (products) {
-        params.products = convertProductForTypeToACProduct(products)
-      }
       if (buy) {
         params.orderNumber = buy.orderNumber
         params.payMethodName = buy.payMethodName
+        if (buy.products) {
+          params.products = convertProductForTypeToACProduct(buy.products)
+        }
       }
       break
     case ACParams.TYPE.APPEAR_PRODUCT:

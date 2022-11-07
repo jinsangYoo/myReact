@@ -100,10 +100,10 @@ const MallMakeOrder = () => {
       type: ACParams.TYPE.BUY_DONE,
       msg: `${title}_BUY_DONE`,
       randomValue: randomValueForScreen,
-      products: newOrder.products,
       buy: {
         orderNumber: newOrder.orderNumber,
-        payMethodName: newOrder.payMethodName
+        payMethodName: newOrder.payMethodName,
+        products: newOrder.products
       }
     })
   }
