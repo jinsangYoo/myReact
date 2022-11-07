@@ -40,6 +40,12 @@ interface ACSDKProps {
   search?: {
     keyword: string
   }
+  link?: {
+    linkName: string
+  }
+  tel?: {
+    tel: string
+  }
 }
 
 const convertProductForTypeToACProduct = (products: ProductForType[]) =>
@@ -54,7 +60,20 @@ const convertProductForTypeToACProduct = (products: ProductForType[]) =>
     )
   })
 
-const useACSDK = ({ type, msg, randomValue, product, buy, cart, join, leave, login, search }: ACSDKProps) => {
+const useACSDK = ({
+  type,
+  msg,
+  randomValue,
+  product,
+  buy,
+  cart,
+  join,
+  leave,
+  login,
+  search,
+  link,
+  tel
+}: ACSDKProps) => {
   const url = `>>${msg}<< >>${randomValue}<<`
   const params = ACParams.init(type, url)
 
@@ -114,6 +133,20 @@ const useACSDK = ({ type, msg, randomValue, product, buy, cart, join, leave, log
     case ACParams.TYPE.SEARCH:
       if (search) {
         params.keyword = search.keyword
+      }
+      break
+
+    case ACParams.TYPE.LINK:
+      params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
+      if (link) {
+        params.linkName = link.linkName
+      }
+      break
+
+    case ACParams.TYPE.TEL:
+      params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
+      if (tel) {
+        params.tel = tel.tel
       }
       break
 

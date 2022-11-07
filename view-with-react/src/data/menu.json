@@ -27,7 +27,8 @@
       "subMenu": [
         { "id": "main", "name": "메인", "path": "main" },
         { "id": "cart", "name": "장바구니", "path": "cart" },
-        { "id": "order", "name": "주문 목록", "path": "orderList" }
+        { "id": "order", "name": "주문 목록", "path": "orderList" },
+        { "id": "etc", "name": "기타", "path": "etc" }
       ]
     },
     {

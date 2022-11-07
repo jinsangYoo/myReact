@@ -45,6 +45,7 @@ const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 const MallMakeOrder = () => {
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    document.title = msg
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
     sendCommonWithPromise(msg, params)
   }, [])

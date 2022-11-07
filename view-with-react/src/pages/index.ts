@@ -14,7 +14,17 @@ import MallCart from './MallCart'
 import MallMakeOrder from './MallMakeOrder'
 import MallOrderDone from './MallOrderDone'
 import MallOrderList from './MallOrderList'
-export { MallMain, MallInRouter, ProductDetailInMall, MallCart, MallMakeOrder, MallOrderDone, MallOrderList }
+import MallEtc from './MallEtc'
+export {
+  MallMain,
+  MallInRouter,
+  ProductDetailInMall,
+  MallCart,
+  MallMakeOrder,
+  MallOrderDone,
+  MallOrderList,
+  MallEtc
+}
 
 import EtcMain from './EtcMain'
 import EtcGrid from './EtcGrid'
