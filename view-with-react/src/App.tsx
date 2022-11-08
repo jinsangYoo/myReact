@@ -44,6 +44,9 @@ function App() {
         console.log('innerResult: ' + JSON.stringify(innerResult, null, 2))
         console.log(`2. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
         console.log('ACS.getDetail(): ' + JSON.stringify(ACS.getSdkDetails(), null, 2))
+        console.log('ACS.getSdkVersion(): ' + JSON.stringify(JSON.parse(ACS.getSdkVersion()), null, 2))
+        console.log('ACS.getTS(): ' + JSON.stringify(JSON.parse(ACS.getTS()), null, 2))
+        console.log('ACS.getKey(): ' + ACS.getKey())
       } else {
         console.log('SDK CB 초기화::finally!!')
         console.log('error and innerResult is undefined.')
