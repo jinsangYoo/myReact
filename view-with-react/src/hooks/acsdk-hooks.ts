@@ -60,7 +60,7 @@ const convertProductForTypeToACProduct = (products: ProductForType[]) =>
     )
   })
 
-const useACSDK = ({
+const ACSDK = ({
   type,
   msg,
   randomValue,
@@ -157,4 +157,4 @@ const useACSDK = ({
   sendCommonWithPromise(url, params)
 }
 
-export default useACSDK
+export default ACSDK

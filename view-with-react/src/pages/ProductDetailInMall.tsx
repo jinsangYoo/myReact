@@ -3,15 +3,7 @@ import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import {
-  ProductForType,
-  useProduct,
-  useCart,
-  CustomizedHook,
-  useOrder,
-  IStateToOrder,
-  useACSDK
-} from '../hooks'
+import { ProductForType, useProduct, useCart, CustomizedHook, useOrder, IStateToOrder, ACSDK } from '../hooks'
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { Link, useNavigate } from 'react-router-dom'
@@ -53,7 +45,7 @@ const ProductDetailInMall = () => {
   const { product } = useProduct()
   console.log(`init 제품: ${JSON.stringify(product, null, 2)}`)
   useEffect(() => {
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.APPEAR_PRODUCT,
       msg: `${title}_APPEAR_PRODUCT`,
       randomValue: randomValueForScreen,
@@ -108,7 +100,7 @@ const ProductDetailInMall = () => {
   const handleRandom5AddCart = () => {
     const _products = makeFakeProducts(5)
     addProducts(_products)
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.ADDCART,
       msg: `${title}_ADDCART`,
       randomValue: randomValueForScreen,
@@ -124,7 +116,7 @@ const ProductDetailInMall = () => {
 
     const productPrice = isNaN(Number(argProduct.productPrice)) ? 0 : Number(argProduct.productPrice)
     argProduct.totalPrice = productQuantity * productPrice
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.ADDCART,
       msg: `${title}_ADDCART`,
       randomValue: randomValueForScreen,

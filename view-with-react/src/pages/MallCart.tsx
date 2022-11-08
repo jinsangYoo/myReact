@@ -2,7 +2,7 @@ import React, { useState, useReducer, useEffect, useCallback, useLayoutEffect } 
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useCart, ProductForType, useProduct, IStateToOrder, useACSDK } from '../hooks'
+import { useCart, ProductForType, useProduct, IStateToOrder, ACSDK } from '../hooks'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
 import { VariantType, useSnackbar } from 'notistack'
@@ -42,7 +42,7 @@ export default function MallCart() {
   const handleRemoveCart = (product: ProductForType) => {
     if (!product) return
     removeProduct(product)
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.DELCART,
       msg: `${title}_DELCART`,
       randomValue: randomValueForScreen,
@@ -69,7 +69,7 @@ export default function MallCart() {
   const handleRandom5AddCart = () => {
     const _products = makeFakeProducts(5)
     addProducts(_products)
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.ADDCART,
       msg: `${title}_ADDCART`,
       randomValue: randomValueForScreen,

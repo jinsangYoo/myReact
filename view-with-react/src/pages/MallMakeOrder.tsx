@@ -15,7 +15,7 @@ import {
   OrderType,
   CustomizedHook,
   useProduct,
-  useACSDK
+  ACSDK
 } from '../hooks'
 
 import {
@@ -53,9 +53,9 @@ const MallMakeOrder = () => {
   const { resetProduct } = useProduct()
   const { productId } = useParams()
   const { state } = useLocation() as StateTypeForLocationOrder
-  const { addOrder } = useOrder()
+  const { order, addOrder } = useOrder()
   const [orderName, setOrderName] = useState(faker.name.firstName())
-  const { removeAllInCart, removeProduct } = useCart()
+  const { removeAllInCart, removeProduct, productsInCart } = useCart()
   const [defaultPayMethodIndex] = useState(getRandomIntInclusive(0, 5))
   const samplesPayMethods = React.useMemo(
     () => ['cash', 'kakao pay', 'naver pay', 'credit card', 'smile pay', 'payco'],
@@ -73,7 +73,6 @@ const MallMakeOrder = () => {
     products: []
   }
   if (state.myState.from === 'cart') {
-    const { productsInCart } = useCart()
     newOrder.orderNumber = faker.datatype.uuid()
     if (productId) {
       newOrder.products = productsInCart.filter((product) => product.productId === productId)
@@ -81,7 +80,6 @@ const MallMakeOrder = () => {
       newOrder.products = productsInCart
     }
   } else if (state.myState.from === 'detail') {
-    const { order } = useOrder()
     newOrder = order
   }
 
@@ -97,7 +95,7 @@ const MallMakeOrder = () => {
     newOrder.ordererName = orderName
     addOrder(newOrder)
 
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.BUY_DONE,
       msg: `${title}_BUY_DONE`,
       randomValue: randomValueForScreen,

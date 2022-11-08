@@ -28,8 +28,8 @@ export { OrderProvider, useOrder, randomGetPayMethod }
 import type { IStateToOrder } from './location-hooks'
 export { IStateToOrder }
 
-import useACSDK from './acsdk-hooks'
-export { useACSDK }
+import ACSDK from './acsdk-hooks'
+export { ACSDK }
 
 import type { MemberProps } from './member-hooks'
 export { MemberProps }

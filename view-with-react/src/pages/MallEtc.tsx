@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 
 import { faker } from '@faker-js/faker'
-import { useACSDK } from '../hooks'
+import { ACSDK } from '../hooks'
 
 import {
   AceConfiguration,
@@ -30,7 +30,7 @@ const MallEtc = () => {
   }, [])
 
   const handleLink = () => {
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.LINK,
       msg: `URL_10`,
       randomValue: randomValueForScreen,
@@ -41,7 +41,7 @@ const MallEtc = () => {
   }
 
   const handleTel = () => {
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.TEL,
       msg: `${title}_TEL`,
       randomValue: randomValueForScreen,

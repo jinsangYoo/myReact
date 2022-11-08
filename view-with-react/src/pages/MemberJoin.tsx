@@ -6,8 +6,6 @@ import Typography from '@mui/material/Typography'
 import { faker } from '@faker-js/faker'
 import Avatar from 'react-avatar'
 
-import { CustomizedHook, useACSDK } from '../hooks'
-
 import {
   AceConfiguration,
   ACParams,
@@ -18,12 +16,12 @@ import {
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
-import { useMember } from '../hooks'
+import { useMember, ACSDK } from '../hooks'
 
 const title = 'memeber_회원가입'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 const MemberJoin = () => {
-  useACSDK({
+  ACSDK({
     type: ACParams.TYPE.EVENT,
     msg: title,
     randomValue: randomValueForScreen
@@ -32,7 +30,7 @@ const MemberJoin = () => {
   const { member, isLogin, login } = useMember()
   const [memberId, setMemberId] = useState(member?.id ?? faker.name.lastName)
   const handleAPI = () => {
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.JOIN,
       msg: `${title}_join`,
       randomValue: randomValueForScreen,

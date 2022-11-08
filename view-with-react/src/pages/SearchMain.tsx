@@ -4,7 +4,7 @@ import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { faker } from '@faker-js/faker'
 
-import { useACSDK } from '../hooks'
+import { ACSDK } from '../hooks'
 
 import {
   AceConfiguration,
@@ -20,7 +20,7 @@ import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '
 const title = 'search_키워드'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 const SearchMain = () => {
-  useACSDK({
+  ACSDK({
     type: ACParams.TYPE.EVENT,
     msg: title,
     randomValue: randomValueForScreen
@@ -30,7 +30,7 @@ const SearchMain = () => {
     `${faker.commerce.product()}${getRandomIntInclusive(0, 999).toString()}`
   )
   const handleAPI = () => {
-    useACSDK({
+    ACSDK({
       type: ACParams.TYPE.SEARCH,
       msg: `${title}_search`,
       randomValue: randomValueForScreen,
