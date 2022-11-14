@@ -1,4 +1,5 @@
 import React, { useLayoutEffect } from 'react'
+import { regSw, subscribe } from '../helper'
 import {
   AceConfiguration,
   ACParams,
@@ -20,10 +21,20 @@ export default function PersonalMain() {
     sendCommonWithPromise(msg, params)
   }, [])
 
+  async function registerAndSubscribe() {
+    try {
+      const serviceWorkerReg = await regSw()
+      await subscribe(serviceWorkerReg)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div>
       <p>대문 메인 입니다.</p>
       <Button label="사이트 첫화면!!" />
+      <button onClick={registerAndSubscribe}>subscribe for push notifications</button>
     </div>
   )
 }

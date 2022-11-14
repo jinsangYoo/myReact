@@ -3,12 +3,48 @@ const path = require('path')
 const { faker } = require('@faker-js/faker')
 const app = express()
 const colors = require('colors')
+const webPush = require('web-push')
 const cors = require('cors')
 app.use(cors())
 
 app.use(express.static(path.join(__dirname, './view-with-react/build')))
 
 let isDisableKeepAlive = false
+
+app.use(express.urlencoded({ extended: false }))
+
+app.post('/subscribe', async (req, res, next) => {
+  console.log('===== POST call')
+  console.log('***** req.headers: >>' + JSON.stringify(req.headers) + '<<')
+
+  console.log('***** req.url: ' + JSON.stringify(req.url))
+  console.log('***** req.query: ' + JSON.stringify(req.query))
+  console.log('***** req.body: ' + JSON.stringify(req.body))
+
+  const options = {
+    vapidDetails: {
+      subject: 'mailto:myemail@example.com',
+      publicKey: process.env.PUBLIC_KEY,
+      privateKey: process.env.PRIVATE_KEY
+    }
+  }
+  try {
+    const res2 = await webPush.sendNotification(
+      newSubscription,
+      JSON.stringify({
+        title: 'Hello from server',
+        description: 'this message is coming from the server',
+        image:
+          'https://cdn2.vectorstock.com/i/thumb-large/94/66/emoji-smile-icon-symbol-smiley-face-vector-26119466.jpg'
+      }),
+      options
+    )
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(error)
+    res.sendStatus(500)
+  }
+})
 
 // keep-alive 해제용 미들웨어
 app.use(function (req, res, next) {

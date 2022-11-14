@@ -20,38 +20,41 @@ function App() {
     console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
 
     const _config = AceConfiguration.init(gcodeSelector())
-    // ACS.configure(_config)
-    //   .then(response => {
-    //     console.log('SDK Promise 초기화::in then!!')
-    //     console.log('response: ' + JSON.stringify(response, null, 2))
-    //     console.log(
-    //       'ACS.getDetail(): ' + JSON.stringify(ACS.getDetail(), null, 2),
-    //     )
-    //   })
-    //   .catch(err => {
-    //     console.log('SDK Promise 초기화::in reject!!')
-    //     console.log('err: ' + JSON.stringify(err, null, 2))
-    //   })
-    ACS.configure(_config, (error?: object, innerResult?: ACEResponseToCaller) => {
-      if (error) {
-        console.log('SDK CB 초기화::in error!!')
-        console.log(`error: ${error}`)
-        if (innerResult) {
-          console.log('innerResult: ' + JSON.stringify(innerResult, null, 2))
-        }
-      } else if (innerResult) {
-        console.log('SDK CB 초기화::in innerResult!!')
-        console.log('innerResult: ' + JSON.stringify(innerResult, null, 2))
-        console.log(`2. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
+    ACS.configure(_config)
+      .then((response) => {
+        console.log('SDK Promise 초기화::in then!!')
+        console.log('response: ' + JSON.stringify(response, null, 2))
+        console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
         console.log('ACS.getDetail(): ' + JSON.stringify(ACS.getSdkDetails(), null, 2))
         console.log('ACS.getSdkVersion(): ' + JSON.stringify(JSON.parse(ACS.getSdkVersion()), null, 2))
         console.log('ACS.getTS(): ' + JSON.stringify(JSON.parse(ACS.getTS()), null, 2))
         console.log('ACS.getKey(): ' + ACS.getKey())
-      } else {
-        console.log('SDK CB 초기화::finally!!')
-        console.log('error and innerResult is undefined.')
-      }
-    })
+      })
+      .catch((err) => {
+        console.log('SDK Promise 초기화::in reject!!')
+        console.log('err: ' + JSON.stringify(err, null, 2))
+      })
+
+    // ACS.configure(_config, (error?: object, innerResult?: ACEResponseToCaller) => {
+    //   if (error) {
+    //     console.log('SDK CB 초기화::in error!!')
+    //     console.log(`error: ${error}`)
+    //     if (innerResult) {
+    //       console.log('innerResult: ' + JSON.stringify(innerResult, null, 2))
+    //     }
+    //   } else if (innerResult) {
+    //     console.log('SDK CB 초기화::in innerResult!!')
+    //     console.log('innerResult: ' + JSON.stringify(innerResult, null, 2))
+    //     console.log(`2. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
+    //     console.log('ACS.getDetail(): ' + JSON.stringify(ACS.getSdkDetails(), null, 2))
+    //     console.log('ACS.getSdkVersion(): ' + JSON.stringify(JSON.parse(ACS.getSdkVersion()), null, 2))
+    //     console.log('ACS.getTS(): ' + JSON.stringify(JSON.parse(ACS.getTS()), null, 2))
+    //     console.log('ACS.getKey(): ' + ACS.getKey())
+    //   } else {
+    //     console.log('SDK CB 초기화::finally!!')
+    //     console.log('error and innerResult is undefined.')
+    //   }
+    // })
   }, [])
 
   const isPro = process.env.NODE_ENV === 'production' || false
