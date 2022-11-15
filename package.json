@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pm2 start ecosystem.config.js --only myReact-dev --env development",
-    "start": "pm2 start ecosystem.config.js --only myReact-pd --env production",
+    "pd": "pm2 start ecosystem.config.js --only myReact-pd --env production",
     "del-dev": "pm2 delete myReact-dev",
     "del-pd": "pm2 delete myReact-pd",
     "gen_vapid_keys": " web-push generate-vapid-keys [--json]"
@@ -20,6 +20,7 @@
   "dependencies": {
     "axios": "^1.1.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "web-push": "^3.5.0"
   },

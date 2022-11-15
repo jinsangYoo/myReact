@@ -11,14 +11,14 @@ async function regSw() {
 
 async function subscribe(serviceWorkerReg) {
   let subscription = await serviceWorkerReg.pushManager.getSubscription()
-  console.log({ subscription })
   if (subscription === null) {
+    console.log('subscription === null')
     subscription = await serviceWorkerReg.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey:
         'BCcrOlHCfMx6DB5qmU0Y0dUbnHAdPV7_V21MxqIaHsS4CrlkCS8EHoUqEJrM7JCjjUfVcXnPCGupqb-IRmi-LU8'
     })
-    axios.post('/subscribe', subscription)
+    axios.post('/subscribe', { subscription })
   }
 }
 

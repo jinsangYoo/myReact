@@ -1,17 +1,20 @@
+require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const { faker } = require('@faker-js/faker')
 const app = express()
 const colors = require('colors')
 const webPush = require('web-push')
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
 const cors = require('cors')
 app.use(cors())
 
 app.use(express.static(path.join(__dirname, './view-with-react/build')))
 
 let isDisableKeepAlive = false
-
-app.use(express.urlencoded({ extended: false }))
 
 app.post('/subscribe', async (req, res, next) => {
   console.log('===== POST call')
@@ -21,9 +24,11 @@ app.post('/subscribe', async (req, res, next) => {
   console.log('***** req.query: ' + JSON.stringify(req.query))
   console.log('***** req.body: ' + JSON.stringify(req.body))
 
+  const newSubscription = { ...req.body.subscription }
+  console.log('newSubscription: ', JSON.stringify(newSubscription, null, 2))
   const options = {
     vapidDetails: {
-      subject: 'mailto:myemail@example.com',
+      subject: 'mailto:milkybboy@gmail.com',
       publicKey: process.env.PUBLIC_KEY,
       privateKey: process.env.PRIVATE_KEY
     }
@@ -44,6 +49,7 @@ app.post('/subscribe', async (req, res, next) => {
     console.log(error)
     res.sendStatus(500)
   }
+  next()
 })
 
 // keep-alive 해제용 미들웨어
