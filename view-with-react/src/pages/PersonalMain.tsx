@@ -13,7 +13,7 @@ import {
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 
 import toast, { Toaster } from 'react-hot-toast'
-import { getMessagingHelper, initializeHelper, requestForToken, onMessageListener } from '../firebase'
+import { getMessagingHelper, requestForToken, onMessageListener, deleteForToken } from '../firebase'
 import { MessagePayload } from 'firebase/messaging'
 
 const title = '대문_main'
@@ -45,7 +45,7 @@ export default function PersonalMain() {
   }, [notification])
 
   useEffect(() => {
-    const messaging = getMessagingHelper(initializeHelper())
+    const messaging = getMessagingHelper()
     requestForToken(messaging)
       .then((currentToken) => {
         if (currentToken) {
@@ -60,13 +60,20 @@ export default function PersonalMain() {
         console.log('An error occurred while retrieving token. ', err)
       })
 
-    // onMessageListener(messaging)
-    //   .then((payload) => {
-    //     let pay = payload as MessagePayload
-    //     let noti? = payload?.notification as NotificationPayload
-    //     setNotification({ title: payload?.notification?.title, body: payload?.notification?.body })
-    //   })
-    //   .catch((err) => console.log('failed: ', err))
+    onMessageListener(messaging)
+      .then((result) => {
+        console.log('result: ', JSON.stringify(result, null, 2))
+        const payload = result as MessagePayload
+        if (payload) {
+          setNotification({
+            title: payload?.notification?.title ?? 'noTitle',
+            body: payload?.notification?.body ?? 'noBody'
+          })
+        } else {
+          console.log('failed type casting result to MessagePayload.')
+        }
+      })
+      .catch((err) => console.log('failed: ', err))
   }, [])
 
   async function registerAndSubscribe() {
@@ -78,11 +85,25 @@ export default function PersonalMain() {
     }
   }
 
+  async function deleteToken() {
+    try {
+      const result = await deleteForToken()
+        .then((result) => {
+          console.log('result: ', result)
+        })
+        .catch((err) => console.log('failed: ', err))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div>
       <p>대문 메인 입니다.</p>
       <Button label="사이트 첫화면!!" />
       <button onClick={registerAndSubscribe}>subscribe for push notifications</button>
+      <button onClick={deleteToken}>delete Token</button>
+      <Toaster />
     </div>
   )
 }

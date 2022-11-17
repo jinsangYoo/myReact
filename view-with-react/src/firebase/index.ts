@@ -1,2 +1,2 @@
-import { getMessagingHelper, initializeHelper, requestForToken, onMessageListener } from './firebase'
-export { getMessagingHelper, initializeHelper, requestForToken, onMessageListener }
+import { getMessagingHelper, requestForToken, onMessageListener, deleteForToken } from './firebase'
+export { getMessagingHelper, requestForToken, onMessageListener, deleteForToken }

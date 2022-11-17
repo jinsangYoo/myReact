@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp, FirebaseApp } from 'firebase/app'
-import { getMessaging, getToken, Messaging, onMessage } from 'firebase/messaging'
+import { initializeApp } from 'firebase/app'
+import { getMessaging, getToken, Messaging, onMessage, deleteToken } from 'firebase/messaging'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,19 +14,20 @@ const firebaseConfig = {
   appId: '1:684762241392:web:177fc37ac723ba274197b5'
 }
 
-const initializeHelper = () => {
-  // Initialize Firebase
-  return initializeApp(firebaseConfig)
-}
+initializeApp(firebaseConfig)
 
-const getMessagingHelper = (firebaseApp: FirebaseApp) => {
-  return getMessaging(firebaseApp)
+const getMessagingHelper = () => {
+  return getMessaging()
 }
 
 const requestForToken = async (messaging: Messaging) => {
   return getToken(messaging, {
     vapidKey: 'BNviTz8UP7lfhPSClfcDmSh5e-iv5R2pTqlSSiloZ6GFxFZAM4p4vjMyE1haT_MoBiRd3YiEqwUAPy4vZvN-xlQ'
   })
+}
+
+const deleteForToken = async () => {
+  return deleteToken(getMessaging())
 }
 
 const onMessageListener = (messaging: Messaging) =>
@@ -37,4 +38,4 @@ const onMessageListener = (messaging: Messaging) =>
     })
   })
 
-export { initializeHelper, getMessagingHelper, requestForToken, onMessageListener }
+export { getMessagingHelper, requestForToken, onMessageListener, deleteForToken }
