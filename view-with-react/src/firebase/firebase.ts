@@ -1,6 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
 import { getMessaging, getToken, Messaging, onMessage, deleteToken } from 'firebase/messaging'
+import { onBackgroundMessage } from 'firebase/messaging/sw'
+const { REACT_APP_VAPID_KEY } = process.env
+const publicKey = REACT_APP_VAPID_KEY
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,7 +26,7 @@ const getMessagingHelper = () => {
 
 const requestForToken = async (messaging: Messaging) => {
   return getToken(messaging, {
-    vapidKey: 'BNviTz8UP7lfhPSClfcDmSh5e-iv5R2pTqlSSiloZ6GFxFZAM4p4vjMyE1haT_MoBiRd3YiEqwUAPy4vZvN-xlQ'
+    vapidKey: publicKey
   })
 }
 
@@ -33,7 +37,7 @@ const deleteForToken = async () => {
 const onMessageListener = (messaging: Messaging) =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
-      console.log('payload', payload)
+      console.log('onMessage::payload', payload)
       resolve(payload)
     })
   })

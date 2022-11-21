@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 import { BrowserRouter as Router } from 'react-router-dom'
 import DefaultLayout from './components/layout/DefaultLayout'
@@ -13,6 +13,11 @@ import {
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
 import { gcodeSelector } from './utils'
+import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from './utils'
+
+import toast, { Toaster } from 'react-hot-toast'
+import { getMessagingHelper, requestForToken, onMessageListener } from './firebase'
+import { MessagePayload } from 'firebase/messaging'
 
 function App() {
   useEffect(() => {
@@ -65,10 +70,75 @@ function App() {
     `NODE_ENV: &gt;&gt;${process.env.NODE_ENV}&lt;&lt;, REACT_APP_MODE: &gt;&gt;${process.env.REACT_APP_MODE}&lt;&lt;`
   )
 
+  const [notification, setNotification] = useState({ title: '', body: '' })
+  const notify = () => toast(<ToastDisplay />)
+  function ToastDisplay() {
+    return (
+      <div>
+        <p>
+          <b>{notification?.title}</b>
+        </p>
+        <p>{notification?.body}</p>
+      </div>
+    )
+  }
+
+  useEffect(() => {
+    if (notification?.title) {
+      notify()
+    }
+  }, [notification])
+
+  useEffect(() => {
+    const messaging = getMessagingHelper()
+    requestForToken(messaging)
+      .then((currentToken) => {
+        if (currentToken) {
+          console.log('current token for client: ', currentToken)
+          // Perform any other neccessary action with the token
+          toast(
+            <div>
+              <p>{currentToken}</p>
+            </div>
+          )
+        } else {
+          // Show permission request UI
+          console.log('No registration token available. Request permission to generate one.')
+        }
+      })
+      .catch((err) => {
+        console.log('An error occurred while retrieving token. ', err)
+      })
+
+    onMessageListener(messaging)
+      .then((result) => {
+        console.log('onMessageListener::result: ', JSON.stringify(result, null, 2))
+        const payload = result as MessagePayload
+        if (payload) {
+          setNotification({
+            title: payload?.notification?.title ?? 'noTitle',
+            body: payload?.notification?.body ?? 'noBody'
+          })
+          if (payload.data) {
+            const msg = payload?.notification?.body ?? 'noBody'
+            const params = ACParams.init(ACParams.TYPE.PUSH, msg)
+            params.data = payload.data
+            sendCommonWithPromise(msg, params)
+          } else {
+            console.log('payload.data is empty.')
+          }
+        } else {
+          console.log('failed type casting result to MessagePayload.')
+        }
+      })
+      .catch((err) => console.log('failed: ', err))
+  }, [])
+
   return (
     <div>
       <Router>
         <DefaultLayout />
+        <Toaster />
       </Router>
     </div>
   )
