@@ -74,7 +74,7 @@ function App() {
   const notify = () => toast(<ToastDisplay />)
   function ToastDisplay() {
     return (
-      <div>
+      <div style={{ backgroundColor: 'yellowgreen' }}>
         <p>
           <b>{notification?.title}</b>
         </p>

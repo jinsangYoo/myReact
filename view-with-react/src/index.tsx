@@ -5,6 +5,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { MenuProvider, ProductProvider, CartProvider, OrderProvider, MemberProvider } from './hooks'
 import { SnackbarProvider } from 'notistack'
+import { registerServiceWorker } from './serviceWorker'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
@@ -27,3 +28,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals()
+registerServiceWorker()

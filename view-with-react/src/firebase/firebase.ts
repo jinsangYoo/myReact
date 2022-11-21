@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
 import { getMessaging, getToken, Messaging, onMessage, deleteToken } from 'firebase/messaging'
-import { onBackgroundMessage } from 'firebase/messaging/sw'
 const { REACT_APP_VAPID_KEY } = process.env
 const publicKey = REACT_APP_VAPID_KEY
 

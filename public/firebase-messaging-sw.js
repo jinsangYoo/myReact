@@ -25,8 +25,14 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = 'Background Message Title'
   const notificationOptions = {
     body: 'Background Message body.',
-    icon: '/logo192.png'
+    icon: '/logo192.png',
+    data: payload.data
   }
 
   self.registration.showNotification(notificationTitle, notificationOptions)
+})
+
+self.addEventListener('notificationclick', (event) => {
+  console.log('notificationclick', event)
+  return event
 })
