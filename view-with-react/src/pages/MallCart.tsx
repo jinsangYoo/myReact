@@ -86,7 +86,7 @@ export default function MallCart() {
   return (
     <>
       <h2>장바구니</h2>
-      <Container style={{ border: '3px solid #eee', padding: 10 }} fixed>
+      <Container style={{ border: '1px solid #eee', padding: 10 }} fixed>
         {productsInCart.length < 1 ? (
           <Container>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
