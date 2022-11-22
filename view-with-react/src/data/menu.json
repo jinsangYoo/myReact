@@ -22,7 +22,7 @@
     },
     {
       "id": "mall",
-      "name": "쇼핑몰(가상)",
+      "name": "커머스(가상)",
       "path": "mall",
       "subMenu": [
         { "id": "main", "name": "메인", "path": "main" },

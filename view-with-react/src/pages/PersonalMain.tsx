@@ -47,9 +47,8 @@ export default function PersonalMain() {
   return (
     <div>
       <p>대문 메인 입니다.</p>
-      <Button label="사이트 첫화면!!!!!!!!" />
-      <button onClick={registerAndSubscribe}>subscribe for push notifications</button>
-      <button onClick={deleteToken}>delete Token</button>
+      {/* <button onClick={registerAndSubscribe}>subscribe for push notifications</button> */}
+      <button onClick={deleteToken}>Delete FCM push token.</button>
     </div>
   )
 }
