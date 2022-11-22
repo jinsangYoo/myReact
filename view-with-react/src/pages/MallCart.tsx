@@ -86,7 +86,7 @@ export default function MallCart() {
   return (
     <>
       <h2>장바구니</h2>
-      <Container style={{ border: '1px solid #eee', padding: 10 }} fixed>
+      <Container style={{ border: '1px solid #eee', padding: 5 }} fixed>
         {productsInCart.length < 1 ? (
           <Container>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
@@ -94,9 +94,7 @@ export default function MallCart() {
                 Random 제품x5 추가
               </Button>
             </Box>
-            <div>
-              <p>장바구니가 비었습니다.</p>
-            </div>
+            <p>장바구니가 비었습니다.</p>
           </Container>
         ) : (
           <Container>
