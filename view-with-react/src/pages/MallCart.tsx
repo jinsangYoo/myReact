@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useCart, ProductForType, useProduct, IStateToOrder, ACSDK } from '../hooks'
 import { Link } from 'react-router-dom'
-import { Button } from '@mui/material'
+import { Button, Container, List, Paper, ListItem, ListItemText, Divider } from '@mui/material'
 import { VariantType, useSnackbar } from 'notistack'
 
 import {
@@ -86,9 +86,9 @@ export default function MallCart() {
   return (
     <>
       <h2>장바구니</h2>
-      <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
+      <Container style={{ border: '3px solid #eee', padding: 10 }} fixed>
         {productsInCart.length < 1 ? (
-          <>
+          <Container>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
               <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRandom5AddCart()}>
                 Random 제품x5 추가
@@ -97,9 +97,9 @@ export default function MallCart() {
             <div>
               <p>장바구니가 비었습니다.</p>
             </div>
-          </>
+          </Container>
         ) : (
-          <>
+          <Container>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
               <Typography sx={{ mr: 2, color: 'red' }}>제품 수: {productsInCart.length}</Typography>
               <Link
@@ -118,22 +118,27 @@ export default function MallCart() {
                 전체 삭제
               </Button>
             </Box>
-            <div>
+            <List>
               {productsInCart.map((product, index) => (
-                <Product
-                  key={index}
-                  index={index}
-                  product={product}
-                  onPressUpdateCart={handleUpdateCart}
-                  onPressRemoveCart={handleRemoveCart}
-                  onPressGoToProductDetailAddCart={handleGoToProductDetail}
-                  onPressGoToOrder={handleGoToOrder}
-                />
+                <>
+                  <Paper>
+                    <Product
+                      key={index}
+                      index={index}
+                      product={product}
+                      onPressUpdateCart={handleUpdateCart}
+                      onPressRemoveCart={handleRemoveCart}
+                      onPressGoToProductDetailAddCart={handleGoToProductDetail}
+                      onPressGoToOrder={handleGoToOrder}
+                    />
+                  </Paper>
+                  <Divider />
+                </>
               ))}
-            </div>
-          </>
+            </List>
+          </Container>
         )}
-      </div>
+      </Container>
     </>
   )
 }
@@ -147,57 +152,63 @@ function Product(props: {
   onPressGoToOrder: (p: ProductForType) => void
 }) {
   return (
-    <div style={{ borderBottom: '1px', borderBottomColor: '#eee', borderBottomStyle: 'solid' }}>
-      <Box sx={{ display: 'flex', p: 1, m: 1, alignItems: 'center' }}>
-        <Typography>
-          {props.index + 1}. 제품명: {props.product.productName}
-        </Typography>
-      </Box>
-      <Link to={'/mall/detail'} onClick={() => props.onPressGoToProductDetailAddCart(props.product)}>
-        <Image sx={{ width: '30%' }} src={props.product.productImg} alt="" />
-      </Link>
-      <Box sx={{ width: '100%' }}>
-        <Typography display="inline" variant="subtitle1" color="text.secondary">
-          제품 단가:{' '}
-          {Number(props.product.productPrice).toLocaleString(navigator.language, {
-            minimumFractionDigits: 0
-          })}{' '}
-          원
-        </Typography>
-
-        <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-          수량:{' '}
-          {Number(props.product.quantity).toLocaleString(navigator.language, {
-            minimumFractionDigits: 0
-          })}
-        </Typography>
-        {props.product.totalPrice && (
-          <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-            수량x가격:{' '}
-            {props.product.totalPrice.toLocaleString(navigator.language, {
-              minimumFractionDigits: 0
-            })}{' '}
-            원
-          </Typography>
-        )}
-        <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-          옵션코드: {props.product.optionCode ?? 'none'}
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
-        <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressRemoveCart(props.product)}>
-          장바구니 제거
-        </Button>
-        <Link
-          {...{ to: `/mall/makeorder/${props.product.productId}` }}
-          state={{ myState: { from: 'cart', prodcutId: props.product.productId } as IStateToOrder }}
-          style={{ textDecoration: 'none' }}
-        >
-          <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
-            개별 주문
-          </Button>
-        </Link>
-      </Box>
-    </div>
+    <ListItem alignItems="flex-start">
+      <ListItemText
+        sx={{ display: 'block' }}
+        primary={`${props.index + 1}. 제품명: ${props.product.productName}`}
+        secondary={
+          <>
+            <Link to={'/mall/detail'} onClick={() => props.onPressGoToProductDetailAddCart(props.product)}>
+              <Image sx={{ width: '50%', display: 'block' }} src={props.product.productImg} alt="" />
+            </Link>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography display="inline" variant="subtitle1" color="text.secondary">
+                제품 단가:{' '}
+                {Number(props.product.productPrice).toLocaleString(navigator.language, {
+                  minimumFractionDigits: 0
+                })}{' '}
+                원
+              </Typography>
+              <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
+                수량:{' '}
+                {Number(props.product.quantity).toLocaleString(navigator.language, {
+                  minimumFractionDigits: 0
+                })}
+              </Typography>
+              {props.product.totalPrice && (
+                <Typography display="inline" variant="subtitle1" color="text.secondary">
+                  수량x가격:{' '}
+                  {props.product.totalPrice.toLocaleString(navigator.language, {
+                    minimumFractionDigits: 0
+                  })}{' '}
+                  원
+                </Typography>
+              )}
+              <Typography display="inline" variant="subtitle1" color="text.secondary">
+                옵션코드: {props.product.optionCode ?? 'none'}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+              <Button
+                variant="outlined"
+                sx={{ mr: 1 }}
+                onClick={() => props.onPressRemoveCart(props.product)}
+              >
+                장바구니 제거
+              </Button>
+              <Link
+                {...{ to: `/mall/makeorder/${props.product.productId}` }}
+                state={{ myState: { from: 'cart', prodcutId: props.product.productId } as IStateToOrder }}
+                style={{ textDecoration: 'none' }}
+              >
+                <Button variant="outlined" onClick={() => props.onPressGoToOrder(props.product)}>
+                  개별 주문
+                </Button>
+              </Link>
+            </Box>
+          </>
+        }
+      />
+    </ListItem>
   )
 }

@@ -11,6 +11,8 @@ import FactoryContentPanelForMall from './FactoryContentPanelForMall'
 import FactoryContentPanelForMemeber from './FactoryContentPanelForMemeber'
 import FactoryContentPanelForSearch from './FactoryContentPanelForSearch'
 
+import { Paper } from '@mui/material'
+
 export default function FactoryContentPanels() {
   const { getDefaultMainMenuId, getDefaultSubMenuId } = useMenus()
   var { mainMenu, subMenu } = useParams()
@@ -18,7 +20,7 @@ export default function FactoryContentPanels() {
   if (!subMenu) subMenu = getDefaultSubMenuId()
 
   return (
-    <div>
+    <Paper style={{ margin: 10, padding: 10 }}>
       <Routes>
         <Route path="etc/*" element={<FactoryContentPanelForEtc />} />
         <Route path="search/*" element={<FactoryContentPanelForSearch />} />
@@ -28,6 +30,6 @@ export default function FactoryContentPanels() {
         <Route path="personal/*" element={<FactoryContentPanelForPersonal />} />
         <Route path="*" element={<FactoryContentPanelForPersonal />} />
       </Routes>
-    </div>
+    </Paper>
   )
 }
