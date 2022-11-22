@@ -34,5 +34,6 @@ messaging.onBackgroundMessage((payload) => {
 
 self.addEventListener('notificationclick', (event) => {
   console.log('notificationclick', event)
+  event.notification.close()
   return event
 })
