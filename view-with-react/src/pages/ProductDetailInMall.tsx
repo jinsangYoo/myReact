@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback, useMemo, useLayoutEffect } from 'react'
+import React, { useState, useReducer, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -33,7 +33,7 @@ export interface SampleType {
 const title = 'mall_제품 노출'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 const ProductDetailInMall = () => {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     document.title = msg
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)

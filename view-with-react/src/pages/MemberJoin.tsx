@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useReducer, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
@@ -21,11 +21,12 @@ import { useMember, ACSDK } from '../hooks'
 const title = 'memeber_회원가입'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 const MemberJoin = () => {
-  ACSDK({
-    type: ACParams.TYPE.EVENT,
-    msg: title,
-    randomValue: randomValueForScreen
-  })
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    document.title = msg
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
 
   const { member, isLogin, login } = useMember()
   const [memberId, setMemberId] = useState(member?.id ?? faker.name.lastName)

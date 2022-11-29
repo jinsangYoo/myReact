@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useReducer, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
@@ -20,11 +20,12 @@ import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '
 const title = 'search_키워드'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 const SearchMain = () => {
-  ACSDK({
-    type: ACParams.TYPE.EVENT,
-    msg: title,
-    randomValue: randomValueForScreen
-  })
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    document.title = msg
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
 
   const [keyword, setKeyword] = useState(
     `${faker.commerce.product()}${getRandomIntInclusive(0, 999).toString()}`
@@ -41,8 +42,8 @@ const SearchMain = () => {
   }
 
   return (
-    <div>
-      <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
+    <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
+      <div>
         <>
           <Typography sx={{ display: 'inline', ml: 1 }}>키워드: </Typography>
 
@@ -59,10 +60,7 @@ const SearchMain = () => {
       </div>
       <div
         style={{
-          width: '80%',
-          border: '3px solid #eee',
           display: 'flex',
-          padding: 10,
           flexDirection: 'row-reverse'
         }}
       >
