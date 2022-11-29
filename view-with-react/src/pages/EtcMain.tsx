@@ -1,4 +1,11 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useState, useReducer, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
+import TextField from '@mui/material/TextField'
+import { Button } from '@mui/material'
+import Typography from '@mui/material/Typography'
+import { faker } from '@faker-js/faker'
+
+import { ACSDK } from '../hooks'
+
 import {
   AceConfiguration,
   ACParams,
@@ -10,9 +17,9 @@ import {
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 
-const title = '기타_main'
+const title = '기타_pl'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-export default function EtcMain() {
+const EtcMain = () => {
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     document.title = msg
@@ -20,5 +27,45 @@ export default function EtcMain() {
     sendCommonWithPromise(msg, params)
   }, [])
 
-  return <p>기타 메인 입니다.</p>
+  const [newMsg, setNewMsg] = useState(`${faker.color.human()}_${getRandomIntInclusive(0, 999).toString()}`)
+
+  const handleAPI = () => {
+    ACSDK({
+      type: ACParams.TYPE.EVENT,
+      msg: newMsg,
+      randomValue: randomValueForScreen
+    })
+  }
+
+  return (
+    <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
+      <div>
+        <>
+          <Typography sx={{ display: 'inline', ml: 1 }}>임의 PL: </Typography>
+
+          <TextField
+            sx={{ ml: 1 }}
+            required
+            id="filled-required"
+            label="Required"
+            defaultValue={newMsg}
+            variant="filled"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMsg(e.currentTarget.value)}
+          />
+        </>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row-reverse'
+        }}
+      >
+        <Button variant="outlined" sx={{ ml: 1 }} onClick={handleAPI}>
+          A 전송
+        </Button>
+      </div>
+    </div>
+  )
 }
+
+export default EtcMain

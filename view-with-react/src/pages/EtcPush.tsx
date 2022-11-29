@@ -17,9 +17,9 @@ import {
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 
-const title = 'search_키워드'
+const title = '기타_push'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-const SearchMain = () => {
+const EtcPush = () => {
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     document.title = msg
@@ -27,17 +27,18 @@ const SearchMain = () => {
     sendCommonWithPromise(msg, params)
   }, [])
 
-  const [keyword, setKeyword] = useState(
-    `${faker.commerce.product()}${getRandomIntInclusive(0, 999).toString()}`
+  const [newMsg, setNewMsg] = useState(
+    `${faker.address.country()}_${getRandomIntInclusive(0, 999).toString()}`
   )
+
   const handleAPI = () => {
     ACSDK({
-      type: ACParams.TYPE.SEARCH,
-      msg: `${title}_search`,
-      randomValue: randomValueForScreen,
-      search: {
-        keyword: keyword
-      }
+      type: ACParams.TYPE.PUSH,
+      msg: title,
+      push: {
+        push: newMsg
+      },
+      randomValue: randomValueForScreen
     })
   }
 
@@ -45,16 +46,17 @@ const SearchMain = () => {
     <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
       <div>
         <>
-          <Typography sx={{ display: 'inline', ml: 1 }}>키워드: </Typography>
+          <Typography sx={{ display: 'inline', ml: 1 }}>임의 PUSH: </Typography>
 
           <TextField
-            sx={{ ml: 1 }}
+            fullWidth
             required
+            margin="dense"
             id="filled-required"
             label="Required"
-            defaultValue={keyword}
+            defaultValue={newMsg}
             variant="filled"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.currentTarget.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMsg(e.currentTarget.value)}
           />
         </>
       </div>
@@ -72,4 +74,4 @@ const SearchMain = () => {
   )
 }
 
-export default SearchMain
+export default EtcPush

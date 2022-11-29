@@ -159,7 +159,7 @@ const MallMakeOrder = () => {
           결제:
           <Link to="/mall/orderDone" style={{ textDecoration: 'none' }}>
             <Button variant="outlined" sx={{ ml: 1 }} onClick={handlePay}>
-              결제
+              A 결제
             </Button>
           </Link>
         </div>

@@ -136,7 +136,7 @@ const MemberLogin = () => {
         }}
       >
         <Button variant="outlined" sx={{ ml: 1 }} onClick={handleAPI}>
-          로그인
+          A 전송
         </Button>
       </div>
     </div>

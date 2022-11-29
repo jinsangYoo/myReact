@@ -7,7 +7,6 @@ import {
   ACEGender,
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
-import { getRandomIntInclusive } from '.'
 
 export function gcodeSelector(): string {
   return 'AK3A79964'

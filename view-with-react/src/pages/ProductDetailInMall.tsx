@@ -255,10 +255,10 @@ function Product(props: {
             />
           </Box>
           <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressRandom5AddCart()}>
-            Random 장바구니x5 추가
+            A Random 장바구니x5 추가
           </Button>
           <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressAddCart(props.product)}>
-            장바구니 추가
+            A 장바구니 추가
           </Button>
           <Link
             to="/mall/makeorder"
@@ -266,7 +266,7 @@ function Product(props: {
             style={{ textDecoration: 'none' }}
           >
             <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
-              주문서 작성
+              A 주문서 작성
             </Button>
           </Link>
         </Box>

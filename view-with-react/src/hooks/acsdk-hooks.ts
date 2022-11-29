@@ -46,6 +46,9 @@ interface ACSDKProps {
   tel?: {
     tel: string
   }
+  push?: {
+    push: string
+  }
 }
 
 const convertProductForTypeToACProduct = (products: ProductForType[]) =>
@@ -72,7 +75,8 @@ const ACSDK = ({
   login,
   search,
   link,
-  tel
+  tel,
+  push
 }: ACSDKProps) => {
   const url = `>>${msg}<< >>${randomValue}<<`
   const params = ACParams.init(type, url)
@@ -147,6 +151,12 @@ const ACSDK = ({
       params.memberKey = `멤버ID >>${randomValue && randomValue + 0}<<`
       if (tel) {
         params.tel = tel.tel
+      }
+      break
+
+    case ACParams.TYPE.PUSH:
+      if (push) {
+        params.push = push.push
       }
       break
 

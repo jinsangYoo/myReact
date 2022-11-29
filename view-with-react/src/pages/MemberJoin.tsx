@@ -69,7 +69,7 @@ const MemberJoin = () => {
         }}
       >
         <Button variant="outlined" sx={{ ml: 1 }} onClick={handleAPI}>
-          가입
+          A 전송
         </Button>
       </div>
     </div>

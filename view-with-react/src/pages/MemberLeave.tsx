@@ -69,7 +69,7 @@ const MemberLeave = () => {
         }}
       >
         <Button variant="outlined" sx={{ ml: 1 }} onClick={handleAPI}>
-          탈퇴
+          A 전송
         </Button>
       </div>
     </div>

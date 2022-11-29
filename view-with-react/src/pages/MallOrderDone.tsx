@@ -31,7 +31,7 @@ export default function MallOrderDone() {
       <div style={{ marginLeft: '20px' }}>
         <Link to="/mall/orderList" style={{ textDecoration: 'none' }}>
           <Button variant="outlined" sx={{ ml: 1 }} onClick={handlePay}>
-            주문 목록으로 이동
+            A 주문 목록으로 이동
           </Button>
         </Link>
       </div>

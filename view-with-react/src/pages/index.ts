@@ -27,8 +27,8 @@ export {
 }
 
 import EtcMain from './EtcMain'
-import EtcGrid from './EtcGrid'
-export { EtcMain, EtcGrid }
+import EtcPush from './EtcPush'
+export { EtcMain, EtcPush }
 
 import MemberLogin from './MemberLogin'
 import MemberJoin from './MemberJoin'

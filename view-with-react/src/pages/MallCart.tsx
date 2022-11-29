@@ -91,7 +91,7 @@ export default function MallCart() {
           <Container>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
               <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRandom5AddCart()}>
-                Random 제품x5 추가
+                A Random 제품x5 추가
               </Button>
             </Box>
             <p>장바구니가 비었습니다.</p>
@@ -106,11 +106,11 @@ export default function MallCart() {
                 style={{ textDecoration: 'none' }}
               >
                 <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleGoToOrders(productsInCart)}>
-                  전체 주문
+                  A 전체 주문
                 </Button>
               </Link>
               <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRandom5AddCart()}>
-                Random 장바구니x5 추가
+                A Random 장바구니x5 추가
               </Button>
               <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRemoveAllInCart()}>
                 전체 삭제
@@ -192,7 +192,7 @@ function Product(props: {
                 sx={{ mr: 1 }}
                 onClick={() => props.onPressRemoveCart(props.product)}
               >
-                장바구니 제거
+                A 장바구니 제거
               </Button>
               <Link
                 {...{ to: `/mall/makeorder/${props.product.productId}` }}
@@ -200,7 +200,7 @@ function Product(props: {
                 style={{ textDecoration: 'none' }}
               >
                 <Button variant="outlined" onClick={() => props.onPressGoToOrder(props.product)}>
-                  개별 주문
+                  A 개별 주문
                 </Button>
               </Link>
             </Box>
