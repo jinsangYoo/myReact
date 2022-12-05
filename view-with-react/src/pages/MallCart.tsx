@@ -4,7 +4,18 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useCart, ProductForType, useProduct, IStateToOrder, ACSDK } from '../hooks'
 import { Link } from 'react-router-dom'
-import { Button, Container, List, Paper, ListItem, ListItemText, Divider } from '@mui/material'
+import {
+  Button,
+  Container,
+  List,
+  Paper,
+  ListItem,
+  ListItemText,
+  Divider,
+  ListItemSecondaryAction,
+  IconButton
+} from '@mui/material'
+import { DeleteOutlined } from '@mui/icons-material'
 import { VariantType, useSnackbar } from 'notistack'
 
 import {
@@ -112,9 +123,9 @@ export default function MallCart() {
               <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRandom5AddCart()}>
                 A Random 장바구니x5 추가
               </Button>
-              <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRemoveAllInCart()}>
-                전체 삭제
-              </Button>
+              <IconButton aria-label="전체 삭제" onClick={() => handleRemoveAllInCart()}>
+                <DeleteOutlined />
+              </IconButton>
             </Box>
             <List>
               {productsInCart.map((product, index) => (

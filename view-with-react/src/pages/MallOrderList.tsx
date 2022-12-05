@@ -1,7 +1,17 @@
 import React, { useState, useReducer, useEffect, useCallback, useMemo, useLayoutEffect } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Button, Container, List, Paper, ListItem, ListItemText, Divider } from '@mui/material'
+import {
+  Button,
+  Container,
+  List,
+  Paper,
+  ListItem,
+  ListItemText,
+  Divider,
+  ListItemSecondaryAction,
+  IconButton
+} from '@mui/material'
 
 import { useOrder, OrderType, ACSDK } from '../hooks'
 import { useSnackbar } from 'notistack'
@@ -16,6 +26,7 @@ import {
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+import { DeleteOutlined } from '@mui/icons-material'
 
 const title = 'mall_주문목록'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
@@ -58,9 +69,9 @@ export default function MallOrderList() {
           <Container>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
               <Typography sx={{ mr: 2, color: 'red' }}>주문 수: {orders.length}</Typography>
-              <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRemoveAllInOrders()}>
-                전체 삭제
-              </Button>
+              <IconButton aria-label="전체 삭제" onClick={() => handleRemoveAllInOrders()}>
+                <DeleteOutlined />
+              </IconButton>
             </Box>
             <List sx={{ width: '100%', bgcolor: '' }}>
               {orders.map((order, index) => (
