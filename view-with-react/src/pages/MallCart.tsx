@@ -12,8 +12,10 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  InputBase,
   ListItemSecondaryAction,
-  IconButton
+  IconButton,
+  Grid
 } from '@mui/material'
 import { DeleteOutlined } from '@mui/icons-material'
 import { VariantType, useSnackbar } from 'notistack'
@@ -28,6 +30,7 @@ import {
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+import { padding } from '@mui/system'
 
 const Image = styled('img')({
   width: '100%',
@@ -46,9 +49,17 @@ export default function MallCart() {
 
   const { enqueueSnackbar } = useSnackbar()
   const { updateProduct } = useProduct()
-  const { productsInCart, removeAllInCart, removeProduct, makeFakeProducts, addProducts } = useCart()
+  const {
+    productsInCart,
+    updateProductInCart,
+    removeAllInCart,
+    removeProduct,
+    makeFakeProducts,
+    addProducts
+  } = useCart()
   const handleUpdateCart = (product: ProductForType) => {
     if (!product) return
+    updateProductInCart(product)
   }
   const handleRemoveCart = (product: ProductForType) => {
     if (!product) return
@@ -160,11 +171,42 @@ function Product(props: {
   onPressGoToProductDetailAddCart: (p: ProductForType) => void
   onPressGoToOrder: (p: ProductForType) => void
 }) {
+  const [readOnly, setReadOnly] = useState(true)
+  const turnOnReadOnly = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
+      setReadOnly(true)
+    }
+  }
+  const turnOffReadOnly = () => {
+    setReadOnly(false)
+  }
+  const editEventHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    props.product.productName = e.target.value
+    props.onPressUpdateCart(props.product)
+  }
+
   return (
     <ListItem alignItems="flex-start">
       <ListItemText
         sx={{ display: 'block' }}
-        primary={`${props.index + 1}. 제품명: ${props.product.productName}`}
+        primary={
+          <Grid container>
+            <Grid xs={2} md={2}>
+              {props.index + 1}. 제품명:
+            </Grid>
+            <Grid xs={10} md={10}>
+              <InputBase
+                size="small"
+                inputProps={{ 'aria-label': 'naked', readOnly: readOnly }}
+                fullWidth
+                value={props.product.productName ?? ''}
+                onClick={turnOffReadOnly}
+                onKeyDown={turnOnReadOnly}
+                onChange={editEventHandler}
+              />
+            </Grid>
+          </Grid>
+        }
         secondary={
           <>
             <Link to={'/mall/detail'} onClick={() => props.onPressGoToProductDetailAddCart(props.product)}>
