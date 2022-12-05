@@ -19,6 +19,7 @@ export type OrderType = {
   orderNumber: string
   payMethodName: string
   products: ProductForType[]
+  makeDate?: Date
 }
 
 const OrderContext = React.createContext({} as IOrderContext)

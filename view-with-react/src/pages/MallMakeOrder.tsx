@@ -93,6 +93,7 @@ const MallMakeOrder = () => {
       }
     }
     newOrder.ordererName = orderName
+    newOrder.makeDate = new Date()
     addOrder(newOrder)
 
     ACSDK({

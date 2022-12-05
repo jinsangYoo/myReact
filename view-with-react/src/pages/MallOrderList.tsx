@@ -10,7 +10,9 @@ import {
   ListItemText,
   Divider,
   ListItemSecondaryAction,
-  IconButton
+  IconButton,
+  Grid,
+  InputBase
 } from '@mui/material'
 
 import { useOrder, OrderType, ACSDK } from '../hooks'
@@ -74,7 +76,7 @@ export default function MallOrderList() {
               </IconButton>
             </Box>
             <List sx={{ width: '100%', bgcolor: '' }}>
-              {orders.map((order, index) => (
+              {orders.reverse().map((order, index) => (
                 <>
                   <Order key={index} index={index} order={order} onPressRemoveOrder={handleRemoveOrder} />
                   <Divider />
@@ -93,7 +95,22 @@ function Order(props: { index: number; order: OrderType; onPressRemoveOrder: (or
     <ListItem alignItems="flex-start">
       <ListItemText
         sx={{ display: 'block' }}
-        primary={`${props.index + 1}. 주문자: ${props.order.ordererName}`}
+        primary={
+          <Grid container>
+            <Grid xs={2} md={2}>
+              {props.index + 1}. 주문자:
+            </Grid>
+            <Grid xs={6} md={6}>
+              <InputBase
+                size="small"
+                inputProps={{ 'aria-label': 'naked' }}
+                fullWidth
+                value={props.order.ordererName ?? ''}
+              />
+            </Grid>
+            <Grid xs={4}>{props.order.makeDate?.toLocaleString() ?? ''}</Grid>
+          </Grid>
+        }
         secondary={
           <>
             <Container
