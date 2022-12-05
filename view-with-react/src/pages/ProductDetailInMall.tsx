@@ -265,7 +265,12 @@ function Product(props: {
             state={{ myState: { from: 'detail' } as IStateToOrder }}
             style={{ textDecoration: 'none' }}
           >
-            <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
+            <Button
+              variant="outlined"
+              sx={{ mr: 2 }}
+              color="secondary"
+              onClick={() => props.onPressGoToOrder(props.product)}
+            >
               A 주문서 작성
             </Button>
           </Link>
