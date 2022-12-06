@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "pm2 start ecosystem.config.js --only myReact-dev --env development",
     "pd": "pm2 start ecosystem.config.js --only myReact-pd --env production",
-    "del-dev": "pm2 delete myReact-dev",
-    "del-pd": "pm2 delete myReact-pd",
+    "del": "pm2 del all",
     "gen_vapid_keys": " web-push generate-vapid-keys [--json]"
   },
   "repository": {
