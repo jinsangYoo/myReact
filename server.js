@@ -1,4 +1,14 @@
 require('dotenv').config()
+var ip = require('ip')
+var http = require('http')
+var https = require('https')
+const fs = require('fs')
+const option = {
+  key: fs.readFileSync('key.pem', 'utf8'),
+  cert: fs.readFileSync('cert.pem', 'utf8'),
+  passphrase: 'tkfkdgo04'
+}
+
 const express = require('express')
 const path = require('path')
 const { faker } = require('@faker-js/faker')
@@ -219,17 +229,12 @@ app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, './view-with-react/build/index.html'))
 })
 
-const server = app.listen(8080, function () {
-  console.log('listening on 8080')
+//Start server
+const httpPort = 3000
+http.createServer(app).listen(httpPort, function () {
+  console.log('http://' + ip.address() + ':' + httpPort + '| start time : ' + new Date())
 })
-
-// 만일 process로부터 SIGINT 이벤트를 받으면..
-process.on('SIGINT', function () {
-  // SIGINT 시그널을 받으면 전역변수를 true로 만들어 앞으로 요청오면 종료해 버리게 만든다.
-  isDisableKeepAlive = true
-  // 어플리케이션을 닫음
-  server.close(function () {
-    console.log('server closed')
-    process.exit(0) // 정상 종료
-  })
+const httpsPort = 8080
+https.createServer(option, app).listen(httpsPort, function () {
+  console.log('https://' + ip.address() + ':' + httpsPort + '| start time : ' + new Date())
 })
