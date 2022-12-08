@@ -18,6 +18,7 @@ import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '
 import toast, { Toaster } from 'react-hot-toast'
 import { getMessagingHelper, requestForToken, onMessageListener } from './firebase'
 import { MessagePayload } from 'firebase/messaging'
+import { usePush } from './hooks'
 
 function App() {
   useEffect(() => {
@@ -89,6 +90,7 @@ function App() {
     }
   }, [notification])
 
+  const { setPushToken } = usePush()
   useEffect(() => {
     const messaging = getMessagingHelper()
     requestForToken(messaging)
@@ -96,6 +98,7 @@ function App() {
         if (currentToken) {
           console.log('current token for client: ', currentToken)
           // Perform any other neccessary action with the token
+          setPushToken(currentToken)
           toast(
             <div>
               <p>{currentToken}</p>

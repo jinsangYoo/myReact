@@ -3,24 +3,33 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { MenuProvider, ProductProvider, CartProvider, OrderProvider, MemberProvider } from './hooks'
+import {
+  PushProvider,
+  MenuProvider,
+  ProductProvider,
+  CartProvider,
+  OrderProvider,
+  MemberProvider
+} from './hooks'
 import { SnackbarProvider } from 'notistack'
 import { registerServiceWorker } from './serviceWorker'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <SnackbarProvider>
-    <MenuProvider>
-      <MemberProvider>
-        <OrderProvider>
-          <CartProvider>
-            <ProductProvider>
-              <App />
-            </ProductProvider>
-          </CartProvider>
-        </OrderProvider>
-      </MemberProvider>
-    </MenuProvider>
+    <PushProvider>
+      <MenuProvider>
+        <MemberProvider>
+          <OrderProvider>
+            <CartProvider>
+              <ProductProvider>
+                <App />
+              </ProductProvider>
+            </CartProvider>
+          </OrderProvider>
+        </MemberProvider>
+      </MenuProvider>
+    </PushProvider>
   </SnackbarProvider>
 )
 
