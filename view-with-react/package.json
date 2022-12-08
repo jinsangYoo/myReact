@@ -40,14 +40,15 @@
     "prettier": "^2.7.1"
   },
   "scripts": {
+    "prebuild": "node -p \"'export const REACT_FRONT_PART_VERSION = ' + JSON.stringify(require('./package.json').version)\" > src/version.ts",
     "start": "GENERATE_SOURCEMAP=false react-scripts start --reset-cache",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false npm run prebuild && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cover": "npm test -- --coverage",
     "lint": "eslint .",
     "prettier-all": "prettier --write 'src/.'",
-    "dev:start": "nodemon ./build/index.js",
+    "dev:start": "npm run prebuild && nodemon ./build/index.js",
     "dev": "npm-run-all --parallel build dev:*"
   },
   "eslintConfig": {
