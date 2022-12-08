@@ -71,7 +71,7 @@ const MallEtc = () => {
         </div>
         <div style={{ marginLeft: '20px' }}>
           <Button variant="outlined" sx={{ ml: 1 }} onClick={handleLink}>
-            Link API
+            A Link 전송
           </Button>
         </div>
       </div>
@@ -93,7 +93,7 @@ const MallEtc = () => {
         </div>
         <div style={{ marginLeft: '20px' }}>
           <Button variant="outlined" sx={{ ml: 1 }} onClick={handleTel}>
-            TEL API
+            A TEL 전송
           </Button>
         </div>
       </div>
