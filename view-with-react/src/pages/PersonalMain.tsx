@@ -7,14 +7,14 @@ import {
   ACEResponseToCaller,
   ACProduct,
   ACEGender,
-  ACEMaritalStatus,
-  Button
+  ACEMaritalStatus
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 
 import { deleteForToken } from '../firebase'
 import { REACT_FRONT_PART_VERSION } from '../version'
 import { usePush } from '../hooks'
+import { Button } from '@mui/material'
 
 const title = '대문_main'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
@@ -54,11 +54,21 @@ export default function PersonalMain() {
     <div>
       {/* <button onClick={registerAndSubscribe}>subscribe for push notifications</button> */}
       <p>react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}</p>
-      <pre>FCM token: {token}</pre>
+      <Button
+        variant="outlined"
+        onClick={() => {
+          navigator.clipboard.writeText(token)
+        }}
+      >
+        FCM token copy to clipboard
+      </Button>
+      <pre>{token}</pre>
       <pre>ACS SDK 버전: {ACS.getSdkVersion()}</pre>
       <pre>ACS SDK 활성화 여부: {enbaleInSDK.toString()}</pre>
       <pre>ACS SDK 현황: {JSON.stringify(detailInSDK, null, 2)}</pre>
-      <button onClick={deleteToken}>Delete FCM push token.</button>
+      <Button variant="outlined" onClick={deleteToken}>
+        Delete FCM push token.
+      </Button>
     </div>
   )
 }
