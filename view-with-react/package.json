@@ -42,7 +42,7 @@
   "scripts": {
     "prebuild": "node -p \"'export const REACT_FRONT_PART_VERSION = ' + JSON.stringify(require('./package.json').version)\" > src/version.ts",
     "start": "GENERATE_SOURCEMAP=false react-scripts start --reset-cache",
-    "build": "GENERATE_SOURCEMAP=false npm run prebuild && react-scripts build",
+    "build": "npm run prebuild && GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cover": "npm test -- --coverage",
