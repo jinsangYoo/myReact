@@ -230,11 +230,11 @@ app.get('*', function (req, res) {
 })
 
 //Start server
-const httpPort = 8080
+const httpPort = 3000
 http.createServer(app).listen(httpPort, function () {
   console.log('http://' + ip.address() + ':' + httpPort + '| start time : ' + new Date())
 })
-const httpsPort = 30000
+const httpsPort = 8080
 https.createServer(option, app).listen(httpsPort, function () {
   console.log('https://' + ip.address() + ':' + httpsPort + '| start time : ' + new Date())
 })
