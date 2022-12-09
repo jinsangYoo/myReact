@@ -122,7 +122,7 @@ function getProducts(
   setError: React.Dispatch<React.SetStateAction<Error | null>>,
   setLoading?: (value: React.SetStateAction<boolean>) => void
 ) {
-  fetch(`http://jinsang.myds.me/products`)
+  fetch(`https://jinsang.myds.me/products`)
     .then((res) => res.json())
     .then((res) => setProducts(res))
     .then(() => setLoading && setLoading(false))
