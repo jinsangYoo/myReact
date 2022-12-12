@@ -15,7 +15,7 @@ import { deleteForToken } from '../firebase'
 import { REACT_FRONT_PART_VERSION } from '../version'
 import { usePush } from '../hooks'
 import { Button, IconButton } from '@mui/material'
-import { Autorenew, AutorenewOutlined, AutorenewRounded } from '@mui/icons-material'
+import { AutorenewRounded } from '@mui/icons-material'
 
 const title = '대문_main'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
