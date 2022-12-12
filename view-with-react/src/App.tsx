@@ -16,8 +16,8 @@ import { gcodeSelector } from './utils'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from './utils'
 
 import toast, { Toaster } from 'react-hot-toast'
-import { getMessagingHelper, requestForToken, onMessageListener } from './firebase'
-import { MessagePayload } from 'firebase/messaging'
+import { getMessagingHelper, requestForToken } from './firebase'
+import { onMessage } from 'firebase/messaging'
 import { usePush } from './hooks'
 
 function App() {
@@ -113,28 +113,30 @@ function App() {
         console.log('An error occurred while retrieving token. ', err)
       })
 
-    onMessageListener(messaging)
-      .then((result) => {
-        console.log('onMessageListener::result: ', JSON.stringify(result, null, 2))
-        const payload = result as MessagePayload
-        if (payload) {
-          setNotification({
-            title: payload?.notification?.title ?? 'noTitle',
-            body: payload?.notification?.body ?? 'noBody'
-          })
-          if (payload.data) {
-            const msg = payload?.notification?.body ?? 'noBody'
-            const params = ACParams.init(ACParams.TYPE.PUSH, msg)
-            params.data = payload.data
-            sendCommonWithPromise(msg, params)
-          } else {
-            console.log('payload.data is empty.')
-          }
-        } else {
-          console.log('failed type casting result to MessagePayload.')
-        }
+    onMessage(messaging, (payload) => {
+      console.log(
+        `[${new Date().toLocaleDateString()}] in Ap::onMessage::${JSON.stringify(payload, null, 2)}`
+      )
+      setNotification({
+        title: payload?.notification?.title ?? 'noTitle',
+        body: payload?.notification?.body ?? 'noBody'
       })
-      .catch((err) => console.log('failed: ', err))
+      console.log(
+        `[${new Date().toLocaleDateString()}] in Ap::onMessageListener::payload.data: ${JSON.stringify(
+          payload.data,
+          null,
+          2
+        )}`
+      )
+      if (payload.data) {
+        const msg = payload?.notification?.body ?? 'noBody'
+        const params = ACParams.init(ACParams.TYPE.PUSH, msg)
+        params.data = payload.data
+        sendCommonWithPromise(msg, params)
+      } else {
+        console.log('in Ap::payload.data is empty.')
+      }
+    })
   }, [])
 
   return (

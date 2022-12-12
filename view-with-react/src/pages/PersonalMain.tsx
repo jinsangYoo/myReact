@@ -59,10 +59,10 @@ export default function PersonalMain() {
     <div>
       {/* <button onClick={registerAndSubscribe}>subscribe for push notifications</button> */}
       <p>
-        react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}
         <IconButton aria-label="갱신" onClick={() => handleRenew()}>
           <AutorenewRounded />
         </IconButton>
+        react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}
       </p>
       <Button
         variant="outlined"

@@ -1,7 +1,8 @@
-importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-app-compat.js')
-importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging-compat.js')
+//프로젝트 버전 확인
+importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js')
+importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging.js')
 
-const firebaseConfig = {
+const config = {
   apiKey: 'AIzaSyD4BPLxZiN6Ikg63_pXXIjJmFNWTw3Rdjs',
   authDomain: 'rnfornhndata.firebaseapp.com',
   projectId: 'rnfornhndata',
@@ -10,23 +11,21 @@ const firebaseConfig = {
   appId: '1:684762241392:web:177fc37ac723ba274197b5'
 }
 
-// Initialize the Firebase app in the service worker by passing in
-// your app's Firebase config object.
-// https://firebase.google.com/docs/web/setup#config-object
-firebase.initializeApp(firebaseConfig)
+// Initialize Firebase
+firebase.initializeApp(config)
 
-// Retrieve an instance of Firebase Messaging so that it can handle background
-// messages.
 const messaging = firebase.messaging()
 
-messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload)
+//백그라운드 서비스워커 설정
+messaging.onBackgroundMessage(messaging, (payload) => {
+  console.log('in [firebase-messaging-sw.js] ', new Date().toLocaleDateString())
+  console.log('Received background message ', payload)
+
   // Customize notification here
   const notificationTitle = 'Background Message Title'
   const notificationOptions = {
-    body: 'Background Message body.',
-    icon: '/logo192.png',
-    data: payload.data
+    body: payload,
+    icon: './logo512.png'
   }
 
   self.registration.showNotification(notificationTitle, notificationOptions)

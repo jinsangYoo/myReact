@@ -33,12 +33,4 @@ const deleteForToken = async () => {
   return deleteToken(getMessaging())
 }
 
-const onMessageListener = (messaging: Messaging) =>
-  new Promise((resolve) => {
-    onMessage(messaging, (payload) => {
-      console.log('onMessage::payload', payload)
-      resolve(payload)
-    })
-  })
-
-export { getMessagingHelper, requestForToken, onMessageListener, deleteForToken }
+export { getMessagingHelper, requestForToken, deleteForToken }
