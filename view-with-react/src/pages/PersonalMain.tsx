@@ -14,13 +14,14 @@ import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '
 import { deleteForToken } from '../firebase'
 import { REACT_FRONT_PART_VERSION } from '../version'
 import { usePush } from '../hooks'
-import { Button } from '@mui/material'
+import { Button, IconButton } from '@mui/material'
+import { Autorenew, AutorenewOutlined, AutorenewRounded } from '@mui/icons-material'
 
 const title = '대문_main'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function PersonalMain() {
-  const [enbaleInSDK] = useState(ACS.isEnableSDK())
-  const [detailInSDK] = useState(ACS.getSdkDetails())
+  const [enbaleInSDK, setEnbaleInSDK] = useState(ACS.isEnableSDK())
+  const [detailInSDK, setDetailInSDK] = useState(ACS.getSdkDetails())
   const { token } = usePush()
 
   useLayoutEffect(() => {
@@ -49,11 +50,20 @@ export default function PersonalMain() {
       console.log(error)
     }
   }
+  const handleRenew = () => {
+    setEnbaleInSDK(ACS.isEnableSDK())
+    setDetailInSDK(ACS.getSdkDetails())
+  }
 
   return (
     <div>
       {/* <button onClick={registerAndSubscribe}>subscribe for push notifications</button> */}
-      <p>react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}</p>
+      <p>
+        react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}
+        <IconButton aria-label="갱신" onClick={() => handleRenew()}>
+          <AutorenewRounded />
+        </IconButton>
+      </p>
       <Button
         variant="outlined"
         onClick={() => {
