@@ -1,1 +1,1 @@
-export const REACT_FRONT_PART_VERSION = "0.1.12"
+export const REACT_FRONT_PART_VERSION = "0.1.14"
