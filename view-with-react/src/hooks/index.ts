@@ -39,3 +39,6 @@ export { useMember, MemberProvider }
 
 import { usePush, PushProvider } from './push-hooks'
 export { usePush, PushProvider }
+
+import { useACSDKUtil, ACSDKUtilProvider } from './acsdk-util-hooks'
+export { useACSDKUtil, ACSDKUtilProvider }

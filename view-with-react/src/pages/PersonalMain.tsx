@@ -13,15 +13,14 @@ import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '
 
 import { deleteForToken } from '../firebase'
 import { REACT_FRONT_PART_VERSION } from '../version'
-import { usePush } from '../hooks'
+import { usePush, useACSDKUtil } from '../hooks'
 import { Button, IconButton } from '@mui/material'
 import { AutorenewRounded } from '@mui/icons-material'
 
 const title = '대문_main'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function PersonalMain() {
-  const [enbaleInSDK, setEnbaleInSDK] = useState(ACS.isEnableSDK())
-  const [detailInSDK, setDetailInSDK] = useState(ACS.getSdkDetails())
+  const { enable, setEnableInSDK, details, setDetailInSDK } = useACSDKUtil()
   const { token } = usePush()
 
   useLayoutEffect(() => {
@@ -51,8 +50,8 @@ export default function PersonalMain() {
     }
   }
   const handleRenew = () => {
-    setEnbaleInSDK(ACS.isEnableSDK())
-    setDetailInSDK(ACS.getSdkDetails())
+    setEnableInSDK(ACS.isEnableSDK())
+    setDetailInSDK(Object.assign(ACS.getSdkDetails()))
   }
 
   return (
@@ -74,8 +73,8 @@ export default function PersonalMain() {
       </Button>
       <pre>{token}</pre>
       <pre>ACS SDK 버전: {ACS.getSdkVersion()}</pre>
-      <pre>ACS SDK 활성화 여부: {enbaleInSDK.toString()}</pre>
-      <pre>ACS SDK 현황: {JSON.stringify(detailInSDK, null, 2)}</pre>
+      <pre>ACS SDK 활성화 여부: {enable.toString()}</pre>
+      <pre>ACS SDK 현황: {JSON.stringify(details, null, 2)}</pre>
       <Button variant="outlined" onClick={deleteToken}>
         Delete FCM push token.
       </Button>

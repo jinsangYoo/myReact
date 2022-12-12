@@ -9,7 +9,8 @@ import {
   ProductProvider,
   CartProvider,
   OrderProvider,
-  MemberProvider
+  MemberProvider,
+  ACSDKUtilProvider
 } from './hooks'
 import { SnackbarProvider } from 'notistack'
 import { registerServiceWorker } from './serviceWorker'
@@ -18,17 +19,19 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <SnackbarProvider>
     <PushProvider>
-      <MenuProvider>
-        <MemberProvider>
-          <OrderProvider>
-            <CartProvider>
-              <ProductProvider>
-                <App />
-              </ProductProvider>
-            </CartProvider>
-          </OrderProvider>
-        </MemberProvider>
-      </MenuProvider>
+      <ACSDKUtilProvider>
+        <MenuProvider>
+          <MemberProvider>
+            <OrderProvider>
+              <CartProvider>
+                <ProductProvider>
+                  <App />
+                </ProductProvider>
+              </CartProvider>
+            </OrderProvider>
+          </MemberProvider>
+        </MenuProvider>
+      </ACSDKUtilProvider>
     </PushProvider>
   </SnackbarProvider>
 )

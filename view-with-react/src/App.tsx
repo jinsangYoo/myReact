@@ -18,9 +18,10 @@ import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '
 import toast, { Toaster } from 'react-hot-toast'
 import { getMessagingHelper, requestForToken } from './firebase'
 import { onMessage } from 'firebase/messaging'
-import { usePush } from './hooks'
+import { usePush, useACSDKUtil } from './hooks'
 
 function App() {
+  const { setEnableInSDK, setDetailInSDK } = useACSDKUtil()
   useEffect(() => {
     console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
     console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
@@ -30,7 +31,9 @@ function App() {
       .then((response) => {
         console.log('SDK Promise 초기화::in then!!')
         console.log('response: ' + JSON.stringify(response, null, 2))
+        setEnableInSDK(ACS.isEnableSDK())
         console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
+        setDetailInSDK(Object.assign(ACS.getSdkDetails()))
         console.log('ACS.getDetail(): ' + JSON.stringify(ACS.getSdkDetails(), null, 2))
         console.log('ACS.getSdkVersion(): ' + JSON.stringify(JSON.parse(ACS.getSdkVersion()), null, 2))
         console.log('ACS.getTS(): ' + JSON.stringify(JSON.parse(ACS.getTS()), null, 2))
@@ -96,14 +99,9 @@ function App() {
     requestForToken(messaging)
       .then((currentToken) => {
         if (currentToken) {
-          console.log('current token for client: ', currentToken)
+          console.log('current push token for client: ', currentToken)
           // Perform any other neccessary action with the token
           setPushToken(currentToken)
-          toast(
-            <div>
-              <p>{currentToken}</p>
-            </div>
-          )
         } else {
           // Show permission request UI
           console.log('No registration token available. Request permission to generate one.')
@@ -122,7 +120,7 @@ function App() {
         body: payload?.notification?.body ?? 'noBody'
       })
       console.log(
-        `[${new Date().toLocaleDateString()}] in Ap::onMessageListener::payload.data: ${JSON.stringify(
+        `[${new Date().toLocaleDateString()}] in Ap::onMessage::payload.data: ${JSON.stringify(
           payload.data,
           null,
           2
