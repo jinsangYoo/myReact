@@ -16,7 +16,7 @@ import {
   ACEGender,
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
-import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+import { newFakeProducts, sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 
 const Image = styled('img')({
   width: '100%',
@@ -122,14 +122,32 @@ function getProducts(
   setError: React.Dispatch<React.SetStateAction<Error | null>>,
   setLoading?: (value: React.SetStateAction<boolean>) => void
 ) {
-  fetch(`https://jinsang.myds.me/products`)
-    .then((res) => res.json())
+  newFakeProductUsePromise()
     .then((res) => setProducts(res))
     .then(() => setLoading && setLoading(false))
     .catch((error: Error) => {
       setError(error)
     })
 }
+
+async function newFakeProductUsePromise() {
+  let oneTimeProductMAX = 10
+  return await newFakeProducts(oneTimeProductMAX)
+}
+
+// function getProductsOnJinsangNAS(
+//   setProducts: React.Dispatch<ProductForType[]>,
+//   setError: React.Dispatch<React.SetStateAction<Error | null>>,
+//   setLoading?: (value: React.SetStateAction<boolean>) => void
+// ) {
+//   fetch(`https://jinsang.myds.me/products`)
+//     .then((res) => res.json())
+//     .then((res) => setProducts(res))
+//     .then(() => setLoading && setLoading(false))
+//     .catch((error: Error) => {
+//       setError(error)
+//     })
+// }
 
 function Product(props: {
   index: number
