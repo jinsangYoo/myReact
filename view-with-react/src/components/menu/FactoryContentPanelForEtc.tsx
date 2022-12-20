@@ -9,7 +9,7 @@ export default function FactoryContentPanelForEtc() {
       <Routes>
         <Route path="push" element={<EtcPush />} />
         <Route path="main" element={<EtcMain />} />
-        <Route path="/*" element={<EtcMain />} />
+        <Route path="*" element={<EtcMain />} />
       </Routes>
     </div>
   )
