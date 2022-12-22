@@ -59,7 +59,7 @@ const EtcPush = () => {
           </Grid>
           <Grid item xs={12}>
             <Button fullWidth variant="contained" color="primary" onClick={handleAPI}>
-              A PL
+              A PUSH
             </Button>
           </Grid>
         </Grid>
