@@ -1,10 +1,7 @@
 import React, { useState, useReducer, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
-import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
-import { Button } from '@mui/material'
-import Typography from '@mui/material/Typography'
+import { Button, Container, Grid } from '@mui/material'
 import { faker } from '@faker-js/faker'
-import Avatar from 'react-avatar'
 
 import { CustomizedHook, ACSDK, useMember } from '../hooks'
 
@@ -78,68 +75,76 @@ const MemberLogin = () => {
   }
 
   return (
-    <div>
-      <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
-        <>
-          {isLogin() ? <Avatar name={memberId ?? 'new'} /> : <Avatar name={'new'} size="50" round={true} />}
-          <Typography sx={{ display: 'inline', ml: 1 }}>ID: </Typography>
-
-          <TextField
-            sx={{ ml: 1 }}
-            required
-            id="filled-required"
-            label="Required"
-            defaultValue={memberId}
-            variant="filled"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMemberId(e.currentTarget.value)}
-          />
-          <TextField
-            sx={{ ml: 1, width: 100 }}
-            required
-            id="filled-required"
-            label="Required"
-            defaultValue={memberAge}
-            variant="filled"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setMemberAge(Number(e.currentTarget.value) ?? 1)
-            }
-          />
-        </>
-      </div>
-      <div style={{ width: '80%', border: '3px solid #eee', display: 'flex', padding: 10 }}>
-        <div style={{ marginLeft: '20px' }}>
-          <CustomizedHook
-            labelName="성별"
-            defaultValueIndex={randomValueForGenderIndex}
-            minWidth={200}
-            samples={genders}
-            onSelectedOptions={handleSelectedGender}
-          />
-        </div>
-        <div style={{ marginLeft: '20px' }}>
-          <CustomizedHook
-            labelName="결혼 여부"
-            defaultValueIndex={randomValueForMaritalStatusIndex}
-            minWidth={200}
-            samples={maritalStatuses}
-            onSelectedOptions={handleSelectedMaritalStatus}
-          />
-        </div>
-      </div>
-      <div
-        style={{
-          width: '80%',
-          border: '3px solid #eee',
-          display: 'flex',
-          padding: 10,
-          flexDirection: 'row-reverse'
-        }}
-      >
-        <Button variant="outlined" sx={{ ml: 1 }} onClick={handleAPI}>
-          A 전송
-        </Button>
-      </div>
-    </div>
+    <Container component="main" maxWidth="xs" style={{ marginTop: '8%' }}>
+      <form noValidate>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="username"
+              label="아이디"
+              defaultValue={memberId}
+              name="username"
+              autoComplete="username"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMemberId(e.currentTarget.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="password"
+              label="패스워드 - 안써도 됨"
+              name="password"
+              autoComplete="current-password"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="age"
+              label="나이"
+              defaultValue={memberAge}
+              name="age"
+              autoComplete="age"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setMemberAge(Number(e.currentTarget.value) ?? 1)
+              }
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomizedHook
+              labelName="성별"
+              id="gender"
+              minWidth={200}
+              defaultValueIndex={randomValueForGenderIndex}
+              samples={genders}
+              onSelectedOptions={handleSelectedGender}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomizedHook
+              labelName="결혼 여부"
+              id="marital"
+              defaultValueIndex={randomValueForMaritalStatusIndex}
+              minWidth={200}
+              samples={maritalStatuses}
+              onSelectedOptions={handleSelectedMaritalStatus}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button fullWidth variant="contained" color="primary" onClick={handleAPI}>
+              A 로그인
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+    </Container>
   )
 }
 
