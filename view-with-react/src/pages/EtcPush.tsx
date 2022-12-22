@@ -1,7 +1,6 @@
 import React, { useState, useReducer, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import TextField from '@mui/material/TextField'
-import { Button } from '@mui/material'
-import Typography from '@mui/material/Typography'
+import { Button, Container, Grid } from '@mui/material'
 import { faker } from '@faker-js/faker'
 
 import { ACSDK } from '../hooks'
@@ -37,40 +36,35 @@ const EtcPush = () => {
       msg: title,
       push: {
         push: newMsg
-      },
-      randomValue: randomValueForScreen
+      }
     })
   }
 
   return (
-    <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
-      <div>
-        <>
-          <Typography sx={{ display: 'inline', ml: 1 }}>임의 PUSH: </Typography>
-
-          <TextField
-            fullWidth
-            required
-            margin="dense"
-            id="filled-required"
-            label="Required"
-            defaultValue={newMsg}
-            variant="filled"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMsg(e.currentTarget.value)}
-          />
-        </>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row-reverse'
-        }}
-      >
-        <Button variant="outlined" sx={{ ml: 1 }} onClick={handleAPI}>
-          A 전송
-        </Button>
-      </div>
-    </div>
+    <Container component="main" maxWidth="xs" style={{ marginTop: '8%' }}>
+      <form noValidate>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="custom_push"
+              label="임의 PUSH"
+              defaultValue={newMsg}
+              name="custom_push"
+              autoComplete="custom_push"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMsg(e.currentTarget.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button fullWidth variant="contained" color="primary" onClick={handleAPI}>
+              A PL
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+    </Container>
   )
 }
 

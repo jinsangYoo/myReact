@@ -1,7 +1,6 @@
 import React, { useState, useReducer, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import TextField from '@mui/material/TextField'
-import { Button } from '@mui/material'
-import Typography from '@mui/material/Typography'
+import { Button, Container, Grid } from '@mui/material'
 import { faker } from '@faker-js/faker'
 
 import { ACSDK } from '../hooks'
@@ -42,33 +41,30 @@ const SearchMain = () => {
   }
 
   return (
-    <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
-      <div>
-        <>
-          <Typography sx={{ display: 'inline', ml: 1 }}>키워드: </Typography>
-
-          <TextField
-            sx={{ ml: 1 }}
-            required
-            id="filled-required"
-            label="Required"
-            defaultValue={keyword}
-            variant="filled"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.currentTarget.value)}
-          />
-        </>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row-reverse'
-        }}
-      >
-        <Button variant="outlined" sx={{ ml: 1 }} onClick={handleAPI}>
-          A 전송
-        </Button>
-      </div>
-    </div>
+    <Container component="main" maxWidth="xs" style={{ marginTop: '8%' }}>
+      <form noValidate>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="keyword"
+              label="키워드"
+              defaultValue={keyword}
+              name="keyword"
+              autoComplete="keyword"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.currentTarget.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button fullWidth variant="contained" color="primary" onClick={handleAPI}>
+              A 검색
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+    </Container>
   )
 }
 
