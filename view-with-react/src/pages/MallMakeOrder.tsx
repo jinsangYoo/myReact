@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useReducer, useEffect, useCallback, useMemo, useLayoutEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
@@ -14,9 +14,20 @@ import {
   IStateToOrder,
   OrderType,
   CustomizedHook,
-  useProduct
+  useProduct,
+  ACSDK
 } from '../hooks'
-import { getRandomIntInclusive } from '../utils'
+
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus
+} from '@jinsang/slimer-react'
+import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 
 const Image = styled('img')({
   width: '100%',
@@ -29,13 +40,22 @@ interface StateTypeForLocationOrder {
   }
 }
 
-export default function MallMakeOrder() {
+const title = 'mall_주문서_작성'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
+const MallMakeOrder = () => {
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    document.title = msg
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   const { resetProduct } = useProduct()
   const { productId } = useParams()
   const { state } = useLocation() as StateTypeForLocationOrder
-  const { addOrder } = useOrder()
+  const { order, addOrder } = useOrder()
   const [orderName, setOrderName] = useState(faker.name.firstName())
-  const { removeAllInCart, removeProduct } = useCart()
+  const { removeAllInCart, removeProduct, productsInCart } = useCart()
   const [defaultPayMethodIndex] = useState(getRandomIntInclusive(0, 5))
   const samplesPayMethods = React.useMemo(
     () => ['cash', 'kakao pay', 'naver pay', 'credit card', 'smile pay', 'payco'],
@@ -53,15 +73,13 @@ export default function MallMakeOrder() {
     products: []
   }
   if (state.myState.from === 'cart') {
-    const { products } = useCart()
     newOrder.orderNumber = faker.datatype.uuid()
     if (productId) {
-      newOrder.products = products.filter((product) => product.productId === productId)
+      newOrder.products = productsInCart.filter((product) => product.productId === productId)
     } else {
-      newOrder.products = products
+      newOrder.products = productsInCart
     }
   } else if (state.myState.from === 'detail') {
-    const { order } = useOrder()
     newOrder = order
   }
 
@@ -75,10 +93,22 @@ export default function MallMakeOrder() {
       }
     }
     newOrder.ordererName = orderName
+    newOrder.makeDate = new Date()
     addOrder(newOrder)
+
+    ACSDK({
+      type: ACParams.TYPE.BUY_DONE,
+      msg: `${title}_BUY_DONE`,
+      randomValue: randomValueForScreen,
+      buy: {
+        orderNumber: newOrder.orderNumber,
+        payMethodName: newOrder.payMethodName,
+        products: newOrder.products
+      }
+    })
   }
 
-  const handleSelectedOptions = (payMethod: string) => {
+  const handleSelectedPayMethod = (payMethod: string) => {
     newOrder.payMethodName = payMethod
   }
 
@@ -108,7 +138,7 @@ export default function MallMakeOrder() {
             defaultValueIndex={defaultPayMethodIndex}
             minWidth={200}
             samples={samplesPayMethods}
-            onSelectedOptions={handleSelectedOptions}
+            onSelectedOptions={handleSelectedPayMethod}
           />
         </div>
       </div>
@@ -130,7 +160,7 @@ export default function MallMakeOrder() {
           결제:
           <Link to="/mall/orderDone" style={{ textDecoration: 'none' }}>
             <Button variant="outlined" sx={{ ml: 1 }} onClick={handlePay}>
-              결제
+              A 결제
             </Button>
           </Link>
         </div>
@@ -182,18 +212,4 @@ function Product(props: { index: number; product: ProductForType }) {
   )
 }
 
-interface CountryType {
-  code: string
-  label: string
-  phone: string
-  suggested?: boolean
-}
-
-const countries: readonly CountryType[] = [
-  {
-    code: 'KP',
-    label: "Korea, Democratic People's Republic of",
-    phone: '850'
-  },
-  { code: 'KR', label: 'Korea, Republic of', phone: '82' }
-]
+export default MallMakeOrder

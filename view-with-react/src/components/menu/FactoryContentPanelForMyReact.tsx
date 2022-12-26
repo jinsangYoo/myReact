@@ -9,7 +9,7 @@ export default function FactoryContentPanelForMyReact() {
       <Routes>
         <Route path="openSourceLicense" element={<MyReactOpenSourceLicense />} />
         <Route path="main" element={<MyReactMain />} />
-        <Route path="/*" element={<MyReactMain />} />
+        <Route path="*" element={<MyReactMain />} />
       </Routes>
     </div>
   )

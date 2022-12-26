@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback } from 'react'
+import React, { useState, useReducer, useEffect, useCallback, useLayoutEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -7,12 +7,32 @@ import Skeleton from '@mui/material/Skeleton'
 import { ProductForType, useProduct } from '../hooks'
 import { Link } from 'react-router-dom'
 
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus
+} from '@jinsang/slimer-react'
+import { newFakeProducts, sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+
 const Image = styled('img')({
   width: '100%',
   borderRadius: 10
 })
 
+const title = 'mall_main'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function MallMain() {
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    document.title = msg
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   const [products, setProducts] = useReducer(
     (products: ProductForType[], newProducts: ProductForType[]) => [...products, ...newProducts],
     []
@@ -102,14 +122,32 @@ function getProducts(
   setError: React.Dispatch<React.SetStateAction<Error | null>>,
   setLoading?: (value: React.SetStateAction<boolean>) => void
 ) {
-  fetch(`http://jinsang.myds.me/products`)
-    .then((res) => res.json())
+  newFakeProductUsePromise()
     .then((res) => setProducts(res))
     .then(() => setLoading && setLoading(false))
     .catch((error: Error) => {
       setError(error)
     })
 }
+
+async function newFakeProductUsePromise() {
+  let oneTimeProductMAX = 10
+  return await newFakeProducts(oneTimeProductMAX)
+}
+
+// function getProductsOnJinsangNAS(
+//   setProducts: React.Dispatch<ProductForType[]>,
+//   setError: React.Dispatch<React.SetStateAction<Error | null>>,
+//   setLoading?: (value: React.SetStateAction<boolean>) => void
+// ) {
+//   fetch(`https://jinsang.myds.me/products`)
+//     .then((res) => res.json())
+//     .then((res) => setProducts(res))
+//     .then(() => setLoading && setLoading(false))
+//     .catch((error: Error) => {
+//       setError(error)
+//     })
+// }
 
 function Product(props: {
   index: number

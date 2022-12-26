@@ -3,40 +3,57 @@
   "menu": [
     {
       "id": "personal",
-      "name": "대문",
+      "name": "A 대문",
       "path": "personal",
       "subMenu": [
-        { "id": "main", "name": "메인", "path": "main" },
-        { "id": "community", "name": "게시판", "path": "community" },
-        { "id": "about", "name": "여긴 어디", "path": "about" }
+        { "id": "main", "name": "A 메인", "path": "main" },
+        { "id": "community", "name": "A 게시판", "path": "community" },
+        { "id": "about", "name": "A 여긴 어디", "path": "about" }
       ]
     },
     {
       "id": "myReact",
-      "name": "myReact",
+      "name": "A myReact",
       "path": "myReact",
       "subMenu": [
-        { "id": "main", "name": "메인", "path": "main" },
-        { "id": "openSourceLicense", "name": "라이센스", "path": "openSourceLicense" }
+        { "id": "main", "name": "A 메인", "path": "main" },
+        { "id": "openSourceLicense", "name": "A 라이센스", "path": "openSourceLicense" }
       ]
     },
     {
       "id": "mall",
-      "name": "쇼핑몰(가상)",
+      "name": "A 커머스(가상)",
       "path": "mall",
       "subMenu": [
-        { "id": "main", "name": "메인", "path": "main" },
-        { "id": "cart", "name": "장바구니", "path": "cart" },
-        { "id": "order", "name": "주문 목록", "path": "orderList" }
+        { "id": "main", "name": "A 메인", "path": "main" },
+        { "id": "cart", "name": "A 장바구니", "path": "cart" },
+        { "id": "order", "name": "A 주문 목록", "path": "orderList" },
+        { "id": "etc", "name": "A 기타", "path": "etc" }
       ]
     },
     {
+      "id": "member",
+      "name": "A 로그인/가입/탈퇴",
+      "path": "member",
+      "subMenu": [
+        { "id": "main", "name": "A 로그인", "path": "main" },
+        { "id": "join", "name": "A 가입", "path": "join" },
+        { "id": "leave", "name": "A 탈퇴", "path": "leave" }
+      ]
+    },
+    {
+      "id": "search",
+      "name": "A 검색",
+      "path": "search",
+      "subMenu": [{ "id": "main", "name": "A 검색", "path": "main" }]
+    },
+    {
       "id": "etc",
-      "name": "기타",
+      "name": "A 기타",
       "path": "etc",
       "subMenu": [
-        { "id": "main", "name": "메인", "path": "main" },
-        { "id": "grid", "name": "그리드", "path": "grid" }
+        { "id": "main", "name": "A PL", "path": "main" },
+        { "id": "push", "name": "A Push", "path": "push" }
       ]
     }
   ]

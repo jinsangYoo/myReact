@@ -1,27 +1,77 @@
-import React, { useState, useReducer, useEffect, useCallback } from 'react'
+import React, { useState, useReducer, useEffect, useCallback, useLayoutEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useCart, ProductForType, useProduct, IStateToOrder } from '../hooks'
+import { useCart, ProductForType, useProduct, IStateToOrder, ACSDK } from '../hooks'
 import { Link } from 'react-router-dom'
-import { Button } from '@mui/material'
+import {
+  Button,
+  Container,
+  List,
+  Paper,
+  ListItem,
+  ListItemText,
+  Divider,
+  InputBase,
+  ListItemSecondaryAction,
+  IconButton,
+  Grid
+} from '@mui/material'
+import { DeleteOutlined } from '@mui/icons-material'
 import { VariantType, useSnackbar } from 'notistack'
+
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus
+} from '@jinsang/slimer-react'
+import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+import { padding } from '@mui/system'
 
 const Image = styled('img')({
   width: '100%',
   borderRadius: 10
 })
 
+const title = 'mall_장바구니'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function MallCart() {
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    document.title = msg
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   const { enqueueSnackbar } = useSnackbar()
   const { updateProduct } = useProduct()
-  const { products, removeAllInCart, removeProduct, addFakeProductInCart } = useCart()
+  const {
+    productsInCart,
+    updateProductInCart,
+    removeAllInCart,
+    removeProduct,
+    makeFakeProducts,
+    addProducts
+  } = useCart()
   const handleUpdateCart = (product: ProductForType) => {
     if (!product) return
+    updateProductInCart(product)
   }
   const handleRemoveCart = (product: ProductForType) => {
     if (!product) return
     removeProduct(product)
+    ACSDK({
+      type: ACParams.TYPE.DELCART,
+      msg: `${title}_DELCART`,
+      randomValue: randomValueForScreen,
+      cart: {
+        products: [product]
+      }
+    })
     enqueueSnackbar('장바구니 제품을 제거 했습니다.', { variant: 'success' })
   }
   const handleGoToProductDetail = (product: ProductForType) => {
@@ -39,7 +89,16 @@ export default function MallCart() {
     handleClickVariant('전체 장바구니 제품을 제거 했습니다.', 'success')
   }
   const handleRandom5AddCart = () => {
-    addFakeProductInCart(5)
+    const _products = makeFakeProducts(5)
+    addProducts(_products)
+    ACSDK({
+      type: ACParams.TYPE.ADDCART,
+      msg: `${title}_ADDCART`,
+      randomValue: randomValueForScreen,
+      cart: {
+        products: _products
+      }
+    })
   }
   const handleClickVariant = (message: string, variant: VariantType) => () => {
     // variant could be success, error, warning, info, or default
@@ -49,54 +108,57 @@ export default function MallCart() {
   return (
     <>
       <h2>장바구니</h2>
-      <div style={{ width: '80%', border: '3px solid #eee', padding: 10 }}>
-        {products.length < 1 ? (
-          <>
+      <Container style={{ border: '1px solid #eee', padding: 5 }} fixed>
+        {productsInCart.length < 1 ? (
+          <Container>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
               <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRandom5AddCart()}>
-                Random 제품x5 추가
+                A Random 제품x5 추가
               </Button>
             </Box>
-            <div>
-              <p>장바구니가 비었습니다.</p>
-            </div>
-          </>
+            <p>장바구니가 비었습니다.</p>
+          </Container>
         ) : (
-          <>
+          <Container>
             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
-              <Typography sx={{ mr: 2, color: 'red' }}>제품 수: {products.length}</Typography>
+              <Typography sx={{ mr: 2, color: 'red' }}>제품 수: {productsInCart.length}</Typography>
               <Link
                 to="/mall/makeorder"
                 state={{ myState: { from: 'cart' } as IStateToOrder }}
                 style={{ textDecoration: 'none' }}
               >
-                <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleGoToOrders(products)}>
-                  전체 주문
+                <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleGoToOrders(productsInCart)}>
+                  A 전체 주문
                 </Button>
               </Link>
               <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRandom5AddCart()}>
-                Random 장바구니x5 추가
+                A Random 장바구니x5 추가
               </Button>
-              <Button variant="outlined" sx={{ mr: 2 }} onClick={() => handleRemoveAllInCart()}>
-                전체 삭제
-              </Button>
+              <IconButton aria-label="전체 삭제" onClick={() => handleRemoveAllInCart()}>
+                <DeleteOutlined />
+              </IconButton>
             </Box>
-            <div>
-              {products.map((product, index) => (
-                <Product
-                  key={index}
-                  index={index}
-                  product={product}
-                  onPressUpdateCart={handleUpdateCart}
-                  onPressRemoveCart={handleRemoveCart}
-                  onPressGoToProductDetailAddCart={handleGoToProductDetail}
-                  onPressGoToOrder={handleGoToOrder}
-                />
+            <List>
+              {productsInCart.map((product, index) => (
+                <>
+                  <Paper>
+                    <Product
+                      key={index}
+                      index={index}
+                      product={product}
+                      onPressUpdateCart={handleUpdateCart}
+                      onPressRemoveCart={handleRemoveCart}
+                      onPressGoToProductDetailAddCart={handleGoToProductDetail}
+                      onPressGoToOrder={handleGoToOrder}
+                    />
+                  </Paper>
+                  <Divider />
+                </>
               ))}
-            </div>
-          </>
+            </List>
+          </Container>
         )}
-      </div>
+      </Container>
     </>
   )
 }
@@ -109,60 +171,95 @@ function Product(props: {
   onPressGoToProductDetailAddCart: (p: ProductForType) => void
   onPressGoToOrder: (p: ProductForType) => void
 }) {
-  return (
-    <div style={{ borderBottom: '1px', borderBottomColor: '#eee', borderBottomStyle: 'solid' }}>
-      <Box sx={{ display: 'flex', p: 1, m: 1, alignItems: 'center' }}>
-        <Typography>
-          {props.index + 1}. 제품명: {props.product.productName}
-        </Typography>
-      </Box>
-      <Link to={'/mall/detail'} onClick={() => props.onPressGoToProductDetailAddCart(props.product)}>
-        <Image sx={{ width: '30%' }} src={props.product.productImg} alt="" />
-      </Link>
-      <Box sx={{ width: '100%' }}>
-        <Typography display="inline" variant="subtitle1" color="text.secondary">
-          제품 단가:{' '}
-          {Number(props.product.productPrice).toLocaleString(navigator.language, {
-            minimumFractionDigits: 0
-          })}{' '}
-          원
-        </Typography>
+  const [readOnly, setReadOnly] = useState(true)
+  const turnOnReadOnly = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
+      setReadOnly(true)
+    }
+  }
+  const turnOffReadOnly = () => {
+    setReadOnly(false)
+  }
+  const editEventHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    props.product.productName = e.target.value
+    props.onPressUpdateCart(props.product)
+  }
 
-        <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-          수량:{' '}
-          {Number(props.product.quantity).toLocaleString(navigator.language, {
-            minimumFractionDigits: 0
-          })}
-        </Typography>
-        {props.product.totalPrice && (
-          <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-            수량x가격:{' '}
-            {props.product.totalPrice.toLocaleString(navigator.language, {
-              minimumFractionDigits: 0
-            })}{' '}
-            원
-          </Typography>
-        )}
-        {props.product.optionCode && (
-          <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
-            옵션 코드명: {props.product.optionCode}
-          </Typography>
-        )}
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'right' }}>
-        <Button variant="outlined" sx={{ mr: 1 }} onClick={() => props.onPressRemoveCart(props.product)}>
-          장바구니 제거
-        </Button>
-        <Link
-          {...{ to: `/mall/makeorder/${props.product.productId}` }}
-          state={{ myState: { from: 'cart', prodcutId: props.product.productId } as IStateToOrder }}
-          style={{ textDecoration: 'none' }}
-        >
-          <Button variant="outlined" sx={{ mr: 2 }} onClick={() => props.onPressGoToOrder(props.product)}>
-            개별 주문
-          </Button>
-        </Link>
-      </Box>
-    </div>
+  return (
+    <ListItem alignItems="flex-start">
+      <ListItemText
+        sx={{ display: 'block' }}
+        primary={
+          <Grid container>
+            <Grid xs={2} md={2}>
+              {props.index + 1}. 제품명:
+            </Grid>
+            <Grid xs={10} md={10}>
+              <InputBase
+                size="small"
+                inputProps={{ 'aria-label': 'naked', readOnly: readOnly }}
+                fullWidth
+                value={props.product.productName ?? ''}
+                onClick={turnOffReadOnly}
+                onKeyDown={turnOnReadOnly}
+                onChange={editEventHandler}
+              />
+            </Grid>
+          </Grid>
+        }
+        secondary={
+          <>
+            <Link to={'/mall/detail'} onClick={() => props.onPressGoToProductDetailAddCart(props.product)}>
+              <Image sx={{ width: '50%', display: 'block' }} src={props.product.productImg} alt="" />
+            </Link>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography display="inline" variant="subtitle1" color="text.secondary">
+                제품 단가:{' '}
+                {Number(props.product.productPrice).toLocaleString(navigator.language, {
+                  minimumFractionDigits: 0
+                })}{' '}
+                원
+              </Typography>
+              <Typography display="inline" variant="subtitle1" color="text.secondary" sx={{ ml: 5 }}>
+                수량:{' '}
+                {Number(props.product.quantity).toLocaleString(navigator.language, {
+                  minimumFractionDigits: 0
+                })}
+              </Typography>
+              {props.product.totalPrice && (
+                <Typography display="inline" variant="subtitle1" color="text.secondary">
+                  수량x가격:{' '}
+                  {props.product.totalPrice.toLocaleString(navigator.language, {
+                    minimumFractionDigits: 0
+                  })}{' '}
+                  원
+                </Typography>
+              )}
+              <Typography display="inline" variant="subtitle1" color="text.secondary">
+                옵션코드: {props.product.optionCode ?? 'none'}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+              <Button
+                variant="outlined"
+                sx={{ mr: 1 }}
+                onClick={() => props.onPressRemoveCart(props.product)}
+              >
+                A 장바구니 제거
+              </Button>
+              <Link
+                {...{ to: `/mall/makeorder/${props.product.productId}` }}
+                state={{ myState: { from: 'cart', prodcutId: props.product.productId } as IStateToOrder }}
+                style={{ textDecoration: 'none' }}
+              >
+                <Button variant="outlined" onClick={() => props.onPressGoToOrder(props.product)}>
+                  A 개별 주문
+                </Button>
+              </Link>
+            </Box>
+          </>
+        }
+      />
+    </ListItem>
   )
 }
