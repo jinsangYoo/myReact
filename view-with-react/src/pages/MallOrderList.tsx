@@ -42,6 +42,9 @@ export default function MallOrderList() {
 
   const { enqueueSnackbar } = useSnackbar()
   const { orders, removeOrder, removeAllInOrders } = useOrder()
+  useLayoutEffect(() => {
+    orders.map((order, index) => console.log('order[' + index + ']: ', JSON.stringify(order, null, 2)))
+  }, [])
   const handleRemoveOrder = (order: OrderType) => {
     removeOrder(order)
     ACSDK({
@@ -76,7 +79,7 @@ export default function MallOrderList() {
               </IconButton>
             </Box>
             <List sx={{ width: '100%', bgcolor: '' }}>
-              {orders.reverse().map((order, index) => (
+              {orders.map((order, index) => (
                 <>
                   <Order key={index} index={index} order={order} onPressRemoveOrder={handleRemoveOrder} />
                   <Divider />

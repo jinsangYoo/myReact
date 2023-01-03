@@ -139,11 +139,13 @@ export function OrderProvider(props: any) {
   }
 
   const [orders, dispatchForOrders] = useReducer(reducerForOrders, initialOrderListState)
-  const addOrder = (newOrder: OrderType) =>
+  const addOrder = (newOrder: OrderType) => {
+    console.log('in addOrder:', JSON.stringify(newOrder, null, 2))
     dispatchForOrders({
       type: 'addOrder',
       order: newOrder
     })
+  }
   const removeOrder = (order: OrderType) =>
     dispatchForOrders({
       type: 'removeOrder',

@@ -28,6 +28,7 @@ import {
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+import { SamplesPayMethods } from '../data'
 
 const Image = styled('img')({
   width: '100%',
@@ -57,10 +58,6 @@ const MallMakeOrder = () => {
   const [orderName, setOrderName] = useState(faker.name.firstName())
   const { removeAllInCart, removeProduct, productsInCart } = useCart()
   const [defaultPayMethodIndex] = useState(getRandomIntInclusive(0, 5))
-  const samplesPayMethods = React.useMemo(
-    () => ['cash', 'kakao pay', 'naver pay', 'credit card', 'smile pay', 'payco'],
-    []
-  )
   useEffect(() => {
     return () => resetProduct()
   }, [])
@@ -69,9 +66,11 @@ const MallMakeOrder = () => {
     ordererName: '',
     orderState: 'MakeOrder',
     orderNumber: '',
-    payMethodName: samplesPayMethods[defaultPayMethodIndex],
+    payMethodName: SamplesPayMethods[defaultPayMethodIndex],
     products: []
   }
+  console.log(`state.myState.from: ${state.myState.from}`)
+  console.log('1. init newOrder:', JSON.stringify(newOrder, null, 2))
   if (state.myState.from === 'cart') {
     newOrder.orderNumber = faker.datatype.uuid()
     if (productId) {
@@ -82,6 +81,12 @@ const MallMakeOrder = () => {
   } else if (state.myState.from === 'detail') {
     newOrder = order
   }
+
+  newOrder.payMethodName = SamplesPayMethods[defaultPayMethodIndex]
+  console.log(
+    `defaultPayMethodIndex: ${defaultPayMethodIndex}, samplesPayMethods[${defaultPayMethodIndex}]: ${SamplesPayMethods[defaultPayMethodIndex]}`
+  )
+  console.log('2. init newOrder:', JSON.stringify(newOrder, null, 2))
 
   const handlePay = () => {
     if (state.myState.from === 'cart') {
@@ -109,7 +114,9 @@ const MallMakeOrder = () => {
   }
 
   const handleSelectedPayMethod = (payMethod: string) => {
+    console.log(`before newOrder.payMethodName: ${newOrder.payMethodName}, payMethod: ${payMethod}`)
     newOrder.payMethodName = payMethod
+    console.log(`after newOrder.payMethodName: ${newOrder.payMethodName}`)
   }
 
   return (
@@ -137,7 +144,7 @@ const MallMakeOrder = () => {
             labelName="지불 방법 선택"
             defaultValueIndex={defaultPayMethodIndex}
             minWidth={200}
-            samples={samplesPayMethods}
+            samples={SamplesPayMethods}
             onSelectedOptions={handleSelectedPayMethod}
           />
         </div>

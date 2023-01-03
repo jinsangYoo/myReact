@@ -21,7 +21,11 @@ export default function CustomizedHook({
   minWidth = 100,
   defaultValueIndex = 0
 }: CustomizedHookProps) {
+  console.log(
+    `defaultValueIndex: ${defaultValueIndex}, samples[${defaultValueIndex}]: ${samples[defaultValueIndex]}`
+  )
   const [value, setValue] = React.useState<string | null>(samples[defaultValueIndex])
+  console.log(`value: ${value}`)
   const [inputValue, setInputValue] = React.useState('')
 
   return (
