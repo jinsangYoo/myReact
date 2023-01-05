@@ -33,6 +33,10 @@ import { DeleteOutlined } from '@mui/icons-material'
 const title = 'mall_주문목록'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function MallOrderList() {
+  const { orders, removeOrder, removeAllInOrders } = useOrder()
+  useEffect(() => {
+    orders.map((order, index) => console.log('order[' + index + ']: ', JSON.stringify(order, null, 2)))
+  }, [])
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     document.title = msg
@@ -41,10 +45,6 @@ export default function MallOrderList() {
   }, [])
 
   const { enqueueSnackbar } = useSnackbar()
-  const { orders, removeOrder, removeAllInOrders } = useOrder()
-  useLayoutEffect(() => {
-    orders.map((order, index) => console.log('order[' + index + ']: ', JSON.stringify(order, null, 2)))
-  }, [])
   const handleRemoveOrder = (order: OrderType) => {
     removeOrder(order)
     ACSDK({

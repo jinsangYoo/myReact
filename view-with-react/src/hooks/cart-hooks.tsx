@@ -9,7 +9,7 @@ export interface ICartContext {
   addProducts: (products: ProductForType[]) => void
   addProduct: (newProduct: ProductForType) => void
   addProductWithCalculateTotalPrice: (newProduct: ProductForType) => void
-  removeProduct: (product: ProductForType) => void
+  removeProductInCart: (product: ProductForType) => void
   updateProductInCart: (product: ProductForType) => void
   printProducts: () => void
   removeAllInCart: () => void
@@ -101,7 +101,7 @@ export function CartProvider(props: any) {
       products: [newProduct]
     })
   }
-  const removeProduct = (product: ProductForType) =>
+  const removeProductInCart = (product: ProductForType) =>
     dispatch({
       type: 'remove',
       products: [product]
@@ -128,7 +128,7 @@ export function CartProvider(props: any) {
         addProducts,
         addProduct,
         addProductWithCalculateTotalPrice,
-        removeProduct,
+        removeProductInCart,
         updateProductInCart,
         printProducts,
         removeAllInCart

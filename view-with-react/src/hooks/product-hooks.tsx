@@ -96,8 +96,11 @@ export function ProductProvider(props: any) {
       })
     return _products
   }
-  const updateProduct = (newProduct: ProductForType) =>
+  const updateProduct = (newProduct: ProductForType) => {
+    const _productPrice = isNaN(Number(newProduct.productPrice)) ? 1 : Number(newProduct.productPrice)
+    newProduct.totalPrice = newProduct.quantity * _productPrice
     setProduct(product ? { ...product, ...newProduct } : { ...newProduct })
+  }
   const resetProduct = () =>
     setProduct({
       productId: '',

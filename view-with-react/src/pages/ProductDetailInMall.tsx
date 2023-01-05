@@ -42,7 +42,7 @@ const ProductDetailInMall = () => {
 
   const { enqueueSnackbar } = useSnackbar()
   const _nav = useNavigate()
-  const { product } = useProduct()
+  const { product, updateProduct } = useProduct()
   console.log(`init 제품: ${JSON.stringify(product, null, 2)}`)
   useEffect(() => {
     ACSDK({
@@ -95,8 +95,6 @@ const ProductDetailInMall = () => {
     product.quantity !== 0 ? product.quantity : getRandomIntInclusive(1, 20)
   )
   const { productsInCart, addProductWithCalculateTotalPrice, makeFakeProducts, addProducts } = useCart()
-  const { setProductInTempNewOrderWithCalculateTotalPrice } = useOrder()
-
   const handleRandom5AddCart = () => {
     const _products = makeFakeProducts(5)
     addProducts(_products)
@@ -129,7 +127,7 @@ const ProductDetailInMall = () => {
 
   const handleGoToOrder = (product: ProductForType) => {
     if (!product) return
-    setProductInTempNewOrderWithCalculateTotalPrice({
+    updateProduct({
       ...product,
       quantity: productQuantity,
       optionCode: productOption
