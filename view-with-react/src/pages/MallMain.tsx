@@ -73,7 +73,6 @@ export default function MallMain() {
   const { updateProduct, resetProduct } = useProduct()
   const handleProductClick = (product: ProductForType | undefined) => {
     if (!product) return
-    console.log(`product: ${JSON.stringify(product, null, 2)}`)
     updateProduct(product)
   }
 

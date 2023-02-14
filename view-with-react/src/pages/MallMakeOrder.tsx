@@ -28,6 +28,7 @@ import {
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+import { SamplesPayMethods } from '../data'
 
 const Image = styled('img')({
   width: '100%',
@@ -50,82 +51,81 @@ const MallMakeOrder = () => {
     sendCommonWithPromise(msg, params)
   }, [])
 
-  const { resetProduct } = useProduct()
+  const { product, resetProduct } = useProduct()
   const { productId } = useParams()
   const { state } = useLocation() as StateTypeForLocationOrder
-  const { order, addOrder } = useOrder()
+  const { addOrder } = useOrder()
   const [orderName, setOrderName] = useState(faker.name.firstName())
-  const { removeAllInCart, removeProduct, productsInCart } = useCart()
+  const { removeAllInCart, removeProductInCart, productsInCart } = useCart()
   const [defaultPayMethodIndex] = useState(getRandomIntInclusive(0, 5))
-  const samplesPayMethods = React.useMemo(
-    () => ['cash', 'kakao pay', 'naver pay', 'credit card', 'smile pay', 'payco'],
-    []
-  )
+  const [payMethodName, setPayMethodName] = useState(SamplesPayMethods[defaultPayMethodIndex])
+  const [orderNumber] = useState(faker.datatype.uuid())
+  const [products, setProducts] = useState([] as ProductForType[])
   useEffect(() => {
+    console.log(`state.myState.from: ${state.myState.from}`)
+    if (state.myState.from === 'cart') {
+      if (productId) {
+        setProducts(productsInCart.filter((product) => product.productId === productId))
+      } else {
+        setProducts(productsInCart)
+      }
+    } else if (state.myState.from === 'detail') {
+      setProducts([product])
+    }
     return () => resetProduct()
   }, [])
 
-  var newOrder: OrderType = {
-    ordererName: '',
-    orderState: 'MakeOrder',
-    orderNumber: '',
-    payMethodName: samplesPayMethods[defaultPayMethodIndex],
-    products: []
-  }
-  if (state.myState.from === 'cart') {
-    newOrder.orderNumber = faker.datatype.uuid()
-    if (productId) {
-      newOrder.products = productsInCart.filter((product) => product.productId === productId)
-    } else {
-      newOrder.products = productsInCart
-    }
-  } else if (state.myState.from === 'detail') {
-    newOrder = order
-  }
-
   const handlePay = () => {
+    console.log(`in handlePay::state.myState.from: ${state.myState.from}`)
     if (state.myState.from === 'cart') {
       if (productId) {
-        const willRemoveProduct = newOrder.products.find((product) => product.productId === productId)
-        willRemoveProduct && removeProduct(willRemoveProduct)
+        const willRemoveProduct = products.find((product) => product.productId === productId)
+        willRemoveProduct && removeProductInCart(willRemoveProduct)
       } else {
         removeAllInCart()
       }
     }
-    newOrder.ordererName = orderName
-    newOrder.makeDate = new Date()
-    addOrder(newOrder)
+    addOrder({
+      ordererName: orderName,
+      orderState: 'MakeOrder',
+      orderNumber: orderNumber,
+      payMethodName: payMethodName,
+      makeDate: new Date(),
+      products: products
+    })
 
     ACSDK({
       type: ACParams.TYPE.BUY_DONE,
       msg: `${title}_BUY_DONE`,
       randomValue: randomValueForScreen,
       buy: {
-        orderNumber: newOrder.orderNumber,
-        payMethodName: newOrder.payMethodName,
-        products: newOrder.products
+        orderNumber: orderNumber,
+        payMethodName: payMethodName,
+        products: products
       }
     })
   }
 
   const handleSelectedPayMethod = (payMethod: string) => {
-    newOrder.payMethodName = payMethod
+    console.log(`before payMethodName: ${payMethodName}, payMethod: ${payMethod}`)
+    setPayMethodName(payMethod)
+    console.log(`after payMethodName: ${payMethodName}`)
   }
 
   return (
     <div>
       <div style={{ width: '80%', border: '3px solid #eee' }}>
-        {newOrder.products.length < 1 ? (
+        {products.length < 1 ? (
           <p>카트가 비었습니다.</p>
         ) : (
-          newOrder.products.map((product, index) => <Product key={index} index={index} product={product} />)
+          products.map((product, index) => <Product key={index} index={index} product={product} />)
         )}
       </div>
       <h2>결제 정보</h2>
       <div style={{ width: '80%', border: '3px solid #eee', display: 'flex', padding: 10 }}>
         <div style={{ marginLeft: '20px' }}>
           전체 주문 가격:{' '}
-          {newOrder.products
+          {products
             .reduce((preValue, product) => (product.totalPrice ?? 0) + preValue, 0)
             .toLocaleString(navigator.language, {
               minimumFractionDigits: 0
@@ -137,7 +137,7 @@ const MallMakeOrder = () => {
             labelName="지불 방법 선택"
             defaultValueIndex={defaultPayMethodIndex}
             minWidth={200}
-            samples={samplesPayMethods}
+            samples={SamplesPayMethods}
             onSelectedOptions={handleSelectedPayMethod}
           />
         </div>

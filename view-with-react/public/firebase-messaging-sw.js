@@ -1,6 +1,6 @@
 //프로젝트 버전 확인
-importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging.js')
+importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js')
+importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js')
 
 const config = {
   apiKey: 'AIzaSyD4BPLxZiN6Ikg63_pXXIjJmFNWTw3Rdjs',

@@ -53,7 +53,7 @@ export default function MallCart() {
     productsInCart,
     updateProductInCart,
     removeAllInCart,
-    removeProduct,
+    removeProductInCart,
     makeFakeProducts,
     addProducts
   } = useCart()
@@ -63,7 +63,7 @@ export default function MallCart() {
   }
   const handleRemoveCart = (product: ProductForType) => {
     if (!product) return
-    removeProduct(product)
+    removeProductInCart(product)
     ACSDK({
       type: ACParams.TYPE.DELCART,
       msg: `${title}_DELCART`,
@@ -141,9 +141,8 @@ export default function MallCart() {
             <List>
               {productsInCart.map((product, index) => (
                 <>
-                  <Paper>
+                  <Paper key={index}>
                     <Product
-                      key={index}
                       index={index}
                       product={product}
                       onPressUpdateCart={handleUpdateCart}
