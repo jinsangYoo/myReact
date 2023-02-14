@@ -4,11 +4,12 @@ import { ProductForType } from './product-hooks'
 import { getRandomIntInclusive } from '../utils'
 
 export interface ICartContext {
-  products: ProductForType[]
-  addFakeProductInCart: (cnt: number) => void
+  productsInCart: ProductForType[]
+  makeFakeProducts: (cnt: number) => ProductForType[]
+  addProducts: (products: ProductForType[]) => void
   addProduct: (newProduct: ProductForType) => void
   addProductWithCalculateTotalPrice: (newProduct: ProductForType) => void
-  removeProduct: (product: ProductForType) => void
+  removeProductInCart: (product: ProductForType) => void
   updateProductInCart: (product: ProductForType) => void
   printProducts: () => void
   removeAllInCart: () => void
@@ -49,7 +50,7 @@ function reducer(state: ProductForType[], action: ICartAction) {
 export function CartProvider(props: any) {
   const [products, dispatch] = useReducer(reducer, initialState)
 
-  const addFakeProductInCart = (cnt: number) => {
+  const makeFakeProducts = (cnt: number) => {
     const _products: ProductForType[] = []
     Array(cnt)
       .fill(undefined)
@@ -74,9 +75,12 @@ export function CartProvider(props: any) {
           totalPrice: quantity * productPrice
         })
       })
+    return _products
+  }
+  const addProducts = (products: ProductForType[]) => {
     dispatch({
       type: 'add',
-      products: _products
+      products: products
     })
   }
   const addProduct = (newProduct: ProductForType) => {
@@ -90,14 +94,14 @@ export function CartProvider(props: any) {
     })
   }
   const addProductWithCalculateTotalPrice = (newProduct: ProductForType) => {
-    const productPrice = isNaN(Number(newProduct.productPrice)) ? 1 : Number(newProduct.productPrice)
+    const productPrice = isNaN(Number(newProduct.productPrice)) ? 0 : Number(newProduct.productPrice)
     newProduct.totalPrice = newProduct.quantity * productPrice
     dispatch({
       type: 'add',
       products: [newProduct]
     })
   }
-  const removeProduct = (product: ProductForType) =>
+  const removeProductInCart = (product: ProductForType) =>
     dispatch({
       type: 'remove',
       products: [product]
@@ -119,11 +123,12 @@ export function CartProvider(props: any) {
   return (
     <CartContext.Provider
       value={{
-        products,
-        addFakeProductInCart,
+        productsInCart: products,
+        makeFakeProducts,
+        addProducts,
         addProduct,
         addProductWithCalculateTotalPrice,
-        removeProduct,
+        removeProductInCart,
         updateProductInCart,
         printProducts,
         removeAllInCart

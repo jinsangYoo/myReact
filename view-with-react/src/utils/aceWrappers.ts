@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker'
+import { getRandomIntInclusive } from '../utils'
 import {
   AceConfiguration,
   ACParams,
@@ -7,10 +9,38 @@ import {
   ACEGender,
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
-import { getRandomIntInclusive } from '.'
+import type { ProductForType } from '../hooks'
 
 export function gcodeSelector(): string {
   return 'AK3A79964'
+}
+
+export function newFakeProducts(cnt: number) {
+  const _products: ProductForType[] = []
+  Array(cnt)
+    .fill(undefined)
+    .map((noUse) => {
+      const quantity = getRandomIntInclusive(1, 20)
+      const productPrice = Number(faker.commerce.price(1000, 2000, 0))
+      _products.push({
+        productId: faker.datatype.uuid(),
+        productDescription: faker.commerce.productDescription(),
+        productImg: faker.image.business(450, 200, true),
+        productName: faker.commerce.productName(),
+        productCategory: faker.commerce.productAdjective(),
+        productPrice: faker.commerce.price(1000, 2000, 0),
+        sellerAvatar: faker.image.people(200, 200, true),
+        sellerName: faker.internet.userName(),
+        sellerEmail: faker.internet.email(),
+        company: faker.company.name(),
+        companyDomain: faker.internet.url(),
+        registeredAt: faker.date.past().toLocaleDateString(),
+        quantity: quantity,
+        optionCode: getRandomIntInclusive(1, 30).toString(),
+        totalPrice: quantity * productPrice
+      })
+    })
+  return _products
 }
 
 export function sendCommonWithCB(argMessage: string, params: ACParams): void {

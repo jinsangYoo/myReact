@@ -1,12 +1,13 @@
 import React from 'react'
 import { Routes, Route } from 'react-router'
 
-import { MallMain, ProductDetailInMall, MallMakeOrder, MallOrderDone, MallOrderList } from './'
+import { MallMain, ProductDetailInMall, MallMakeOrder, MallOrderDone, MallOrderList, MallEtc } from './'
 
 export default function MallInRouter() {
   return (
     <div>
       <Routes>
+        <Route path="etc" element={<MallEtc />} />
         <Route path="orderDone" element={<MallOrderDone />} />
         <Route path="makeorder/:productId" element={<MallMakeOrder />} />
         <Route path="makeorder" element={<MallMakeOrder />} />

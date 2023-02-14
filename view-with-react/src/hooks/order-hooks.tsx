@@ -19,6 +19,7 @@ export type OrderType = {
   orderNumber: string
   payMethodName: string
   products: ProductForType[]
+  makeDate?: Date
 }
 
 const OrderContext = React.createContext({} as IOrderContext)
@@ -35,15 +36,13 @@ interface IOrdersAction {
 }
 
 const initialOrderListState: OrderType[] = []
-const initialTemporaryOrderState: OrderType = resetOrder()
+const initialOrderState: OrderType = resetOrder()
 
 export interface IOrderContext {
   order: OrderType
   setFakeOrderInTempOrder: (cnt: number) => void
   setProductInTempOrder: (newProduct: ProductForType) => void
   setProductsInTempOrder: (newProducts: ProductForType[]) => void
-  setProductInTempNewOrderWithCalculateTotalPrice: (newProduct: ProductForType) => void
-  removeOrderInTempOrder: (product: ProductForType) => void
   printOrder: () => void
   updateOrderState: (order: OrderType, newState: OrderStateType) => void
 
@@ -62,8 +61,6 @@ function reducer(state: OrderType, action: IOrderAction) {
       return { ...state, products: [...action.products] }
     case 'setInOrder':
       return { ...state, products: [...state.products, ...action.products] }
-    case 'removeInOrder':
-      return resetOrder()
 
     default:
       throw new Error()
@@ -71,10 +68,11 @@ function reducer(state: OrderType, action: IOrderAction) {
 }
 
 export function OrderProvider(props: any) {
-  const [order, dispatch] = useReducer(reducer, initialTemporaryOrderState)
+  const [order, dispatch] = useReducer(reducer, initialOrderState)
 
-  const setFakeOrderInTempOrder = (cnt: number) =>
-    Array(cnt).map((noUse) => {
+  const setFakeOrderInTempOrder = (cnt: number) => {
+    resetOrder()
+    return Array(cnt).map((noUse) => {
       const quantity = getRandomIntInclusive(1, 10)
       const productPrice = Number(faker.commerce.price(1000, 2000, 0))
       dispatch({
@@ -100,6 +98,7 @@ export function OrderProvider(props: any) {
         ]
       })
     })
+  }
   const setProductInTempOrder = (newProduct: ProductForType) =>
     dispatch({
       type: 'setInOrder',
@@ -109,19 +108,6 @@ export function OrderProvider(props: any) {
     dispatch({
       type: 'setInOrder',
       products: newProducts
-    })
-  const setProductInTempNewOrderWithCalculateTotalPrice = (newProduct: ProductForType) => {
-    const productPrice = isNaN(Number(newProduct.productPrice)) ? 1 : Number(newProduct.productPrice)
-    newProduct.totalPrice = newProduct.quantity * productPrice
-    dispatch({
-      type: 'setNewOrder',
-      products: [newProduct]
-    })
-  }
-  const removeOrderInTempOrder = (product: ProductForType) =>
-    dispatch({
-      type: 'removeInOrder',
-      products: [product]
     })
   const printOrder = () => {
     console.log(`orderState: ${order.orderState}`)
@@ -138,11 +124,13 @@ export function OrderProvider(props: any) {
   }
 
   const [orders, dispatchForOrders] = useReducer(reducerForOrders, initialOrderListState)
-  const addOrder = (newOrder: OrderType) =>
+  const addOrder = (newOrder: OrderType) => {
+    console.log('in addOrder:', JSON.stringify(newOrder, null, 2))
     dispatchForOrders({
       type: 'addOrder',
       order: newOrder
     })
+  }
   const removeOrder = (order: OrderType) =>
     dispatchForOrders({
       type: 'removeOrder',
@@ -161,8 +149,6 @@ export function OrderProvider(props: any) {
         setFakeOrderInTempOrder,
         setProductInTempOrder,
         setProductsInTempOrder,
-        setProductInTempNewOrderWithCalculateTotalPrice,
-        removeOrderInTempOrder,
         printOrder,
         orders,
         addOrder,

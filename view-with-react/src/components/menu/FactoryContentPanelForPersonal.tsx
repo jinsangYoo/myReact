@@ -10,7 +10,7 @@ export default function FactoryContentPanelForPersonal() {
         <Route path="about" element={<PersonalAbout />} />
         <Route path="community" element={<PersonalCommunity />} />
         <Route path="main" element={<PersonalMain />} />
-        <Route path="/*" element={<PersonalMain />} />
+        <Route path="*" element={<PersonalMain />} />
       </Routes>
     </div>
   )

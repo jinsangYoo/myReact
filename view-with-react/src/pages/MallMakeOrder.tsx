@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useReducer, useEffect, useCallback, useMemo, useLayoutEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
@@ -14,9 +14,21 @@ import {
   IStateToOrder,
   OrderType,
   CustomizedHook,
-  useProduct
+  useProduct,
+  ACSDK
 } from '../hooks'
-import { getRandomIntInclusive } from '../utils'
+
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus
+} from '@jinsang/slimer-react'
+import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+import { SamplesPayMethods } from '../data'
 
 const Image = styled('img')({
   width: '100%',
@@ -29,73 +41,91 @@ interface StateTypeForLocationOrder {
   }
 }
 
-export default function MallMakeOrder() {
-  const { resetProduct } = useProduct()
+const title = 'mall_주문서_작성'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
+const MallMakeOrder = () => {
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    document.title = msg
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
+  const { product, resetProduct } = useProduct()
   const { productId } = useParams()
   const { state } = useLocation() as StateTypeForLocationOrder
   const { addOrder } = useOrder()
   const [orderName, setOrderName] = useState(faker.name.firstName())
-  const { removeAllInCart, removeProduct } = useCart()
+  const { removeAllInCart, removeProductInCart, productsInCart } = useCart()
   const [defaultPayMethodIndex] = useState(getRandomIntInclusive(0, 5))
-  const samplesPayMethods = React.useMemo(
-    () => ['cash', 'kakao pay', 'naver pay', 'credit card', 'smile pay', 'payco'],
-    []
-  )
+  const [payMethodName, setPayMethodName] = useState(SamplesPayMethods[defaultPayMethodIndex])
+  const [orderNumber] = useState(faker.datatype.uuid())
+  const [products, setProducts] = useState([] as ProductForType[])
   useEffect(() => {
+    console.log(`state.myState.from: ${state.myState.from}`)
+    if (state.myState.from === 'cart') {
+      if (productId) {
+        setProducts(productsInCart.filter((product) => product.productId === productId))
+      } else {
+        setProducts(productsInCart)
+      }
+    } else if (state.myState.from === 'detail') {
+      setProducts([product])
+    }
     return () => resetProduct()
   }, [])
 
-  var newOrder: OrderType = {
-    ordererName: '',
-    orderState: 'MakeOrder',
-    orderNumber: '',
-    payMethodName: samplesPayMethods[defaultPayMethodIndex],
-    products: []
-  }
-  if (state.myState.from === 'cart') {
-    const { products } = useCart()
-    newOrder.orderNumber = faker.datatype.uuid()
-    if (productId) {
-      newOrder.products = products.filter((product) => product.productId === productId)
-    } else {
-      newOrder.products = products
-    }
-  } else if (state.myState.from === 'detail') {
-    const { order } = useOrder()
-    newOrder = order
-  }
-
   const handlePay = () => {
+    console.log(`in handlePay::state.myState.from: ${state.myState.from}`)
     if (state.myState.from === 'cart') {
       if (productId) {
-        const willRemoveProduct = newOrder.products.find((product) => product.productId === productId)
-        willRemoveProduct && removeProduct(willRemoveProduct)
+        const willRemoveProduct = products.find((product) => product.productId === productId)
+        willRemoveProduct && removeProductInCart(willRemoveProduct)
       } else {
         removeAllInCart()
       }
     }
-    newOrder.ordererName = orderName
-    addOrder(newOrder)
+    addOrder({
+      ordererName: orderName,
+      orderState: 'MakeOrder',
+      orderNumber: orderNumber,
+      payMethodName: payMethodName,
+      makeDate: new Date(),
+      products: products
+    })
+
+    ACSDK({
+      type: ACParams.TYPE.BUY_DONE,
+      msg: `${title}_BUY_DONE`,
+      randomValue: randomValueForScreen,
+      buy: {
+        orderNumber: orderNumber,
+        payMethodName: payMethodName,
+        products: products
+      }
+    })
   }
 
-  const handleSelectedOptions = (payMethod: string) => {
-    newOrder.payMethodName = payMethod
+  const handleSelectedPayMethod = (payMethod: string) => {
+    console.log(`before payMethodName: ${payMethodName}, payMethod: ${payMethod}`)
+    setPayMethodName(payMethod)
+    console.log(`after payMethodName: ${payMethodName}`)
   }
 
   return (
     <div>
       <div style={{ width: '80%', border: '3px solid #eee' }}>
-        {newOrder.products.length < 1 ? (
+        {products.length < 1 ? (
           <p>카트가 비었습니다.</p>
         ) : (
-          newOrder.products.map((product, index) => <Product key={index} index={index} product={product} />)
+          products.map((product, index) => <Product key={index} index={index} product={product} />)
         )}
       </div>
       <h2>결제 정보</h2>
       <div style={{ width: '80%', border: '3px solid #eee', display: 'flex', padding: 10 }}>
         <div style={{ marginLeft: '20px' }}>
           전체 주문 가격:{' '}
-          {newOrder.products
+          {products
             .reduce((preValue, product) => (product.totalPrice ?? 0) + preValue, 0)
             .toLocaleString(navigator.language, {
               minimumFractionDigits: 0
@@ -107,8 +137,8 @@ export default function MallMakeOrder() {
             labelName="지불 방법 선택"
             defaultValueIndex={defaultPayMethodIndex}
             minWidth={200}
-            samples={samplesPayMethods}
-            onSelectedOptions={handleSelectedOptions}
+            samples={SamplesPayMethods}
+            onSelectedOptions={handleSelectedPayMethod}
           />
         </div>
       </div>
@@ -130,7 +160,7 @@ export default function MallMakeOrder() {
           결제:
           <Link to="/mall/orderDone" style={{ textDecoration: 'none' }}>
             <Button variant="outlined" sx={{ ml: 1 }} onClick={handlePay}>
-              결제
+              A 결제
             </Button>
           </Link>
         </div>
@@ -182,18 +212,4 @@ function Product(props: { index: number; product: ProductForType }) {
   )
 }
 
-interface CountryType {
-  code: string
-  label: string
-  phone: string
-  suggested?: boolean
-}
-
-const countries: readonly CountryType[] = [
-  {
-    code: 'KP',
-    label: "Korea, Democratic People's Republic of",
-    phone: '850'
-  },
-  { code: 'KR', label: 'Korea, Republic of', phone: '82' }
-]
+export default MallMakeOrder

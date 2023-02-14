@@ -1,14 +1,66 @@
+require('dotenv').config()
+var ip = require('ip')
+var http = require('http')
+var https = require('https')
+const fs = require('fs')
+const option = {
+  key: fs.readFileSync('key.pem', 'utf8'),
+  cert: fs.readFileSync('cert.pem', 'utf8'),
+  passphrase: 'tkfkdgo04'
+}
+
 const express = require('express')
 const path = require('path')
 const { faker } = require('@faker-js/faker')
 const app = express()
 const colors = require('colors')
+const webPush = require('web-push')
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
 const cors = require('cors')
 app.use(cors())
 
 app.use(express.static(path.join(__dirname, './view-with-react/build')))
 
 let isDisableKeepAlive = false
+
+app.post('/subscribe', async (req, res, next) => {
+  console.log('===== POST call')
+  console.log('***** req.headers: >>' + JSON.stringify(req.headers) + '<<')
+
+  console.log('***** req.url: ' + JSON.stringify(req.url))
+  console.log('***** req.query: ' + JSON.stringify(req.query))
+  console.log('***** req.body: ' + JSON.stringify(req.body))
+
+  const newSubscription = { ...req.body.subscription }
+  console.log('newSubscription: ', JSON.stringify(newSubscription, null, 2))
+  const options = {
+    vapidDetails: {
+      subject: 'mailto:milkybboy@gmail.com',
+      publicKey: process.env.PUBLIC_KEY,
+      privateKey: process.env.PRIVATE_KEY
+    }
+  }
+  try {
+    const res2 = await webPush.sendNotification(
+      newSubscription,
+      JSON.stringify({
+        title: 'Hello from server',
+        description: 'this message is coming from the server',
+        image:
+          'https://cdn2.vectorstock.com/i/thumb-large/94/66/emoji-smile-icon-symbol-smiley-face-vector-26119466.jpg'
+      }),
+      options
+    )
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(error)
+    res.sendStatus(500)
+  }
+  next()
+})
 
 // keep-alive 해제용 미들웨어
 app.use(function (req, res, next) {
@@ -177,17 +229,12 @@ app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, './view-with-react/build/index.html'))
 })
 
-const server = app.listen(8080, function () {
-  console.log('listening on 8080')
+//Start server
+const httpPort = 3000
+http.createServer(app).listen(httpPort, function () {
+  console.log('http://' + ip.address() + ':' + httpPort + '| start time : ' + new Date())
 })
-
-// 만일 process로부터 SIGINT 이벤트를 받으면..
-process.on('SIGINT', function () {
-  // SIGINT 시그널을 받으면 전역변수를 true로 만들어 앞으로 요청오면 종료해 버리게 만든다.
-  isDisableKeepAlive = true
-  // 어플리케이션을 닫음
-  server.close(function () {
-    console.log('server closed')
-    process.exit(0) // 정상 종료
-  })
+const httpsPort = 8080
+https.createServer(option, app).listen(httpsPort, function () {
+  console.log('https://' + ip.address() + ':' + httpsPort + '| start time : ' + new Date())
 })
