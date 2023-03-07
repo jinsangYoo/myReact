@@ -9,6 +9,9 @@ import {
   ACEMaritalStatus
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
+import '@toast-ui/editor/dist/toastui-editor.css'
+
+import { Editor } from '@toast-ui/react-editor'
 
 const title = 'MyReact_main'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
@@ -19,5 +22,13 @@ export default function MyReactMain() {
     sendCommonWithPromise(msg, params)
   }, [])
 
-  return <p>MyReact 메인 입니다.</p>
+  return (
+    <Editor
+      initialValue="hello react editor world!"
+      previewStyle="vertical"
+      height="600px"
+      initialEditType="markdown"
+      useCommandShortcut={true}
+    />
+  )
 }
