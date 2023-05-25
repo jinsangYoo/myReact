@@ -1,6 +1,6 @@
 //프로젝트 버전 확인
-importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging.js')
+importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js')
+importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js')
 
 const config = {
   apiKey: 'AIzaSyD4BPLxZiN6Ikg63_pXXIjJmFNWTw3Rdjs',
@@ -18,8 +18,7 @@ const messaging = firebase.messaging()
 
 //백그라운드 서비스워커 설정
 messaging.onBackgroundMessage(messaging, (payload) => {
-  console.log('in [firebase-messaging-sw.js] ', new Date().toLocaleDateString())
-  console.log('Received background message ', payload)
+  console.log('[firebase-messaging-sw.js] Received background message ', payload)
 
   // Customize notification here
   const notificationTitle = 'Background Message Title'
@@ -29,10 +28,4 @@ messaging.onBackgroundMessage(messaging, (payload) => {
   }
 
   self.registration.showNotification(notificationTitle, notificationOptions)
-})
-
-self.addEventListener('notificationclick', (event) => {
-  console.log('notificationclick', event)
-  event.notification.close()
-  return event
 })
