@@ -14,11 +14,11 @@ import {
 } from '@jinsang/slimer-react'
 import { gcodeSelector } from './utils'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from './utils'
+import { usePush, useACSDKUtil } from './hooks'
 
 import toast, { Toaster } from 'react-hot-toast'
 import { getMessagingHelper, requestForToken } from './firebase'
 import { onMessage } from 'firebase/messaging'
-import { usePush, useACSDKUtil } from './hooks'
 
 function App() {
   const { setEnableInSDK, setDetailInSDK } = useACSDKUtil()
