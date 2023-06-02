@@ -208,9 +208,10 @@ function Product(props: {
         }
         secondary={
           <>
-            <Link to={'/mall/detail'} onClick={() => props.onPressGoToProductDetailAddCart(props.product)}>
+            {/* <Link to={'/mall/detail'} onClick={() => props.onPressGoToProductDetailAddCart(props.product)}>
               <Image sx={{ width: '50%', display: 'block' }} src={props.product.productImg} alt="" />
-            </Link>
+            </Link> */}
+            <Image sx={{ width: '50%', display: 'block' }} src={props.product.productImg} alt="" />
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography display="inline" variant="subtitle1" color="text.secondary">
                 제품 단가:{' '}
