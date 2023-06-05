@@ -77,6 +77,13 @@ export function CartProvider(props: any) {
       })
     return _products
   }
+  const isExistProduct = (newProduct: ProductForType) => {
+    return !isNotExistProduct(newProduct)
+  }
+  const isNotExistProduct = (newProduct: ProductForType) => {
+    const result = products.findIndex((product) => product.productId === newProduct.productId)
+    return result === -1
+  }
   const addProducts = (products: ProductForType[]) => {
     dispatch({
       type: 'add',
@@ -84,9 +91,9 @@ export function CartProvider(props: any) {
     })
   }
   const addProduct = (newProduct: ProductForType) => {
-    const result = products.findIndex((product) => product.productId === newProduct.productId)
-    const newUniqueProduct =
-      result === -1 ? [newProduct] : [{ ...newProduct, productId: faker.datatype.uuid() }]
+    const newUniqueProduct = isNotExistProduct(newProduct)
+      ? [newProduct]
+      : [{ ...newProduct, productId: faker.datatype.uuid() }]
 
     dispatch({
       type: 'add',
@@ -94,6 +101,9 @@ export function CartProvider(props: any) {
     })
   }
   const addProductWithCalculateTotalPrice = (newProduct: ProductForType) => {
+    if (isExistProduct(newProduct)) {
+      newProduct.productId = faker.datatype.uuid()
+    }
     const productPrice = isNaN(Number(newProduct.productPrice)) ? 0 : Number(newProduct.productPrice)
     newProduct.totalPrice = newProduct.quantity * productPrice
     dispatch({
