@@ -1,6 +1,6 @@
 {
   "name": "view-with-react",
-  "version": "0.1.38",
+  "version": "0.1.43",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.0",
