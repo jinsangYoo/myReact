@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import {
   AceConfiguration,
   ACParams,
@@ -14,6 +14,14 @@ import { Button } from '@mui/material'
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function PersonalAbout() {
+  useEffect(() => {
+    // TODO
+    // SDK 와 함께 listener 정리가 필요.
+    // return () => {
+    //   window.top?.removeEventListener('didMounted')
+    // }
+  }, [])
+
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
@@ -21,7 +29,18 @@ export default function PersonalAbout() {
   }, [])
 
   const iframeRef = React.useRef(null)
-  function sendToIFrame() {}
+  function sendToIframe() {
+    console.log('in sendToIframe')
+    window.postMessage(
+      JSON.stringify({
+        type: 'type:sendToIframe',
+        datas: {
+          aa: 'datas:aa:sendToIframe'
+        }
+      }),
+      'http://localhost:3000'
+    )
+  }
 
   return (
     <>
@@ -38,12 +57,13 @@ export default function PersonalAbout() {
             />
           </li>
           <li>
-            <Button variant="outlined" onClick={sendToIFrame}>
-              send to IFrame.
+            <Button variant="outlined" onClick={sendToIframe}>
+              send to Iframe.
             </Button>
           </li>
           <li>
             <iframe
+              ref={iframeRef}
               id="cardGame"
               title="cardGame"
               width="500"
