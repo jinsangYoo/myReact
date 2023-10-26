@@ -1,11 +1,11 @@
 {
   "name": "view-with-react",
-  "version": "0.1.43",
+  "version": "0.1.44",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
-    "@jinsang/slimer-react": "file:../../slimer-react.git/jinsang-slimer-react-1.0.68.tgz",
+    "@jinsang/slimer-react": "file:../../slimer-react.git/jinsang-slimer-react-1.0.79.tgz",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.10",
     "@testing-library/jest-dom": "^5.16.5",

@@ -19,6 +19,7 @@ const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function PersonalAbout() {
   const iframeRef_1 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_2 = React.useRef<HTMLIFrameElement>(null)
+  const iframeRef_3 = React.useRef<HTMLIFrameElement>(null)
 
   const handleMessage = useCallback((e: Event) => {
     const _originSet = new Set<string>()
@@ -69,7 +70,7 @@ export default function PersonalAbout() {
   //   sendCommonWithPromise(msg, params)
   // }, [])
 
-  const sendToIframe = () => {
+  const printDependencies = () => {
     console.log('in sendToIframe')
     ACS.printDependencies()
   }
@@ -93,14 +94,14 @@ export default function PersonalAbout() {
     console.log('Ready for iframeRef_2.')
     console.log(`iframeRef_2: ${iframeRef_2.current?.src}`)
     ACS.addDependency(iframeRef_2, 'http://localhost:52275/')
+  }
+
+  const handleLoad_3 = () => {
+    console.log('Ready for iframeRef_3.')
+    console.log(`iframeRef_3: ${iframeRef_3.current?.src}`)
+    ACS.addDependency(iframeRef_3, 'http://localhost:3001/')
     // setTimeout(() => {
-    //   if (!iframeRef.current) {
-    //     return
-    //   }
-    //   iframeRef.current.contentWindow?.postMessage(
-    //     'initInIframe',
-    //     'http://localhost:52274/'
-    //   )
+    //   ACS.addDependency(iframeRef_3, 'http://localhost:3001/')
     // }, 100)
   }
 
@@ -119,8 +120,8 @@ export default function PersonalAbout() {
             />
           </li> */}
           <li>
-            <Button variant="outlined" onClick={sendToIframe}>
-              send to Iframe.
+            <Button variant="outlined" onClick={printDependencies}>
+              print Dependencies
             </Button>
           </li>
           <li>
@@ -145,6 +146,18 @@ export default function PersonalAbout() {
               style={{ border: '0' }}
               src="http://localhost:52275/"
               onLoad={handleLoad_2}
+            />
+          </li>
+          <li>
+            <iframe
+              ref={iframeRef_3}
+              id="cardGame_3"
+              title="cardGame_3"
+              width="500"
+              height="200"
+              style={{ border: '0' }}
+              src="http://localhost:3001/"
+              onLoad={handleLoad_3}
             />
           </li>
         </ul>
