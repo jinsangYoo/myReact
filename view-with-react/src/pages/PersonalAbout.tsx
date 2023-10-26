@@ -14,36 +14,46 @@ import { Button } from '@mui/material'
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function PersonalAbout() {
-  const iframeRef = React.useRef<HTMLIFrameElement>(null)
+  const iframeRef_1 = React.useRef<HTMLIFrameElement>(null)
+  const iframeRef_2 = React.useRef<HTMLIFrameElement>(null)
   useEffect(() => {
     window.addEventListener('message', ACS.handleMessage)
     return () => {
       window.removeEventListener('message', ACS.handleMessage)
-      ACS.removeAllIfreameRefs()
+      ACS.removeDependencices()
     }
   }, [])
 
-  useLayoutEffect(() => {
-    const msg = `>>${title}<< >>${randomValueForScreen}<<`
-    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
-    sendCommonWithPromise(msg, params)
-  }, [])
+  // useLayoutEffect(() => {
+  //   const msg = `>>${title}<< >>${randomValueForScreen}<<`
+  //   const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+  //   sendCommonWithPromise(msg, params)
+  // }, [])
 
   const sendToIframe = () => {
-    // window.postMessage(
-    //   {
-    //     type: 'didMounted1',
-    //     message: '젭알!!!'
-    //   },
-    //   '*'
-    // )
     console.log('in sendToIframe')
-    ACS.printIfreameRefs()
+    ACS.printDependencies()
   }
 
-  const handleLoad = () => {
-    console.log('Ready for iframeRef.')
-    ACS.addIframeRef(iframeRef, 'http://localhost:52274/')
+  const handleLoad_1 = () => {
+    console.log('Ready for iframeRef_1.')
+    console.log(`iframeRef_1: ${iframeRef_1.current?.src}`)
+    ACS.addDependency(iframeRef_1, 'http://localhost:52274/')
+    // setTimeout(() => {
+    //   if (!iframeRef.current) {
+    //     return
+    //   }
+    //   iframeRef.current.contentWindow?.postMessage(
+    //     'initInIframe',
+    //     'http://localhost:52274/'
+    //   )
+    // }, 100)
+  }
+
+  const handleLoad_2 = () => {
+    console.log('Ready for iframeRef_2.')
+    console.log(`iframeRef_2: ${iframeRef_2.current?.src}`)
+    ACS.addDependency(iframeRef_2, 'http://localhost:52275/')
     // setTimeout(() => {
     //   if (!iframeRef.current) {
     //     return
@@ -76,14 +86,26 @@ export default function PersonalAbout() {
           </li>
           <li>
             <iframe
-              ref={iframeRef}
-              id="cardGame"
-              title="cardGame"
+              ref={iframeRef_1}
+              id="cardGame_1"
+              title="cardGame_1"
               width="500"
               height="200"
               style={{ border: '0' }}
-              src="http://localhost:52274/"
-              onLoad={handleLoad}
+              src="http://localhost:52274/index.html"
+              onLoad={handleLoad_1}
+            />
+          </li>
+          <li>
+            <iframe
+              ref={iframeRef_2}
+              id="cardGame_2"
+              title="cardGame_2"
+              width="500"
+              height="200"
+              style={{ border: '0' }}
+              src="http://localhost:52275/"
+              onLoad={handleLoad_2}
             />
           </li>
         </ul>
