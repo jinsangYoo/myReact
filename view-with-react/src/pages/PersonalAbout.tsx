@@ -6,19 +6,58 @@ import {
   ACEResponseToCaller,
   ACProduct,
   ACEGender,
-  ACEMaritalStatus
+  ACEMaritalStatus,
+  ACSForMessage,
+  MessageForIFrame
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
 import { Button } from '@mui/material'
+import { onlyAlphabetOrNumberAtStringEndIndex } from '../utils/TextUtils'
 
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function PersonalAbout() {
   const iframeRef_1 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_2 = React.useRef<HTMLIFrameElement>(null)
+
+  const handleMessage = useCallback((e: Event) => {
+    const _originSet = new Set<string>()
+    _originSet.add(onlyAlphabetOrNumberAtStringEndIndex('http://localhost:3001'))
+    _originSet.add(onlyAlphabetOrNumberAtStringEndIndex('http://localhost:52274'))
+    _originSet.add(onlyAlphabetOrNumberAtStringEndIndex('http://localhost:52275'))
+
+    const _event = e as MessageEvent<ACSForMessage>
+    const _callback = (
+      params: {
+        type: string
+      } & MessageForIFrame
+    ) => {
+      console.log(`in myRect::params: ${JSON.stringify(params, null, 2)}`)
+    }
+
+    if (!_originSet.has(_event.origin)) {
+      return
+    }
+    switch (_event.data.type) {
+      case 'ACS.didAddedToMap':
+        _callback(_event.data)
+        break
+      case 'ACS.reqAceApp':
+        _callback(_event.data)
+        break
+      case 'ACS.resAceApp':
+        _callback(_event.data)
+        break
+      default:
+        break
+    }
+  }, [])
+
   useEffect(() => {
+    window.addEventListener('message', handleMessage)
     window.addEventListener('message', ACS.handleMessage)
     return () => {
+      window.removeEventListener('message', handleMessage)
       window.removeEventListener('message', ACS.handleMessage)
       ACS.removeDependencices()
     }
