@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useCallback } from 'react'
+import React, { useEffect, useLayoutEffect, useCallback, useState } from 'react'
 import {
   AceConfiguration,
   ACParams,
@@ -11,12 +11,15 @@ import {
   MessageForIFrame
 } from '@jinsang/slimer-react'
 import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '../utils'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { onlyAlphabetOrNumberAtStringEndIndex } from '../utils/TextUtils'
+import { AceWebViewInterface } from '../types'
 
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function PersonalAbout() {
+  const [isWebView, setIsWebView] = useState<boolean>(false)
+  const [browser, setBrowser] = useState<string>('Browser')
   const iframeRef_1 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_2 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_3 = React.useRef<HTMLIFrameElement>(null)
@@ -70,10 +73,51 @@ export default function PersonalAbout() {
   //   sendCommonWithPromise(msg, params)
   // }, [])
 
-  const printDependencies = () => {
+  const _isWebView = useCallback(() => {
+    console.log('in isWebView')
+    let isIos = window as any | undefined
+    let isAndroid: AceWebViewInterface | undefined
+    if (isIos && isIos.webkit && isIos.webkit.messageHandlers) {
+      console.log('maybe ios')
+      return true
+    } else if (isAndroid) {
+      console.log('maybe aos')
+      return true
+    }
+
+    console.log('maybe not webview')
+    return false
+  }, [])
+
+  const getBrowserName = useCallback(() => {
+    console.log('in getBrowserName')
+    let _win = window as any | undefined
+    if (_win && _win.webkit && _win.webkit.messageHandlers) {
+      console.log('maybe ios')
+      _win.webkit.messageHandlers.loaded.postMessage('loaded')
+      return 'maybe ios'
+    } else if (_win && _win.ace_and_interface) {
+      console.log('maybe aos')
+      let isAndroid = _win.ace_and_interface as any as AceWebViewInterface | undefined
+      console.log('isAndroid?.getKey(): ' + isAndroid?.getKey())
+      console.log('isAndroid?.getDevice(): ' + isAndroid?.getDevice())
+      console.log('isAndroid?.getTS(): ' + isAndroid?.getTS())
+      return 'maybe aos'
+    }
+
+    console.log('maybe not webview')
+    return 'browser'
+  }, [])
+
+  useEffect(() => {
+    setIsWebView(_isWebView())
+    setBrowser(getBrowserName())
+  }, [])
+
+  const printDependencies = useCallback(() => {
     console.log('in sendToIframe')
     ACS.printDependencies()
-  }
+  }, [])
 
   const handleLoad_1 = () => {
     console.log('Ready for iframeRef_1.')
@@ -110,6 +154,11 @@ export default function PersonalAbout() {
       <p>대문 여긴어디 입니다.</p>
       <div>
         <ul>
+          <li>
+            <Typography>
+              isWebView: {isWebView == true ? 'true' : 'false'}, 브라우져명: {browser}
+            </Typography>
+          </li>
           {/* <li>
             <iframe
               title="대문 여긴어디 입니다."
