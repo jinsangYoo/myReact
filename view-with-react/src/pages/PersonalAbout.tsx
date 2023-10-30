@@ -40,7 +40,7 @@ export default function PersonalAbout() {
       return
     }
     switch (_event.data.type) {
-      case 'ACS.didAddedToMap':
+      case 'ACS.didAddToMap':
         _callback(_event.data)
         break
       case 'ACS.reqAceApp':
