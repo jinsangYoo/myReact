@@ -94,47 +94,55 @@ function App() {
   }, [notification])
 
   const { setPushToken } = usePush()
-  useEffect(() => {
-    const messaging = getMessagingHelper()
-    requestForToken(messaging)
-      .then((currentToken) => {
-        if (currentToken) {
-          console.log('current push token for client: ', currentToken)
-          // Perform any other neccessary action with the token
-          setPushToken(currentToken)
-        } else {
-          // Show permission request UI
-          console.log('No registration token available. Request permission to generate one.')
-        }
-      })
-      .catch((err) => {
-        console.log('An error occurred while retrieving token. ', err)
-      })
+  // useEffect(() => {
+  //   const messaging = getMessagingHelper()
+  //   requestForToken(messaging)
+  //     .then((currentToken) => {
+  //       if (currentToken) {
+  //         console.log('current push token for client: ', currentToken)
+  //         // Perform any other neccessary action with the token
+  //         setPushToken(currentToken)
+  //       } else {
+  //         // Show permission request UI
+  //         console.log('No registration token available. Request permission to generate one.')
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log('An error occurred while retrieving token. ', err)
+  //     })
 
-    onMessage(messaging, (payload) => {
-      console.log(
-        `[${new Date().toLocaleDateString()}] in Ap::onMessage::${JSON.stringify(payload, null, 2)}`
-      )
-      setNotification({
-        title: payload?.notification?.title ?? 'noTitle',
-        body: payload?.notification?.body ?? 'noBody'
-      })
-      console.log(
-        `[${new Date().toLocaleDateString()}] in Ap::onMessage::payload.data: ${JSON.stringify(
-          payload.data,
-          null,
-          2
-        )}`
-      )
-      if (payload.data) {
-        const msg = payload?.notification?.body ?? 'noBody'
-        const params = ACParams.init(ACParams.TYPE.PUSH, msg)
-        params.data = payload.data
-        sendCommonWithPromise(msg, params)
-      } else {
-        console.log('in Ap::payload.data is empty.')
-      }
-    })
+  //   onMessage(messaging, (payload) => {
+  //     console.log(
+  //       `[${new Date().toLocaleDateString()}] in Ap::onMessage::${JSON.stringify(payload, null, 2)}`
+  //     )
+  //     setNotification({
+  //       title: payload?.notification?.title ?? 'noTitle',
+  //       body: payload?.notification?.body ?? 'noBody'
+  //     })
+  //     console.log(
+  //       `[${new Date().toLocaleDateString()}] in Ap::onMessage::payload.data: ${JSON.stringify(
+  //         payload.data,
+  //         null,
+  //         2
+  //       )}`
+  //     )
+  //     if (payload.data) {
+  //       const msg = payload?.notification?.body ?? 'noBody'
+  //       const params = ACParams.init(ACParams.TYPE.PUSH, msg)
+  //       params.data = payload.data
+  //       sendCommonWithPromise(msg, params)
+  //     } else {
+  //       console.log('in Ap::payload.data is empty.')
+  //     }
+  //   })
+  // }, [])
+
+  useEffect(() => {
+    window.addEventListener('message', ACS.handleMessage)
+    return () => {
+      window.removeEventListener('message', ACS.handleMessage)
+      ACS.removeDependencices()
+    }
   }, [])
 
   return (

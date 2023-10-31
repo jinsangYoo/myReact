@@ -72,6 +72,14 @@ export default function PersonalMain() {
         FCM token copy to clipboard
       </Button>
       <pre>{token}</pre>
+      <Button variant="outlined" onClick={ACS.printDependencies}>
+        ACS SDK print dependencies
+      </Button>
+      <pre>
+        <a href="http://127.0.0.1:52274" style={{ textDecoration: 'none' }}>
+          진상 로컬(http://127.0.0.1:52274)로 a 링크
+        </a>
+      </pre>
       <pre>ACS SDK 버전: {ACS.getSdkVersion()}</pre>
       <pre>ACS SDK 활성화 여부: {enable.toString()}</pre>
       <pre>ACS SDK 현황: {JSON.stringify(details, null, 2)}</pre>

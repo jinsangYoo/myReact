@@ -59,10 +59,10 @@ export default function PersonalAbout() {
 
   useEffect(() => {
     window.addEventListener('message', handleMessage)
-    window.addEventListener('message', ACS.handleMessage)
+    // window.addEventListener('message', ACS.handleMessage)
     return () => {
       window.removeEventListener('message', handleMessage)
-      window.removeEventListener('message', ACS.handleMessage)
+      // window.removeEventListener('message', ACS.handleMessage)
       ACS.removeDependencices()
     }
   }, [])
@@ -76,7 +76,12 @@ export default function PersonalAbout() {
   const isSupportSDK = useCallback(() => {
     console.log('in isWebView')
     let _win = window as any | undefined
-    if (_win && _win.webkit && _win.webkit.messageHandlers && _win.webkit.messageHandlers.loaded) {
+    if (
+      _win &&
+      _win.webkit &&
+      _win.webkit.messageHandlers &&
+      _win.webkit.messageHandlers.ace_message_handler
+    ) {
       console.log('maybe ios')
       return true
     } else if (_win && _win.ace_and_interface) {
@@ -91,9 +96,14 @@ export default function PersonalAbout() {
   const getBrowserName = useCallback(() => {
     console.log('in getBrowserName')
     let _win = window as any | undefined
-    if (_win && _win.webkit && _win.webkit.messageHandlers && _win.webkit.messageHandlers.loaded) {
+    if (
+      _win &&
+      _win.webkit &&
+      _win.webkit.messageHandlers &&
+      _win.webkit.messageHandlers.ace_message_handler
+    ) {
       console.log('maybe ios')
-      _win.webkit.messageHandlers.loaded.postMessage('loaded')
+      _win.webkit.messageHandlers.ace_message_handler.postMessage('ace_message_handler!!!!!')
       return 'maybe ios'
     } else if (_win && _win.ace_and_interface) {
       console.log('maybe aos')
