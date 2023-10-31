@@ -73,14 +73,13 @@ export default function PersonalAbout() {
   //   sendCommonWithPromise(msg, params)
   // }, [])
 
-  const _isWebView = useCallback(() => {
+  const isSupportSDK = useCallback(() => {
     console.log('in isWebView')
-    let isIos = window as any | undefined
-    let isAndroid: AceWebViewInterface | undefined
-    if (isIos && isIos.webkit && isIos.webkit.messageHandlers) {
+    let _win = window as any | undefined
+    if (_win && _win.webkit && _win.webkit.messageHandlers && _win.webkit.messageHandlers.loaded) {
       console.log('maybe ios')
       return true
-    } else if (isAndroid) {
+    } else if (_win && _win.ace_and_interface) {
       console.log('maybe aos')
       return true
     }
@@ -92,13 +91,13 @@ export default function PersonalAbout() {
   const getBrowserName = useCallback(() => {
     console.log('in getBrowserName')
     let _win = window as any | undefined
-    if (_win && _win.webkit && _win.webkit.messageHandlers) {
+    if (_win && _win.webkit && _win.webkit.messageHandlers && _win.webkit.messageHandlers.loaded) {
       console.log('maybe ios')
       _win.webkit.messageHandlers.loaded.postMessage('loaded')
       return 'maybe ios'
     } else if (_win && _win.ace_and_interface) {
       console.log('maybe aos')
-      let isAndroid = _win.ace_and_interface as any as AceWebViewInterface | undefined
+      let isAndroid = _win.ace_and_interface as AceWebViewInterface | undefined
       console.log('isAndroid?.getKey(): ' + isAndroid?.getKey())
       console.log('isAndroid?.getDevice(): ' + isAndroid?.getDevice())
       console.log('isAndroid?.getTS(): ' + isAndroid?.getTS())
@@ -110,7 +109,7 @@ export default function PersonalAbout() {
   }, [])
 
   useEffect(() => {
-    setIsWebView(_isWebView())
+    setIsWebView(isSupportSDK())
     setBrowser(getBrowserName())
   }, [])
 
