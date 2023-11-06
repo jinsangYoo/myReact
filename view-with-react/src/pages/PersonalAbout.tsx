@@ -43,7 +43,10 @@ export default function PersonalAbout() {
       return
     }
     switch (_event.data.type) {
-      case 'ACS.didAddToMap':
+      case 'ACS.didAddByOnLoad':
+        _callback(_event.data)
+        break
+      case 'ACS.didAdd':
         _callback(_event.data)
         break
       case 'ACS.reqAceApp':
@@ -58,10 +61,10 @@ export default function PersonalAbout() {
   }, [])
 
   useEffect(() => {
-    window.addEventListener('message', handleMessage)
+    // window.addEventListener('message', handleMessage)
     // window.addEventListener('message', ACS.handleMessage)
     return () => {
-      window.removeEventListener('message', handleMessage)
+      // window.removeEventListener('message', handleMessage)
       // window.removeEventListener('message', ACS.handleMessage)
       ACS.removeDependencices()
     }
@@ -123,6 +126,18 @@ export default function PersonalAbout() {
     setBrowser(getBrowserName())
   }, [])
 
+  const testWindow = () => {
+    if (window.parent === window) {
+      console.log(`in myReact::window.parent === window: ${window.parent === window}`)
+    } else {
+      console.log(`in myReact::window.parent !== window: ${window.parent !== window}`)
+    }
+  }
+
+  useEffect(() => {
+    testWindow()
+  }, [])
+
   const printDependencies = useCallback(() => {
     console.log('in sendToIframe')
     ACS.printDependencies()
@@ -132,15 +147,6 @@ export default function PersonalAbout() {
     console.log('Ready for iframeRef_1.')
     console.log(`iframeRef_1: ${iframeRef_1.current?.src}`)
     ACS.addDependency(iframeRef_1, 'http://localhost:52274/')
-    // setTimeout(() => {
-    //   if (!iframeRef.current) {
-    //     return
-    //   }
-    //   iframeRef.current.contentWindow?.postMessage(
-    //     'initInIframe',
-    //     'http://localhost:52274/'
-    //   )
-    // }, 100)
   }
 
   const handleLoad_2 = () => {
@@ -153,9 +159,6 @@ export default function PersonalAbout() {
     console.log('Ready for iframeRef_3.')
     console.log(`iframeRef_3: ${iframeRef_3.current?.src}`)
     ACS.addDependency(iframeRef_3, 'http://localhost:3001/')
-    // setTimeout(() => {
-    //   ACS.addDependency(iframeRef_3, 'http://localhost:3001/')
-    // }, 100)
   }
 
   return (
@@ -206,7 +209,7 @@ export default function PersonalAbout() {
               onLoad={handleLoad_2}
             />
           </li>
-          <li>
+          {/* <li>
             <iframe
               ref={iframeRef_3}
               id="cardGame_3"
@@ -217,7 +220,7 @@ export default function PersonalAbout() {
               src="http://localhost:3001/"
               onLoad={handleLoad_3}
             />
-          </li>
+          </li> */}
         </ul>
       </div>
     </>
