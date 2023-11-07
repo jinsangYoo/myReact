@@ -46,9 +46,6 @@ export default function PersonalAbout() {
       case 'ACS.didAddByOnLoad':
         _callback(_event.data)
         break
-      case 'ACS.didAdd':
-        _callback(_event.data)
-        break
       case 'ACS.reqAceApp':
         _callback(_event.data)
         break
@@ -209,7 +206,7 @@ export default function PersonalAbout() {
               onLoad={handleLoad_2}
             />
           </li>
-          {/* <li>
+          <li>
             <iframe
               ref={iframeRef_3}
               id="cardGame_3"
@@ -220,7 +217,7 @@ export default function PersonalAbout() {
               src="http://localhost:3001/"
               onLoad={handleLoad_3}
             />
-          </li> */}
+          </li>
         </ul>
       </div>
     </>
