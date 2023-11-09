@@ -23,6 +23,7 @@ export default function PersonalAbout() {
   const iframeRef_1 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_2 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_3 = React.useRef<HTMLIFrameElement>(null)
+  const iframeRef_4 = React.useRef<HTMLIFrameElement>(null)
 
   const handleMessage = useCallback((e: Event) => {
     const _originSet = new Set<string>()
@@ -158,6 +159,12 @@ export default function PersonalAbout() {
     ACS.addDependency(iframeRef_3, 'http://localhost:3001/')
   }
 
+  const handleLoad_4 = () => {
+    console.log('Ready for iframeRef_4.')
+    console.log(`iframeRef_4: ${iframeRef_4.current?.src}`)
+    ACS.addRequestReady('1234', iframeRef_4, 'http://localhost:3001/')
+  }
+
   return (
     <>
       <p>대문 여긴어디 입니다.</p>
@@ -182,7 +189,7 @@ export default function PersonalAbout() {
               print Dependencies
             </Button>
           </li>
-          <li>
+          {/* <li>
             <iframe
               ref={iframeRef_1}
               id="cardGame_1"
@@ -205,8 +212,8 @@ export default function PersonalAbout() {
               src="http://localhost:52275/"
               onLoad={handleLoad_2}
             />
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <iframe
               ref={iframeRef_3}
               id="cardGame_3"
@@ -216,6 +223,18 @@ export default function PersonalAbout() {
               style={{ border: '0' }}
               src="http://localhost:3001/"
               onLoad={handleLoad_3}
+            />
+          </li> */}
+          <li>
+            <iframe
+              ref={iframeRef_4}
+              id="cardGame_4"
+              title="cardGame_4"
+              width="500"
+              height="200"
+              style={{ border: '0' }}
+              src="http://localhost:3001/"
+              onLoad={handleLoad_4}
             />
           </li>
         </ul>
