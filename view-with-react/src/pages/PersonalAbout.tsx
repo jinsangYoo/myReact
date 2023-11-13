@@ -141,6 +141,15 @@ export default function PersonalAbout() {
     ACS.printDependencies()
   }, [])
 
+  function onPrintDetails() {
+    console.log('in onPrintDetails in test_postmsg_with_react')
+    console.log(`ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
+    console.log('ACS.getDetail(): ' + JSON.stringify(ACS.getSdkDetails(), null, 2))
+    console.log('ACS.getSdkVersion(): ' + JSON.stringify(JSON.parse(ACS.getSdkVersion()), null, 2))
+    console.log('ACS.getTS(): ' + JSON.stringify(JSON.parse(ACS.getTS()), null, 2))
+    console.log('ACS.getKey(): ' + ACS.getKey())
+  }
+
   const handleLoad_1 = () => {
     console.log('Ready for iframeRef_1.')
     console.log(`iframeRef_1: ${iframeRef_1.current?.src}`)
@@ -187,6 +196,11 @@ export default function PersonalAbout() {
           <li>
             <Button variant="outlined" onClick={printDependencies}>
               print Dependencies
+            </Button>
+          </li>
+          <li>
+            <Button variant="outlined" onClick={onPrintDetails}>
+              onPrintDetails
             </Button>
           </li>
           {/* <li>
