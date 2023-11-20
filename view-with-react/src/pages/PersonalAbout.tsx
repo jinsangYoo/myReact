@@ -17,6 +17,7 @@ import { AceWebViewInterface } from '../types'
 
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
+const mobile = 'http://10.77.100.55:3001'
 export default function PersonalAbout() {
   const [isWebView, setIsWebView] = useState<boolean>(false)
   const [browser, setBrowser] = useState<string>('Browser')
@@ -24,6 +25,7 @@ export default function PersonalAbout() {
   const iframeRef_2 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_3 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_4 = React.useRef<HTMLIFrameElement>(null)
+  const iframeRef_5 = React.useRef<HTMLIFrameElement>(null)
 
   const handleMessage = useCallback((e: Event) => {
     const _originSet = new Set<string>()
@@ -174,6 +176,12 @@ export default function PersonalAbout() {
     ACS.addRequestReady('1234', iframeRef_4, 'http://localhost:3001/')
   }
 
+  const handleLoad_5 = () => {
+    console.log('Ready for iframeRef_5.')
+    console.log(`iframeRef_5: ${iframeRef_5.current?.src}`)
+    ACS.addRequestReady('1234', iframeRef_5, mobile)
+  }
+
   return (
     <>
       <p>대문 여긴어디 입니다.</p>
@@ -203,7 +211,7 @@ export default function PersonalAbout() {
               onPrintDetails
             </Button>
           </li>
-          {/* <li>
+          <li>
             <iframe
               ref={iframeRef_1}
               id="cardGame_1"
@@ -215,7 +223,7 @@ export default function PersonalAbout() {
               onLoad={handleLoad_1}
             />
           </li>
-          <li>
+          {/* <li>
             <iframe
               ref={iframeRef_2}
               id="cardGame_2"
@@ -239,7 +247,7 @@ export default function PersonalAbout() {
               onLoad={handleLoad_3}
             />
           </li> */}
-          <li>
+          {/* <li>
             <iframe
               ref={iframeRef_4}
               id="cardGame_4"
@@ -251,6 +259,19 @@ export default function PersonalAbout() {
               onLoad={handleLoad_4}
             />
           </li>
+           */}
+          {/* <li>
+            <iframe
+              ref={iframeRef_5}
+              id="mobile"
+              title="mobile"
+              width="500"
+              height="200"
+              style={{ border: '0' }}
+              src={mobile}
+              onLoad={handleLoad_5}
+            />
+          </li> */}
         </ul>
       </div>
     </>
