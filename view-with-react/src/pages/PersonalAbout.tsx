@@ -49,10 +49,10 @@ export default function PersonalAbout() {
       case 'ACS.didAddByOnLoad':
         _callback(_event.data)
         break
-      case 'ACS.reqAceApp':
+      case 'ACS.reqOnLoad':
         _callback(_event.data)
         break
-      case 'ACS.resAceApp':
+      case 'ACS.resOnLoad':
         _callback(_event.data)
         break
       default:
@@ -223,7 +223,7 @@ export default function PersonalAbout() {
               onLoad={handleLoad_1}
             />
           </li>
-          {/* <li>
+          <li>
             <iframe
               ref={iframeRef_2}
               id="cardGame_2"
@@ -234,7 +234,7 @@ export default function PersonalAbout() {
               src="http://localhost:52275/"
               onLoad={handleLoad_2}
             />
-          </li> */}
+          </li>
           {/* <li>
             <iframe
               ref={iframeRef_3}
@@ -246,8 +246,8 @@ export default function PersonalAbout() {
               src="http://localhost:3001/"
               onLoad={handleLoad_3}
             />
-          </li> */}
-          {/* <li>
+          </li>
+          <li>
             <iframe
               ref={iframeRef_4}
               id="cardGame_4"
@@ -258,8 +258,7 @@ export default function PersonalAbout() {
               src="http://localhost:3001/"
               onLoad={handleLoad_4}
             />
-          </li>
-           */}
+          </li> */}
           {/* <li>
             <iframe
               ref={iframeRef_5}
