@@ -17,7 +17,7 @@ import { AceWebViewInterface } from '../types'
 
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-const mobile = 'http://10.77.100.55:3001'
+const mobile = 'http://10.78.100.116:3001'
 export default function PersonalAbout() {
   const [isWebView, setIsWebView] = useState<boolean>(false)
   const [browser, setBrowser] = useState<string>('Browser')
@@ -26,6 +26,7 @@ export default function PersonalAbout() {
   const iframeRef_3 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_4 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_5 = React.useRef<HTMLIFrameElement>(null)
+  const iframeRef_6 = React.useRef<HTMLIFrameElement>(null)
 
   const handleMessage = useCallback((e: Event) => {
     const _originSet = new Set<string>()
@@ -173,13 +174,23 @@ export default function PersonalAbout() {
   const handleLoad_4 = () => {
     console.log('Ready for iframeRef_4.')
     console.log(`iframeRef_4: ${iframeRef_4.current?.src}`)
-    ACS.addRequestReady('1234', iframeRef_4, 'http://localhost:3001/')
+    console.log(
+      `ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_5, 'http://localhost:3001/')}`
+    )
   }
 
   const handleLoad_5 = () => {
     console.log('Ready for iframeRef_5.')
     console.log(`iframeRef_5: ${iframeRef_5.current?.src}`)
-    ACS.addRequestReady('1234', iframeRef_5, mobile)
+    console.log(
+      `ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_5, 'http://localhost:3001/')}`
+    )
+  }
+
+  const handleLoad_6 = () => {
+    console.log('Ready for iframeRef_6.')
+    console.log(`iframeRef_6: ${iframeRef_6.current?.src}`)
+    console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_6, mobile)}`)
   }
 
   return (
@@ -211,11 +222,10 @@ export default function PersonalAbout() {
               onPrintDetails
             </Button>
           </li>
-          <li>
+          {/* <li>
             <iframe
               ref={iframeRef_1}
-              id="cardGame_1"
-              title="cardGame_1"
+              title="iframeRef_1"
               width="500"
               height="200"
               style={{ border: '0' }}
@@ -226,49 +236,57 @@ export default function PersonalAbout() {
           <li>
             <iframe
               ref={iframeRef_2}
-              id="cardGame_2"
-              title="cardGame_2"
+              title="iframeRef_2"
               width="500"
               height="200"
               style={{ border: '0' }}
               src="http://localhost:52275/"
               onLoad={handleLoad_2}
             />
-          </li>
+          </li> */}
           {/* <li>
             <iframe
               ref={iframeRef_3}
-              id="cardGame_3"
-              title="cardGame_3"
+              title="iframeRef_3"
               width="500"
               height="200"
               style={{ border: '0' }}
               src="http://localhost:3001/"
               onLoad={handleLoad_3}
             />
-          </li>
+          </li> */}
           <li>
             <iframe
               ref={iframeRef_4}
-              id="cardGame_4"
-              title="cardGame_4"
+              title="iframeRef_4"
               width="500"
               height="200"
               style={{ border: '0' }}
               src="http://localhost:3001/"
               onLoad={handleLoad_4}
             />
-          </li> */}
-          {/* <li>
+          </li>
+          <li>
             <iframe
               ref={iframeRef_5}
+              title="iframeRef_5"
+              width="500"
+              height="200"
+              style={{ border: '0' }}
+              src="http://localhost:3001/"
+              onLoad={handleLoad_5}
+            />
+          </li>
+          {/* <li>
+            <iframe
+              ref={iframeRef_6}
               id="mobile"
               title="mobile"
               width="500"
               height="200"
               style={{ border: '0' }}
               src={mobile}
-              onLoad={handleLoad_5}
+              onLoad={handleLoad_6}
             />
           </li> */}
         </ul>
