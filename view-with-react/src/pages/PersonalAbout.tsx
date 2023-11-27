@@ -17,7 +17,9 @@ import { AceWebViewInterface } from '../types'
 
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-const mobile = 'http://10.78.100.116:3001'
+const _ip = 'http://10.78.100.141'
+const mobile = `${_ip}:3001`
+const ipOrigin = `${_ip}:3000`
 export default function PersonalAbout() {
   const [isWebView, setIsWebView] = useState<boolean>(false)
   const [browser, setBrowser] = useState<string>('Browser')
@@ -28,38 +30,38 @@ export default function PersonalAbout() {
   const iframeRef_5 = React.useRef<HTMLIFrameElement>(null)
   const iframeRef_6 = React.useRef<HTMLIFrameElement>(null)
 
-  const handleMessage = useCallback((e: Event) => {
-    const _originSet = new Set<string>()
-    _originSet.add(onlyAlphabetOrNumberAtStringEndIndex('http://localhost:3001'))
-    _originSet.add(onlyAlphabetOrNumberAtStringEndIndex('http://localhost:52274'))
-    _originSet.add(onlyAlphabetOrNumberAtStringEndIndex('http://localhost:52275'))
+  // const handleMessage = useCallback((e: Event) => {
+  //   const _originSet = new Set<string>()
+  //   _originSet.add(onlyAlphabetOrNumberAtStringEndIndex('http://localhost:3001'))
+  //   _originSet.add(onlyAlphabetOrNumberAtStringEndIndex('http://localhost:52274'))
+  //   _originSet.add(onlyAlphabetOrNumberAtStringEndIndex('http://localhost:52275'))
 
-    const _event = e as MessageEvent<ACSForMessage>
-    const _callback = (
-      params: {
-        type: string
-      } & MessageForIFrame
-    ) => {
-      console.log(`in myRect::params: ${JSON.stringify(params, null, 2)}`)
-    }
+  //   const _event = e as MessageEvent<ACSForMessage>
+  //   const _callback = (
+  //     params: {
+  //       type: string
+  //     } & MessageForIFrame
+  //   ) => {
+  //     console.log(`in myRect::params: ${JSON.stringify(params, null, 2)}`)
+  //   }
 
-    if (!_originSet.has(_event.origin)) {
-      return
-    }
-    switch (_event.data.type) {
-      case 'ACS.didAddByOnLoad':
-        _callback(_event.data)
-        break
-      case 'ACS.reqOnLoad':
-        _callback(_event.data)
-        break
-      case 'ACS.resOnLoad':
-        _callback(_event.data)
-        break
-      default:
-        break
-    }
-  }, [])
+  //   if (!_originSet.has(_event.origin)) {
+  //     return
+  //   }
+  //   switch (_event.data.type) {
+  //     case 'ACS.didAddByOnLoad':
+  //       _callback(_event.data)
+  //       break
+  //     case 'ACS.reqOnLoad':
+  //       _callback(_event.data)
+  //       break
+  //     case 'ACS.resOnLoad':
+  //       _callback(_event.data)
+  //       break
+  //     default:
+  //       break
+  //   }
+  // }, [])
 
   useEffect(() => {
     // window.addEventListener('message', handleMessage)
@@ -255,7 +257,7 @@ export default function PersonalAbout() {
               onLoad={handleLoad_3}
             />
           </li> */}
-          <li>
+          {/* <li>
             <iframe
               ref={iframeRef_4}
               title="iframeRef_4"
@@ -276,8 +278,8 @@ export default function PersonalAbout() {
               src="http://localhost:3001/"
               onLoad={handleLoad_5}
             />
-          </li>
-          {/* <li>
+          </li> */}
+          <li>
             <iframe
               ref={iframeRef_6}
               id="mobile"
@@ -288,7 +290,7 @@ export default function PersonalAbout() {
               src={mobile}
               onLoad={handleLoad_6}
             />
-          </li> */}
+          </li>
         </ul>
       </div>
     </>
