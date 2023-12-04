@@ -17,7 +17,7 @@ import { AceWebViewInterface } from '../types'
 
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-const _ip = 'http://10.78.100.141'
+const _ip = 'http://10.77.129.54'
 const mobile = `${_ip}:3001`
 const ipOrigin = `${_ip}:3000`
 export default function PersonalAbout() {
@@ -73,11 +73,11 @@ export default function PersonalAbout() {
     }
   }, [])
 
-  // useLayoutEffect(() => {
-  //   const msg = `>>${title}<< >>${randomValueForScreen}<<`
-  //   const params = ACParams.init(ACParams.TYPE.EVENT, msg)
-  //   sendCommonWithPromise(msg, params)
-  // }, [])
+  useLayoutEffect(() => {
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
 
   const isSupportSDK = useCallback(() => {
     console.log('in isWebView')
