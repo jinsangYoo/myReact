@@ -23,8 +23,8 @@ import { onMessage } from 'firebase/messaging'
 function App() {
   const { setEnableInSDK, setDetailInSDK } = useACSDKUtil()
   useEffect(() => {
-    console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
-    console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
+    // console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
+    // console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
 
     const _config = AceConfiguration.init(gcodeSelector())
     ACS.configure(_config)
@@ -66,34 +66,34 @@ function App() {
     // })
   }, [])
 
-  const isPro = process.env.NODE_ENV === 'production' || false
-  const isDev = process.env.NODE_ENV === 'development' || false
-  const isTest = process.env.NODE_ENV === 'test' || false
-  console.log(`isPro: ${String(isPro)}, isDev: ${String(isDev)}, isTest: ${String(isTest)}`)
-  console.log(
-    `NODE_ENV: &gt;&gt;${process.env.NODE_ENV}&lt;&lt;, REACT_APP_MODE: &gt;&gt;${process.env.REACT_APP_MODE}&lt;&lt;`
-  )
+  // const isPro = process.env.NODE_ENV === 'production' || false
+  // const isDev = process.env.NODE_ENV === 'development' || false
+  // const isTest = process.env.NODE_ENV === 'test' || false
+  // console.log(`isPro: ${String(isPro)}, isDev: ${String(isDev)}, isTest: ${String(isTest)}`)
+  // console.log(
+  //   `NODE_ENV: &gt;&gt;${process.env.NODE_ENV}&lt;&lt;, REACT_APP_MODE: &gt;&gt;${process.env.REACT_APP_MODE}&lt;&lt;`
+  // )
 
-  const [notification, setNotification] = useState({ title: '', body: '' })
-  const notify = () => toast(<ToastDisplay />)
-  function ToastDisplay() {
-    return (
-      <div style={{ backgroundColor: 'yellowgreen' }}>
-        <p>
-          <b>{notification?.title}</b>
-        </p>
-        <p>{notification?.body}</p>
-      </div>
-    )
-  }
+  // const [notification, setNotification] = useState({ title: '', body: '' })
+  // const notify = () => toast(<ToastDisplay />)
+  // function ToastDisplay() {
+  //   return (
+  //     <div style={{ backgroundColor: 'yellowgreen' }}>
+  //       <p>
+  //         <b>{notification?.title}</b>
+  //       </p>
+  //       <p>{notification?.body}</p>
+  //     </div>
+  //   )
+  // }
 
-  useEffect(() => {
-    if (notification?.title) {
-      notify()
-    }
-  }, [notification])
+  // useEffect(() => {
+  //   if (notification?.title) {
+  //     notify()
+  //   }
+  // }, [notification])
 
-  const { setPushToken } = usePush()
+  // const { setPushToken } = usePush()
   // useEffect(() => {
   //   const messaging = getMessagingHelper()
   //   requestForToken(messaging)
@@ -138,6 +138,34 @@ function App() {
   // }, [])
 
   useEffect(() => {
+    const _ip = 'http://10.77.129.54'
+    // const mobileParent = `${_ip}:3000`
+    // let parentDomain = [`${_ip}:3000`, mobileParent]
+    let parentDomain = [`${_ip}:3000`]
+
+    ACS.send(
+      {
+        type: ACParams.TYPE.ONLOAD,
+        name: '네이티브 연동, Use useEffect reqReady in App',
+        key: '1234',
+        origin: parentDomain
+      },
+      (error?: object, result?: ACEResponseToCaller) => {
+        console.log(`myReact::App::in CB`)
+        console.log('error: ' + (error as Error).message)
+        console.log('result: ' + JSON.stringify(result, null, 2))
+      }
+    )
+  }, [])
+
+  useEffect(() => {
+    const msg = `>>${'테스트_PL'}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    // sendCommonWithPromise(msg, params)
+    sendCommonWithCB(msg, params)
+  }, [])
+
+  useEffect(() => {
     window.addEventListener('message', ACS.handleMessage)
     return () => {
       window.removeEventListener('message', ACS.handleMessage)
@@ -146,12 +174,10 @@ function App() {
   }, [])
 
   return (
-    <div>
-      <Router>
-        <DefaultLayout />
-        <Toaster />
-      </Router>
-    </div>
+    <Router>
+      <DefaultLayout />
+      <Toaster />
+    </Router>
   )
 }
 
