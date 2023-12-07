@@ -17,7 +17,8 @@ import { AceWebViewInterface } from '../types'
 
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-const _ip = 'http://10.77.129.54'
+// const _ip = 'http://10.77.129.54'
+const _ip = 'http://10.78.100.175'
 const mobile = `${_ip}:3001`
 const _parentOrigin = `${_ip}:3000`
 export default function PersonalAbout() {
