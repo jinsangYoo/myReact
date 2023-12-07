@@ -19,7 +19,7 @@ const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 const _ip = 'http://10.77.129.54'
 const mobile = `${_ip}:3001`
-const ipOrigin = `${_ip}:3000`
+const _parentOrigin = `${_ip}:3000`
 export default function PersonalAbout() {
   const [isWebView, setIsWebView] = useState<boolean>(false)
   const [browser, setBrowser] = useState<string>('Browser')
@@ -158,35 +158,31 @@ export default function PersonalAbout() {
   const handleLoad_1 = () => {
     console.log('Ready for iframeRef_1.')
     console.log(`iframeRef_1: ${iframeRef_1.current?.src}`)
-    ACS.addDependency(iframeRef_1, 'http://localhost:52274/')
+    ACS.addDependency(iframeRef_1, `${_ip}:52274/`)
   }
 
   const handleLoad_2 = () => {
     console.log('Ready for iframeRef_2.')
     console.log(`iframeRef_2: ${iframeRef_2.current?.src}`)
-    ACS.addDependency(iframeRef_2, 'http://localhost:52275/')
+    ACS.addDependency(iframeRef_2, `${_ip}:52275`)
   }
 
   const handleLoad_3 = () => {
     console.log('Ready for iframeRef_3.')
     console.log(`iframeRef_3: ${iframeRef_3.current?.src}`)
-    ACS.addDependency(iframeRef_3, 'http://localhost:3001/')
+    ACS.addDependency(iframeRef_3, `${_ip}:3001`)
   }
 
   const handleLoad_4 = () => {
     console.log('Ready for iframeRef_4.')
     console.log(`iframeRef_4: ${iframeRef_4.current?.src}`)
-    console.log(
-      `ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_5, 'http://localhost:3001/')}`
-    )
+    console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_5, `${_ip}:3001`)}`)
   }
 
   const handleLoad_5 = () => {
     console.log('Ready for iframeRef_5.')
     console.log(`iframeRef_5: ${iframeRef_5.current?.src}`)
-    console.log(
-      `ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_5, 'http://localhost:3001/')}`
-    )
+    console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_5, `${_ip}:3001`)}`)
   }
 
   const handleLoad_6 = () => {
@@ -231,18 +227,18 @@ export default function PersonalAbout() {
               width="500"
               height="200"
               style={{ border: '0' }}
-              src="http://localhost:52274/index.html"
+              src={`${_ip}:52274/index.html`}
               onLoad={handleLoad_1}
             />
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <iframe
               ref={iframeRef_2}
               title="iframeRef_2"
               width="500"
               height="200"
               style={{ border: '0' }}
-              src="http://localhost:52275/"
+              src={`${_ip}:52275/`}
               onLoad={handleLoad_2}
             />
           </li> */}
@@ -253,7 +249,7 @@ export default function PersonalAbout() {
               width="500"
               height="200"
               style={{ border: '0' }}
-              src="http://localhost:3001/"
+              src=`${_ip}:3001`
               onLoad={handleLoad_3}
             />
           </li> */}
@@ -264,7 +260,7 @@ export default function PersonalAbout() {
               width="500"
               height="200"
               style={{ border: '0' }}
-              src="http://localhost:3001/"
+              src=`${_ip}:3001`
               onLoad={handleLoad_4}
             />
           </li>
@@ -275,7 +271,7 @@ export default function PersonalAbout() {
               width="500"
               height="200"
               style={{ border: '0' }}
-              src="http://localhost:3001/"
+              src=`${_ip}:3001`
               onLoad={handleLoad_5}
             />
           </li> */}
