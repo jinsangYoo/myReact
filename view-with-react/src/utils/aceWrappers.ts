@@ -50,8 +50,8 @@ export function sendCommonWithCB(argMessage: string, params: ACParams): void {
 
   ACS.send(params, (error?: object, result?: ACEResponseToCaller) => {
     console.log(`${argMessage}::in CB`)
-    console.log('error: ' + JSON.stringify(error, null, 2))
-    console.log('result: ' + JSON.stringify(result, null, 2))
+    if (error) console.log('error: ' + (error as Error).message)
+    if (result) console.log('result: ' + JSON.stringify(result, null, 2))
   })
 }
 
