@@ -37,3 +37,8 @@ export { MemberLogin, MemberJoin, MemberLeave }
 
 import SearchMain from './SearchMain'
 export { SearchMain }
+
+import IframeMain from './IframeMain'
+import FirstPage from './IframeFirst'
+import SecondPage from './IframeSecond'
+export { IframeMain, FirstPage, SecondPage }

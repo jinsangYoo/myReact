@@ -20,12 +20,10 @@ import toast, { Toaster } from 'react-hot-toast'
 import { getMessagingHelper, requestForToken } from './firebase'
 import { onMessage } from 'firebase/messaging'
 
+const _ip = 'https://rnfornhndata.web.app/'
 function App() {
   const { setEnableInSDK, setDetailInSDK } = useACSDKUtil()
   useEffect(() => {
-    // console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
-    // console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
-
     const _config = AceConfiguration.init(gcodeSelector())
     ACS.configure(_config)
       .then((response) => {
@@ -138,15 +136,16 @@ function App() {
   // }, [])
 
   useEffect(() => {
-    const _ip = 'http://10.77.129.54'
+    let parentDomain = [_ip]
+    // const _ip = 'http://10.78.104.114'
     // const mobileParent = `${_ip}:3000`
     // let parentDomain = [`${_ip}:3000`, mobileParent]
-    let parentDomain = [`${_ip}:3000`]
+    // let parentDomain = [`${_ip}:3000`]
 
     ACS.send(
       {
         type: ACParams.TYPE.ONLOAD,
-        name: '네이티브 연동, Use useEffect reqReady in App',
+        name: 'iframe 연동, Use useEffect reqReady in App',
         key: '1234',
         origin: parentDomain
       },

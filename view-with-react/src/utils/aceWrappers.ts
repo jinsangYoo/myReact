@@ -12,7 +12,7 @@ import {
 import type { ProductForType } from '../hooks'
 
 export function gcodeSelector(): string {
-  return 'AK3A79964'
+  return 'AX2A98885'
 }
 
 export function newFakeProducts(cnt: number) {

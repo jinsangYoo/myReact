@@ -26,7 +26,8 @@ export default function PersonalMain() {
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
-    sendCommonWithPromise(msg, params)
+    // sendCommonWithPromise(msg, params)
+    sendCommonWithCB(msg, params)
   }, [])
 
   async function registerAndSubscribe() {
@@ -57,6 +58,7 @@ export default function PersonalMain() {
   return (
     <div>
       {/* <button onClick={registerAndSubscribe}>subscribe for push notifications</button> */}
+      <p>PL msg: {`>>${title}<< >>${randomValueForScreen}<<`}</p>
       <p>
         <IconButton aria-label="갱신" onClick={() => handleRenew()}>
           <AutorenewRounded />
@@ -75,11 +77,6 @@ export default function PersonalMain() {
       <Button variant="outlined" onClick={ACS.printDependencies}>
         ACS SDK print dependencies
       </Button>
-      <pre>
-        <a href="http://127.0.0.1:52274" style={{ textDecoration: 'none' }}>
-          진상 로컬(http://127.0.0.1:52274)로 a 링크
-        </a>
-      </pre>
       <pre>ACS SDK 버전: {ACS.getSdkVersion()}</pre>
       <pre>ACS SDK 활성화 여부: {enable.toString()}</pre>
       <pre>ACS SDK 현황: {JSON.stringify(details, null, 2)}</pre>

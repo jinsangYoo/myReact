@@ -14,11 +14,13 @@ import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '
 import { Button, Typography } from '@mui/material'
 import { onlyAlphabetOrNumberAtStringEndIndex } from '../utils/TextUtils'
 import { AceWebViewInterface } from '../types'
+import { getBrowserName, isSupportNativeSDK } from '../utils'
 
 const title = '대문_about'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-// const _ip = 'http://10.77.129.54'
-const _ip = 'http://10.78.100.175'
+// const _ip = 'https://rnfornhndata.web.app/personal/about'
+const _ip = 'http://10.77.129.54'
+// const _ip = 'http://10.77.100.172'
 const mobile = `${_ip}:3001`
 const _parentOrigin = `${_ip}:3000`
 export default function PersonalAbout() {
@@ -80,53 +82,8 @@ export default function PersonalAbout() {
     sendCommonWithPromise(msg, params)
   }, [])
 
-  const isSupportSDK = useCallback(() => {
-    console.log('in isWebView')
-    let _win = window as any | undefined
-    if (
-      _win &&
-      _win.webkit &&
-      _win.webkit.messageHandlers &&
-      _win.webkit.messageHandlers.ace_message_handler
-    ) {
-      console.log('maybe ios')
-      return true
-    } else if (_win && _win.ace_and_interface) {
-      console.log('maybe aos')
-      return true
-    }
-
-    console.log('maybe not webview')
-    return false
-  }, [])
-
-  const getBrowserName = useCallback(() => {
-    console.log('in getBrowserName')
-    let _win = window as any | undefined
-    if (
-      _win &&
-      _win.webkit &&
-      _win.webkit.messageHandlers &&
-      _win.webkit.messageHandlers.ace_message_handler
-    ) {
-      console.log('maybe ios')
-      _win.webkit.messageHandlers.ace_message_handler.postMessage('ace_message_handler!!!!!')
-      return 'maybe ios'
-    } else if (_win && _win.ace_and_interface) {
-      console.log('maybe aos')
-      let isAndroid = _win.ace_and_interface as AceWebViewInterface | undefined
-      console.log('isAndroid?.getKey(): ' + isAndroid?.getKey())
-      console.log('isAndroid?.getDevice(): ' + isAndroid?.getDevice())
-      console.log('isAndroid?.getTS(): ' + isAndroid?.getTS())
-      return 'maybe aos'
-    }
-
-    console.log('maybe not webview')
-    return 'browser'
-  }, [])
-
   useEffect(() => {
-    setIsWebView(isSupportSDK())
+    setIsWebView(isSupportNativeSDK())
     setBrowser(getBrowserName())
   }, [])
 
@@ -194,7 +151,7 @@ export default function PersonalAbout() {
 
   return (
     <>
-      <p>대문 여긴어디 입니다.</p>
+      <p>PL msg: {`>>${title}<< >>${randomValueForScreen}<<`}</p>
       <div>
         <ul>
           <li>
