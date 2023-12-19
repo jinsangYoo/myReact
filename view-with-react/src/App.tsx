@@ -157,12 +157,12 @@ function App() {
     )
   }, [])
 
-  useEffect(() => {
-    const msg = `>>${'테스트_PL'}<<`
-    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
-    // sendCommonWithPromise(msg, params)
-    sendCommonWithCB(msg, params)
-  }, [])
+  // useEffect(() => {
+  //   const msg = `>>${'테스트_PL'}<<`
+  //   const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+  //   // sendCommonWithPromise(msg, params)
+  //   sendCommonWithCB(msg, params)
+  // }, [])
 
   useEffect(() => {
     window.addEventListener('message', ACS.handleMessage)

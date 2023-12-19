@@ -59,6 +59,8 @@ export default function PersonalMain() {
     <div>
       {/* <button onClick={registerAndSubscribe}>subscribe for push notifications</button> */}
       <p>PL msg: {`>>${title}<< >>${randomValueForScreen}<<`}</p>
+      <p>window.location.origin: {window.location.origin}</p>
+      <p>window.location: {window.location.toString()}</p>
       <p>
         <IconButton aria-label="갱신" onClick={() => handleRenew()}>
           <AutorenewRounded />

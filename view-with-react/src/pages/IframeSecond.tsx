@@ -13,7 +13,7 @@ const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 function SecondPage() {
   const navigate = useNavigate()
   const goToFirstPage = () => {
-    navigate('/first')
+    navigate('/iframe/first')
   }
   // useEffect(() => {
   //   ACS.send(
@@ -51,7 +51,8 @@ function SecondPage() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>{`>>${title}<< >>${randomValueForScreen}<<`}</p>
-        <br />
+        <p>window.location.origin: {window.location.origin}</p>
+        <p>window.location: {window.location.toString()}</p>
         <p>react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}</p>
         <p>ACS.getSdkVersion(): {ACS.getSdkVersion()}</p>
         <br />
