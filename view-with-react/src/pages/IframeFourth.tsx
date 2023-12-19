@@ -9,20 +9,19 @@ import { REACT_FRONT_PART_VERSION } from '../version'
 import { ACParams, ACS, ACEResponseToCaller } from '@jinsang/slimer-react'
 
 const _parentOrigin = 'https://rnfornhndata.web.app'
-const title = 'FirstPage'
+const title = 'FourthPage'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-function FirstPage() {
+function FourthPage() {
   const navigate = useNavigate()
-  const goToSecondPage = () => {
-    navigate('/iframe/second')
+  const goToThirdPage = () => {
+    navigate('/iframe/third')
   }
-
   useEffect(() => {
     ACS.send(
       {
         type: ACParams.TYPE.ONLOAD,
-        name: 'iframe 연동, Use useEffect reqReady in App, 1234',
-        key: '1234',
+        name: 'iframe 연동, Use useEffect reqReady in App, abcd',
+        key: 'abcd',
         origin: [_parentOrigin]
       },
       (error?: object, result?: ACEResponseToCaller) => {
@@ -58,11 +57,11 @@ function FirstPage() {
         <p>react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}</p>
         <p>ACS.getSdkVersion(): {ACS.getSdkVersion()}</p>
         <br />
-        <button onClick={goToSecondPage}>go to SecondPage</button>
+        <button onClick={goToThirdPage}>go to ThirdPage</button>
         <button onClick={onDetails}>onDetails</button>
       </header>
     </div>
   )
 }
 
-export default FirstPage
+export default FourthPage

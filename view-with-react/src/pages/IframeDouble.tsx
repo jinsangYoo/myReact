@@ -14,18 +14,17 @@ import { sendCommonWithPromise, sendCommonWithCB, getRandomIntInclusive } from '
 import { Button, Typography } from '@mui/material'
 import { getBrowserName, isSupportNativeSDK, isTopWindow } from '../utils'
 
-const title = 'IframeMain'
+const title = 'IframeDouble'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 const _parentOrigin = 'https://rnfornhndata.web.app'
-const _ip = 'https://rnfornhndata.web.app/iframe/first'
-// const _ip = 'http://10.77.129.54:3001'
-// const _ip = 'http://10.77.100.172'
-const mobile = _ip
-export default function IframeMain() {
+const _0_ip = 'https://rnfornhndata.web.app/iframe/third'
+const _1_ip = 'https://rnfornhndata.web.app/iframe/fourth'
+export default function IframeDouble() {
   const [isTopParent, setIsTopParent] = useState<boolean>(false)
   const [isWebView, setIsWebView] = useState<boolean>(false)
   const [browser, setBrowser] = useState<string>('Browser')
   const iframeRef_0 = React.useRef<HTMLIFrameElement>(null)
+  const iframeRef_1 = React.useRef<HTMLIFrameElement>(null)
 
   useEffect(() => {
     return () => {
@@ -66,6 +65,13 @@ export default function IframeMain() {
     console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_0, _parentOrigin)}`)
   }
 
+  const handleLoad_1 = () => {
+    console.log('Ready for iframeRef_1.')
+    console.log(`_parentOrigin: ${_parentOrigin}`)
+    console.log(`iframeRef_1: ${iframeRef_1.current?.src}`)
+    console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('abcd', iframeRef_1, _parentOrigin)}`)
+  }
+
   return (
     <>
       <p>PL msg: {`>>${title}<< >>${randomValueForScreen}<<`}</p>
@@ -99,8 +105,19 @@ export default function IframeMain() {
               width="500"
               height="200"
               style={{ border: '0' }}
-              src={_ip}
+              src={_0_ip}
               onLoad={handleLoad_0}
+            />
+          </li>
+          <li>
+            <iframe
+              ref={iframeRef_1}
+              title="iframeRef_1"
+              width="500"
+              height="200"
+              style={{ border: '0' }}
+              src={_1_ip}
+              onLoad={handleLoad_1}
             />
           </li>
         </ul>

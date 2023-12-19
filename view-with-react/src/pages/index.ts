@@ -41,4 +41,7 @@ export { SearchMain }
 import IframeMain from './IframeMain'
 import FirstPage from './IframeFirst'
 import SecondPage from './IframeSecond'
-export { IframeMain, FirstPage, SecondPage }
+import ThirdPage from './IframeThird'
+import FourthPage from './IframeFourth'
+import IframeDouble from './IframeDouble'
+export { IframeMain, FirstPage, SecondPage, ThirdPage, FourthPage, IframeDouble }
