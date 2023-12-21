@@ -93,46 +93,50 @@ function App() {
 
   const { setPushToken } = usePush()
   useEffect(() => {
-    const messaging = getMessagingHelper()
-    requestForToken(messaging)
-      .then((currentToken) => {
-        if (currentToken) {
-          console.log('current push token for client: ', currentToken)
-          // Perform any other neccessary action with the token
-          setPushToken(currentToken)
+    try {
+      const messaging = getMessagingHelper()
+      requestForToken(messaging)
+        .then((currentToken) => {
+          if (currentToken) {
+            console.log('current push token for client: ', currentToken)
+            // Perform any other neccessary action with the token
+            setPushToken(currentToken)
+          } else {
+            // Show permission request UI
+            console.log('No registration token available. Request permission to generate one.')
+          }
+        })
+        .catch((err) => {
+          console.log('An error occurred while retrieving token. ', err)
+        })
+
+      onMessage(messaging, (payload) => {
+        console.log(
+          `[${new Date().toLocaleDateString()}] in Ap::onMessage::${JSON.stringify(payload, null, 2)}`
+        )
+        setNotification({
+          title: payload?.notification?.title ?? 'noTitle',
+          body: payload?.notification?.body ?? 'noBody'
+        })
+        console.log(
+          `[${new Date().toLocaleDateString()}] in Ap::onMessage::payload.data: ${JSON.stringify(
+            payload.data,
+            null,
+            2
+          )}`
+        )
+        if (payload.data) {
+          const msg = payload?.notification?.body ?? 'noBody'
+          const params = ACParams.init(ACParams.TYPE.PUSH, msg)
+          params.data = payload.data
+          sendCommonWithPromise(msg, params)
         } else {
-          // Show permission request UI
-          console.log('No registration token available. Request permission to generate one.')
+          console.log('in Ap::payload.data is empty.')
         }
       })
-      .catch((err) => {
-        console.log('An error occurred while retrieving token. ', err)
-      })
-
-    onMessage(messaging, (payload) => {
-      console.log(
-        `[${new Date().toLocaleDateString()}] in Ap::onMessage::${JSON.stringify(payload, null, 2)}`
-      )
-      setNotification({
-        title: payload?.notification?.title ?? 'noTitle',
-        body: payload?.notification?.body ?? 'noBody'
-      })
-      console.log(
-        `[${new Date().toLocaleDateString()}] in Ap::onMessage::payload.data: ${JSON.stringify(
-          payload.data,
-          null,
-          2
-        )}`
-      )
-      if (payload.data) {
-        const msg = payload?.notification?.body ?? 'noBody'
-        const params = ACParams.init(ACParams.TYPE.PUSH, msg)
-        params.data = payload.data
-        sendCommonWithPromise(msg, params)
-      } else {
-        console.log('in Ap::payload.data is empty.')
-      }
-    })
+    } catch (err) {
+      console.error('failed to initialize firebase messaging', err)
+    }
   }, [])
 
   useEffect(() => {
@@ -168,13 +172,6 @@ function App() {
     //   }
     // )
   }, [])
-
-  // useEffect(() => {
-  //   const msg = `>>${'테스트_PL'}<<`
-  //   const params = ACParams.init(ACParams.TYPE.EVENT, msg)
-  //   // sendCommonWithPromise(msg, params)
-  //   sendCommonWithCB(msg, params)
-  // }, [])
 
   useEffect(() => {
     window.addEventListener('message', ACS.handleMessage)

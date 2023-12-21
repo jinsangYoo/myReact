@@ -20,6 +20,7 @@
         { "id": "first", "name": "A FirstPage", "path": "first" },
         { "id": "second", "name": "A SecondPage", "path": "second" },
         { "id": "third", "name": "A ThirdPage", "path": "third" },
+        { "id": "fourth", "name": "A FourthPage", "path": "fourth" },
         { "id": "double", "name": "A Double IFrame", "path": "double" }
       ]
     },

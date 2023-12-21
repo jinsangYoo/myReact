@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router-dom'
 import { sendCommonWithPromise, getRandomIntInclusive } from '../utils'
 import { REACT_FRONT_PART_VERSION } from '../version'
 
-import { ACParams, ACS } from '@jinsang/slimer-react'
+import { ACParams, ACS, ACEResponseToCaller } from '@jinsang/slimer-react'
 
+const _parentOrigin = 'https://rnfornhndata.web.app'
 const title = 'SecondPage'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 function SecondPage() {
@@ -15,21 +16,21 @@ function SecondPage() {
   const goToFirstPage = () => {
     navigate('/iframe/first')
   }
-  // useEffect(() => {
-  //   ACS.send(
-  //     {
-  //       type: ACParams.TYPE.ONLOAD,
-  //       name: `연동, Use useEffect reqReady in ${title}`,
-  //       key: '1234',
-  //       origin: parentDomain,
-  //     },
-  //     (error?: object, result?: ACEResponseToCaller) => {
-  //       console.log(`test_postmsg_with_react::in CB`)
-  //       console.log('error: ' + (error as Error).message)
-  //       console.log('result: ' + JSON.stringify(result, null, 2))
-  //     }
-  //   )
-  // }, [])
+  useEffect(() => {
+    ACS.send(
+      {
+        type: ACParams.TYPE.ONLOAD,
+        name: 'iframe 연동, Use useEffect reqReady in App, 1234',
+        key: '1234',
+        origin: [_parentOrigin]
+      },
+      (error?: object, result?: ACEResponseToCaller) => {
+        console.log(`test_postmsg_with_react::in CB`)
+        console.log('error: ' + (error as Error).message)
+        console.log('result: ' + JSON.stringify(result, null, 2))
+      }
+    )
+  }, [])
 
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
