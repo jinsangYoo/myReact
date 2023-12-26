@@ -72,7 +72,7 @@ export function sendCommonWithPromise(argMessage: string, params: ACParams): voi
     .catch((err) => {
       console.log(`${argMessage}::in reject!!`)
       if (err) {
-        console.log('err: ' + JSON.stringify(err, null, 2))
+        console.log('error: ' + (err as Error).message)
       } else {
         console.log('err is undefined.')
       }

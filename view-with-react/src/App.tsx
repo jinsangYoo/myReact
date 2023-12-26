@@ -39,7 +39,7 @@ function App() {
       })
       .catch((err) => {
         console.log('SDK Promise 초기화::in reject!!')
-        console.log('err: ' + JSON.stringify(err, null, 2))
+        console.log('error: ' + (err as Error).message)
       })
 
     // ACS.configure(_config, (error?: object, innerResult?: ACEResponseToCaller) => {
