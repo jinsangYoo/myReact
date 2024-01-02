@@ -8,7 +8,7 @@
       "subMenu": [
         { "id": "main", "name": "A 메인", "path": "main" },
         { "id": "community", "name": "A 게시판", "path": "community" },
-        { "id": "about", "name": "A 여긴 어디", "path": "about" }
+        { "id": "about", "name": "테스트 no QA", "path": "about" }
       ]
     },
     {
@@ -21,7 +21,8 @@
         { "id": "second", "name": "A SecondPage", "path": "second" },
         { "id": "third", "name": "A ThirdPage", "path": "third" },
         { "id": "fourth", "name": "A FourthPage", "path": "fourth" },
-        { "id": "double", "name": "A Double IFrame", "path": "double" }
+        { "id": "double", "name": "A Double IFrame", "path": "double" },
+        { "id": "customIframePortal", "name": "A Custom IFrame Portal", "path": "customIframePortal" }
       ]
     },
     {

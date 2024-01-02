@@ -173,6 +173,36 @@ function App() {
     // )
   }, [])
 
+  // useEffect(() => {
+  //   const msg = `>>${'테스트_PL_1'}<<`
+  //   const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+  //   sendCommonWithCB(msg, params)
+  // }, [])
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const msg = `>>${'테스트_PL_2'}<<`
+  //     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+  //     sendCommonWithCB(msg, params)
+  //   }, 100)
+  // }, [])
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const msg = `>>${'테스트_PL_3'}<<`
+  //     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+  //     sendCommonWithCB(msg, params)
+  //   }, 200)
+  // }, [])
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const msg = `>>${'테스트_PL_4'}<<`
+  //     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+  //     sendCommonWithCB(msg, params)
+  //   }, 300)
+  // }, [])
+
   useEffect(() => {
     window.addEventListener('message', ACS.handleMessage)
     return () => {

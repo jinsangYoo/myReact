@@ -44,4 +44,5 @@ import SecondPage from './IframeSecond'
 import ThirdPage from './IframeThird'
 import FourthPage from './IframeFourth'
 import IframeDouble from './IframeDouble'
-export { IframeMain, FirstPage, SecondPage, ThirdPage, FourthPage, IframeDouble }
+import IframeCustomPortal from './IframeCustomPortal'
+export { IframeMain, FirstPage, SecondPage, ThirdPage, FourthPage, IframeDouble, IframeCustomPortal }
