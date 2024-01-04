@@ -16,7 +16,6 @@ import { getBrowserName, isSupportNativeSDK, isTopWindow } from '../utils'
 
 const title = 'IframeDouble'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-const _parentOrigin = 'https://rnfornhndata.web.app'
 const _0_ip = 'https://rnfornhndata.web.app/iframe/third'
 const _1_ip = 'https://rnfornhndata.web.app/iframe/fourth'
 export default function IframeDouble() {
@@ -60,16 +59,18 @@ export default function IframeDouble() {
 
   const handleLoad_0 = () => {
     console.log('Ready for iframeRef_0.')
-    console.log(`_parentOrigin: ${_parentOrigin}`)
     console.log(`iframeRef_0: ${iframeRef_0.current?.src}`)
-    console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_0, _parentOrigin)}`)
+    console.log(
+      `ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_0, window.location.origin)}`
+    )
   }
 
   const handleLoad_1 = () => {
     console.log('Ready for iframeRef_1.')
-    console.log(`_parentOrigin: ${_parentOrigin}`)
     console.log(`iframeRef_1: ${iframeRef_1.current?.src}`)
-    console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('abcd', iframeRef_1, _parentOrigin)}`)
+    console.log(
+      `ACS.addRequestReady result: ${ACS.addRequestReady('abcd', iframeRef_1, window.location.origin)}`
+    )
   }
 
   return (

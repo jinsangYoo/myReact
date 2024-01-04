@@ -16,7 +16,6 @@ import { getBrowserName, isSupportNativeSDK, isTopWindow } from '../utils'
 
 const title = 'IframeMain'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
-const _parentOrigin = 'https://rnfornhndata.web.app'
 const _ip = 'https://rnfornhndata.web.app/iframe/first'
 // const _ip = 'http://10.77.129.54:3001'
 // const _ip = 'http://10.77.100.172'
@@ -61,9 +60,10 @@ export default function IframeMain() {
 
   const handleLoad_0 = () => {
     console.log('Ready for iframeRef_0.')
-    console.log(`_parentOrigin: ${_parentOrigin}`)
     console.log(`iframeRef_0: ${iframeRef_0.current?.src}`)
-    console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_0, _parentOrigin)}`)
+    console.log(
+      `ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_0, window.location.origin)}`
+    )
   }
 
   return (

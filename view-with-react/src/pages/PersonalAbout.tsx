@@ -134,7 +134,8 @@ export default function PersonalAbout() {
   const handleLoad_4 = () => {
     console.log('Ready for iframeRef_4.')
     console.log(`iframeRef_4: ${iframeRef_4.current?.src}`)
-    console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_5, `${_ip}:3001`)}`)
+    console.log(`destination: ${_ip}:3001}`)
+    console.log(`ACS.addRequestReady result: ${ACS.addRequestReady('1234', iframeRef_4, `${_ip}:3001`)}`)
   }
 
   const handleLoad_5 = () => {
