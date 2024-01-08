@@ -37,12 +37,12 @@ function FirstPage() {
 
     const params = ACParams.init(
       ACParams.TYPE.ONLOAD,
-      `acparams iframe 연동, Use useEffect reqReady in App, 1234`
+      `${title}::iframe 연동, Use useEffect reqReady in App, 1234`
     )
     params.key = '1234'
     params.origin = [_parentOrigin]
     ACS.send(params, (error?: object, result?: ACEResponseToCaller) => {
-      console.log(`myReact::App::in CB`)
+      console.log(`${title}::in CB`)
       console.log('error: ' + (error as Error).message)
       console.log('result: ' + JSON.stringify(result, null, 2))
     })

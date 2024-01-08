@@ -49,20 +49,23 @@ function SecondPage() {
     //   }
     // )
 
-    const params = ACParams.init(ACParams.TYPE.ONLOAD, 'iframe 연동, Use useEffect reqReady in App, 1234')
+    const params = ACParams.init(
+      ACParams.TYPE.ONLOAD,
+      `${title}::iframe 연동, Use useEffect reqReady in App, 1234`
+    )
     params.key = '1234'
     params.origin = [_parentOrigin]
 
     ACS.send(params)
       .then((response) => {
         if (response) {
-          console.log('response: ' + JSON.stringify(response))
+          console.log(`${title}::response: ${JSON.stringify(response)}`)
         }
-        console.log(`success sdk send ${params.name}`)
+        console.log(`${title}::success sdk send ${params.name}`)
       })
       .catch((err) => {
         if (err) {
-          console.log('error: ' + (err as Error).message)
+          console.log(`${title}::error: ${(err as Error).message}`)
         }
       })
     // (error?: object, result?: ACEResponseToCaller) => {
