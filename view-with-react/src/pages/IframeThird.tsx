@@ -51,12 +51,13 @@ function ThirdPage() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>{`>>${title}<< >>${randomValueForScreen}<<`}</p>
-        <p>window.location.origin: {window.location.origin}</p>
-        <p>window.location: {window.location.toString()}</p>
-        <p>react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}</p>
-        <p>ACS.getSdkVersion(): {ACS.getSdkVersion()}</p>
-        <br />
+        <div>
+          <ol>{`>>${title}<< >>${randomValueForScreen}<<`}</ol>
+          <ol>window.location.origin: {window.location.origin}</ol>
+          <ol>window.location: {window.location.toString()}</ol>
+          <ol>react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}</ol>
+          <ol>ACS.getSdkVersion(): {ACS.getSdkVersion()}</ol>
+        </div>
         <button onClick={goToFourthPage}>go to FourthPage</button>
         <button onClick={onDetails}>onDetails</button>
       </header>

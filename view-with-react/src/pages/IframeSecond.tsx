@@ -16,20 +16,60 @@ function SecondPage() {
   const goToFirstPage = () => {
     navigate('/iframe/first')
   }
+  const resetToOnLoad = () => {
+    ACS.resetToOnLoad()
+  }
+
   useEffect(() => {
-    ACS.send(
-      {
-        type: ACParams.TYPE.ONLOAD,
-        name: 'iframe 연동, Use useEffect reqReady in App, 1234',
-        key: '1234',
-        origin: [_parentOrigin]
-      },
-      (error?: object, result?: ACEResponseToCaller) => {
-        console.log(`test_postmsg_with_react::in CB`)
-        console.log('error: ' + (error as Error).message)
-        console.log('result: ' + JSON.stringify(result, null, 2))
-      }
-    )
+    // ACS.send(
+    //   {
+    //     type: ACParams.TYPE.ONLOAD,
+    //     name: 'iframe 연동, Use useEffect reqReady in App, 1234',
+    //     key: '1234',
+    //     origin: [_parentOrigin]
+    //   },
+    //   (error?: object, result?: ACEResponseToCaller) => {
+    //     console.log(`test_postmsg_with_react::in CB`)
+    //     console.log('error: ' + (error as Error).message)
+    //     console.log('result: ' + JSON.stringify(result, null, 2))
+    //   }
+    // )
+
+    // ACS.send(
+    //   {
+    //     type: ACParams.TYPE.ONLOAD,
+    //     name: 'iframe 연동, Use useEffect reqReady in App, 1234',
+    //     key: '1234',
+    //     origin: [_parentOrigin]
+    //   },
+    //   (error?: object, result?: ACEResponseToCaller) => {
+    //     console.log(`test_postmsg_with_react::in CB`)
+    //     console.log('error: ' + (error as Error).message)
+    //     console.log('result: ' + JSON.stringify(result, null, 2))
+    //   }
+    // )
+
+    const params = ACParams.init(ACParams.TYPE.ONLOAD, 'iframe 연동, Use useEffect reqReady in App, 1234')
+    params.key = '1234'
+    params.origin = [_parentOrigin]
+
+    ACS.send(params)
+      .then((response) => {
+        if (response) {
+          console.log('response: ' + JSON.stringify(response))
+        }
+        console.log(`success sdk send ${params.name}`)
+      })
+      .catch((err) => {
+        if (err) {
+          console.log('error: ' + (err as Error).message)
+        }
+      })
+    // (error?: object, result?: ACEResponseToCaller) => {
+    //   console.log(`test_postmsg_with_react::in CB`)
+    //   console.log('error: ' + (error as Error).message)
+    //   console.log('result: ' + JSON.stringify(result, null, 2))
+    // }
   }, [])
 
   useLayoutEffect(() => {
@@ -51,14 +91,16 @@ function SecondPage() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>{`>>${title}<< >>${randomValueForScreen}<<`}</p>
-        <p>window.location.origin: {window.location.origin}</p>
-        <p>window.location: {window.location.toString()}</p>
-        <p>react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}</p>
-        <p>ACS.getSdkVersion(): {ACS.getSdkVersion()}</p>
-        <br />
+        <div>
+          <ol>{`>>${title}<< >>${randomValueForScreen}<<`}</ol>
+          <ol>window.location.origin: {window.location.origin}</ol>
+          <ol>window.location: {window.location.toString()}</ol>
+          <ol>react QA 웹사이트 버전: {REACT_FRONT_PART_VERSION}</ol>
+          <ol>ACS.getSdkVersion(): {ACS.getSdkVersion()}</ol>
+        </div>
         <button onClick={goToFirstPage}>go to FirstPage</button>
         <button onClick={onDetails}>onDetails</button>
+        <button onClick={resetToOnLoad}>resetToOnLoad</button>
       </header>
     </div>
   )

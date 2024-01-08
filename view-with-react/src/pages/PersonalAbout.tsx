@@ -212,18 +212,18 @@ export default function PersonalAbout() {
               onLoad={handleLoad_3}
             />
           </li> */}
-          {/* <li>
+          <li>
             <iframe
               ref={iframeRef_4}
               title="iframeRef_4"
               width="500"
               height="200"
               style={{ border: '0' }}
-              src=`${_ip}:3001`
+              src={`${_ip}:3001/SecondPage`}
               onLoad={handleLoad_4}
             />
           </li>
-          <li>
+          {/* <li>
             <iframe
               ref={iframeRef_5}
               title="iframeRef_5"
@@ -234,7 +234,7 @@ export default function PersonalAbout() {
               onLoad={handleLoad_5}
             />
           </li> */}
-          <li>
+          {/* <li>
             <iframe
               ref={iframeRef_6}
               id="mobile"
@@ -245,7 +245,7 @@ export default function PersonalAbout() {
               src={mobile}
               onLoad={handleLoad_6}
             />
-          </li>
+          </li> */}
         </ul>
       </div>
     </>
