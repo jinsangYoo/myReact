@@ -26,7 +26,8 @@ export default function PersonalMain() {
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
-    sendCommonWithPromise(msg, params)
+    // sendCommonWithPromise(msg, params)
+    sendCommonWithCB(msg, params)
   }, [])
 
   async function registerAndSubscribe() {
@@ -57,6 +58,9 @@ export default function PersonalMain() {
   return (
     <div>
       {/* <button onClick={registerAndSubscribe}>subscribe for push notifications</button> */}
+      <p>PL msg: {`>>${title}<< >>${randomValueForScreen}<<`}</p>
+      <p>window.location.origin: {window.location.origin}</p>
+      <p>window.location: {window.location.toString()}</p>
       <p>
         <IconButton aria-label="갱신" onClick={() => handleRenew()}>
           <AutorenewRounded />
@@ -72,6 +76,9 @@ export default function PersonalMain() {
         FCM token copy to clipboard
       </Button>
       <pre>{token}</pre>
+      <Button variant="outlined" onClick={ACS.printDependencies}>
+        ACS SDK print dependencies
+      </Button>
       <pre>ACS SDK 버전: {ACS.getSdkVersion()}</pre>
       <pre>ACS SDK 활성화 여부: {enable.toString()}</pre>
       <pre>ACS SDK 현황: {JSON.stringify(details, null, 2)}</pre>

@@ -10,6 +10,7 @@ import FactoryContentPanelForEtc from './FactoryContentPanelForEtc'
 import FactoryContentPanelForMall from './FactoryContentPanelForMall'
 import FactoryContentPanelForMemeber from './FactoryContentPanelForMemeber'
 import FactoryContentPanelForSearch from './FactoryContentPanelForSearch'
+import FactoryContentPanelForIframe from './FactoryContentPanelForIframe'
 
 import { Paper } from '@mui/material'
 
@@ -27,6 +28,7 @@ export default function FactoryContentPanels() {
         <Route path="member/*" element={<FactoryContentPanelForMemeber />} />
         <Route path="mall/*" element={<FactoryContentPanelForMall />} />
         <Route path="myReact/*" element={<FactoryContentPanelForMyReact />} />
+        <Route path="iframe/*" element={<FactoryContentPanelForIframe />} />
         <Route path="personal/*" element={<FactoryContentPanelForPersonal />} />
         <Route path="*" element={<FactoryContentPanelForPersonal />} />
       </Routes>
