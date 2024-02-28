@@ -78,7 +78,10 @@ const ACSDK = ({
   tel,
   push
 }: ACSDKProps) => {
-  const url = randomValue ?? false ? `>>${msg}<< >>${randomValue}<<` : `>>${msg}<<`
+  let url = randomValue ?? false ? `>>${msg}<< >>${randomValue}<<` : `${msg}`
+  if (type === ACParams.TYPE.LINK) {
+    url = msg
+  }
   const params = ACParams.init(type, url)
 
   switch (type) {

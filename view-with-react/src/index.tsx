@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
@@ -15,8 +15,7 @@ import {
 import { SnackbarProvider } from 'notistack'
 import { registerServiceWorker } from './serviceWorker'
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-root.render(
+ReactDOM.render(
   <SnackbarProvider>
     <PushProvider>
       <ACSDKUtilProvider>
@@ -33,7 +32,8 @@ root.render(
         </MenuProvider>
       </ACSDKUtilProvider>
     </PushProvider>
-  </SnackbarProvider>
+  </SnackbarProvider>,
+  document.getElementById('root') as HTMLElement
 )
 
 // If you want to start measuring performance in your app, pass a function

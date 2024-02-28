@@ -12,7 +12,7 @@ import {
 import type { ProductForType } from '../hooks'
 
 export function gcodeSelector(): string {
-  return 'AK3A79964'
+  return 'AK2A98730'
 }
 
 export function newFakeProducts(cnt: number) {
@@ -50,8 +50,8 @@ export function sendCommonWithCB(argMessage: string, params: ACParams): void {
 
   ACS.send(params, (error?: object, result?: ACEResponseToCaller) => {
     console.log(`${argMessage}::in CB`)
-    console.log('error: ' + JSON.stringify(error, null, 2))
-    console.log('result: ' + JSON.stringify(result, null, 2))
+    if (error) console.log('error: ' + (error as Error).message)
+    if (result) console.log('result: ' + JSON.stringify(result, null, 2))
   })
 }
 
@@ -72,7 +72,7 @@ export function sendCommonWithPromise(argMessage: string, params: ACParams): voi
     .catch((err) => {
       console.log(`${argMessage}::in reject!!`)
       if (err) {
-        console.log('err: ' + JSON.stringify(err, null, 2))
+        console.log('error: ' + (err as Error).message)
       } else {
         console.log('err is undefined.')
       }

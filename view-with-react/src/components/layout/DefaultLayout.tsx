@@ -1,5 +1,4 @@
 import React from 'react'
-import Box from '@mui/material/Box'
 import { Routes, Route } from 'react-router-dom'
 
 import Header from './default/Header'
